@@ -113,6 +113,21 @@ This register supports the original Kargil dossier, campaign library and Operati
 - [US Department of State history — Kashmir crisis](https://1997-2001.state.gov/about_state/history/ch13.html): retrospective diplomatic account.
 - [Clinton Presidential Library — Kargil War finding aid](https://www.clintonlibrary.gov/research/archives/finding-aids/kargil-war): archival records catalogue.
 
+
+## 2000 — Operation Khukri (UNAMSIL, Sierra Leone)
+
+- [Lok Sabha answer — Injury to Indian Soldiers, 16 August 2000](https://eparlib.sansad.in/bitstream/123456789/465566/1/10002.pdf): states that the UNAMSIL rescue operation under Maj Gen V. K. Jetley began on 15 July and concluded on 16 July; the answer records seven minor injuries among Indian soldiers and one fatal Indian casualty.
+- [Op Khukri — former Force Commander's after-action account, Part I](https://usiofindia.org/pdf/USI-Journal-Jan-Mar-2007-89-102.pdf) and [Part II](https://usiofindia.org/pdf/USI-Journal-Apr-Jun-2007-74-85.pdf): describes planning and the 13–14 July build-up, aviation and weather constraints, the operation order and execution.
+- [MEA Annual Report 2000–01 — Sierra Leone](https://www.mea.gov.in/uploads/publicationdocs/163_annual-report-2000-2001.pdf): government retrospective on the peacekeeping deployment.
+- Count note: shorthand totals for personnel in the siege/rescue differ across public descriptions. This dossier follows the parliamentary answer's wording, rather than combining different scopes.
+
+## 2003 — Operation Sarp Vinash (Hill Kaka, Poonch)
+
+- [Indian Express — Operation Sarp Vinash / Hill Kaka historical explainer](https://indianexpress.com/article/explained/jammu-kashmir-poonch-encounter-army-militants-search-operation-7582447/): describes the terrain, preparation and broad duration.
+- [DRDO News retrospective](https://www.drdo.gov.in/drdo/sites/default/files/drdo-news-documents/NPC25Jan2024.pdf): government research publication with an overview of the operation.
+- [Army defends Operation Sarp Vinash — Times of India, 9 July 2003](https://timesofindia.indiatimes.com/india/army-defends-operation-sarp-vinash/articleshow/66259.cms): contemporary reporting of Army statements, including debated figures.
+- Date and figure note: public accounts vary on the end date, force strength, casualty counts and number of hideouts. The atlas labels those differences instead of resolving them without a full common dataset.
+
 ## Research method: chronology, mistakes and lessons
 - A daily entry is included only when a source gives a dated milestone. An umbrella operation, multi-year deployment or short public retrospective is not converted into a fabricated full daily log.
 - “Planning” summarises documented intent or clearly labels analysis. “Implementation” describes dated public accounts. “Mistakes/friction” identifies documented constraints or contested critiques, and separately marks evidence gaps. “Lessons” are educational inferences, not claims attributed to commanders unless linked to a source.
