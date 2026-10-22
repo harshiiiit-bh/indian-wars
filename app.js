@@ -86,7 +86,8 @@
   function safeJSON(value, fallback) {
     try { return JSON.parse(value); } catch (e) { return fallback; }
   }
-  var savedIds = new Set(safeJSON(safeStoreGet('iw-field-saved', '[]'), []).filter(function (x) { return typeof x === 'string'; }));
+  var storedSavedIds = safeJSON(safeStoreGet('iw-field-saved', '[]'), []);
+  var savedIds = new Set((Array.isArray(storedSavedIds) ? storedSavedIds : []).filter(function (x) { return typeof x === 'string'; }));
   var activePhase = 'all';
   var TIMELINE_PAGE_SIZE = 10;
   var CAMPAIGN_PAGE_SIZE = 6;
