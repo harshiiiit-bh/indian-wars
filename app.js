@@ -167,8 +167,9 @@
     options = options || {};
     route = ROUTE_TITLES[route] ? route : 'home';
     currentRoute = route;
+    var isKargilRoute = route === 'kargil' || route.indexOf('kargil-') === 0;
     document.body.dataset.route = route;
-    $$('[data-view]').forEach(function (view) {
+    $('[data-view]').forEach(function (view) {
       var visible = view.dataset.view === route;
       view.hidden = !visible;
       view.classList.toggle('route-hidden', !visible);
