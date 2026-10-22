@@ -59,9 +59,11 @@ const delegatedClickStart = app.indexOf("var pageButton = event.target.closest('
 const firstSpecificListener = app.indexOf("window.addEventListener('hashchange'", wireEventsStart);
 check(wireEventsStart >= 0 && delegatedClickStart > wireEventsStart && delegatedClickStart < firstSpecificListener, 'Core delegated click handling must be installed before individual listeners can fail.');
 const initStart = app.indexOf('function init()');
-const wireCall = app.indexOf('wireEvents();', initStart);
-const firstRenderStep = app.indexOf('buildIndex();', initStart);
+const wireCall = app.indexOf("runInitStep('Button and navigation wiring', wireEvents);", initStart);
+const firstRenderStep = app.indexOf("['Search index', buildIndex]", initStart);
 check(initStart >= 0 && wireCall > initStart && wireCall < firstRenderStep, 'Button and navigation listeners must be attached before archive rendering begins.');
+check(app.includes('function runInitStep(') && app.includes('function listen('), 'Startup and control binding need fault-isolation guards.');
+check(app.includes('var guardedHandler = function (event)') && app.includes('Delegated click action failed'), 'Click failures must be logged and reported without disabling the rest of the interface.');
 check(app.includes("var routeButton = event.target.closest('[data-route]');"), 'Global delegated route-button handling is missing.');
 
 check(/function\s+prepareDynamicAnchor\s*\(/.test(app), 'Dynamic list anchor resolver is missing.');
@@ -104,7 +106,8 @@ check(app.includes('data-study-complete') && app.includes('iw-studied-wars'), 'R
 check(html.includes('.kargil-chapter-nav[hidden]{display:none!important}'), 'The Kargil chapter bar must be fully hidden on unrelated routes such as Academy.');
 check(app.includes('function findWarStudyForAtlasOperation('), 'Operations Atlas is missing cross-links to relevant first-party war studies.');
 check(app.includes('data-related-study'), 'Linked operation dossiers must identify their expanded on-site study action.');
-const directListenerIds = [...app.matchAll(/\$\(['"]#([\w-]+)['"]\)\.addEventListener/g)].map((match) => match[1]);
+const directListenerIds = [...app.matchAll(/listen\(['"]#([\w-]+)['"],\s*['"]/g)].map((match) => match[1]);
+check(directListenerIds.length >= 25, 'Core control bindings must use the guarded listener helper.');
 for (const id of directListenerIds) { check(ids.includes(id), 'Event wiring targets missing element #' + id + '; this can break control setup.'); }
 const staticExternalAnchors = [...html.matchAll(/<a\b[^>]*href=["']https?:/gi)];
 check(staticExternalAnchors.length === 0, 'Static learning pages must not send readers to external websites.');
@@ -117,5 +120,8 @@ const sourceRendererStart = app.indexOf('function renderSources()');
 const sourceRendererEnd = app.indexOf('function renderQuizHome()', sourceRendererStart);
 check(sourceRendererStart >= 0 && sourceRendererEnd > sourceRendererStart && !app.slice(sourceRendererStart, sourceRendererEnd).includes('<a href="'), 'Source register entries must be presented as local citation cards.');
 check(app.includes("source-card-' + escapeHTML(s.id)"), 'Source cards need stable in-page targets so search can navigate to them.');
+
+check(!/target=["']_blank["']/.test(app) && !app.includes('window.open(') && !app.includes('googleLink('), 'Application controls must not navigate to external research or search pages.');
+check(/function renderSources\(\)[\s\S]*source-card-/.test(app), 'The on-site source register needs stable scroll targets for search results.');
 if (failures.length) { console.error(`Archive validation failed (${failures.length}):`); for (const failure of failures) console.error(` - ${failure}`); process.exitCode = 1; }
 else { console.log(`Archive validation passed. ${ids.length} HTML IDs are unique; 7 routes, legacy routing, core controls and script order are present.`); }
