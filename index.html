@@ -456,6 +456,7 @@ body[data-route="home"] .footer{margin-top:42px}
 }
 @media(max-width:800px){
  #globalSearchWrap{top:142px!important}
+ #exportBtn{display:inline-flex!important}
  html{scroll-padding-top:155px}
  .topbar{height:auto;min-height:0;flex-wrap:wrap;gap:8px;padding-top:10px;padding-bottom:9px}
  .brand{order:1;min-width:0;flex:1 1 auto}
@@ -645,16 +646,16 @@ body[data-route="home"] .footer{margin-top:42px}
       <div class="metric"><strong>3</strong><span>Army · Air Force · Navy operations</span></div>
     </div>
 
-    <div class="kargil-chapter-nav" data-view="kargil" hidden aria-label="Kargil dossier chapters">
+    <div class="kargil-chapter-nav" id="kargilChapterNav" hidden aria-label="Kargil dossier chapters">
       <div class="chapter-nav-heading"><div class="smallcaps">KARGIL WAR / 1999</div><strong>Jump to a chapter</strong></div>
-      <div class="chapter-nav-links">
-        <button type="button" data-jump="overview-brief">Briefing</button>
-        <button type="button" data-jump="timeline">Timeline</button>
-        <button type="button" data-jump="theatre">Terrain</button>
-        <button type="button" data-jump="operations">Operations</button>
-        <button type="button" data-jump="people">People</button>
-        <button type="button" data-jump="intelligence">Analysis</button>
-        <button type="button" data-jump="sources">Sources</button>
+      <div class="chapter-nav-links" aria-label="Kargil chapters">
+        <button type="button" data-route="kargil">Briefing</button>
+        <button type="button" data-route="kargil-timeline">Timeline</button>
+        <button type="button" data-route="kargil-theatre">Terrain</button>
+        <button type="button" data-route="kargil-operations">Operations</button>
+        <button type="button" data-route="kargil-people">People</button>
+        <button type="button" data-route="analysis">Analysis</button>
+        <button type="button" data-route="sources">Sources</button>
       </div>
     </div>
 
@@ -732,7 +733,7 @@ body[data-route="home"] .footer{margin-top:42px}
       <div class="atlas-grid" id="atlasGrid"><div class="empty-state">Loading operation dossiers…</div></div>
     </section>
 
-    <section class="section" id="timeline" data-view="kargil" hidden>
+    <section class="section" id="timeline" data-view="kargil-timeline" hidden>
       <div class="section-head"><div><div class="kicker">02 / Chronology</div><h2>Follow the campaign.</h2></div><div class="head-count" id="timelineCount">Loading events…</div></div>
       <div class="timeline-tools">
         <div class="search-wrap timeline-search"><span class="search-icon">⌕</span><input id="timelineSearch" class="search-input" aria-label="Search the Kargil timeline" placeholder="Filter events by place, operation, person…" autocomplete="off"></div>
@@ -753,7 +754,7 @@ body[data-route="home"] .footer{margin-top:42px}
       </div>
     </section>
 
-    <section class="section" id="theatre" data-view="kargil" hidden>
+    <section class="section" id="theatre" data-view="kargil-theatre" hidden>
       <div class="section-head"><div><div class="kicker">03 / Terrain &amp; logistics</div><h2>Explore the theatre.</h2></div><p>Sector selector, named heights, and the road network that made the ridgelines strategically important.</p></div>
       <div class="theatre-banner">
         <div class="card"><div class="smallcaps">Terrain effect</div><h3 style="margin-top:8px">The high ground was the battlefield.</h3><p>Steep slopes, thin air, cold, exposed approaches, and long resupply routes shaped both the tactical problem and the pace of the campaign.</p></div>
@@ -775,12 +776,12 @@ body[data-route="home"] .footer{margin-top:42px}
       </article>
     </section>
 
-    <section class="section" id="operations" data-view="kargil" hidden>
+    <section class="section" id="operations" data-view="kargil-operations" hidden>
       <div class="section-head"><div><div class="kicker">04 / Three services</div><h2>Operations, connected.</h2></div><p>Read the campaign through its ground, air, and naval dimensions—not as separate stories.</p></div>
       <div class="ops-grid" id="opsGrid"></div>
     </section>
 
-    <section class="section" id="people" data-view="kargil" hidden>
+    <section class="section" id="people" data-view="kargil-people" hidden>
       <div class="section-head"><div><div class="kicker">05 / Command &amp; gallantry</div><h2>People behind the record.</h2></div><p>Command decisions and individual actions both shaped the campaign. Open a profile to read its details.</p></div>
       <div class="people-toolbar">
         <div class="segmented" id="sideSwitch" role="group" aria-label="Select leadership profiles"><button class="active" data-side="india">Indian leadership</button><button data-side="pak">Pakistani leadership</button></div>
