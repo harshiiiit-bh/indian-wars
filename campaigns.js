@@ -642,6 +642,48 @@ const OPERATIONS_ATLAS = [
     ]
   },
   {
+    id:"khukri-2000",title:"Operation Khukri",period:"15–16 Jul 2000",type:"peacekeeping",service:"Indian Army-led contingent under UNAMSIL · IAF / UN aviation support",
+    place:"Kailahun and Daru, Sierra Leone",lat:8.28,lng:-10.57,scope:"Outside India · UN peacekeeping rescue operation",
+    summary:"A UNAMSIL operation to restore freedom of movement to Indian troops and military observers besieged by the Revolutionary United Front (RUF) near Kailahun. India's Lok Sabha answer states the rescue operation ran from 15 to 16 July 2000 and records the Indian casualty and injury figures reported to Parliament.",
+    plan:"The published retrospective by the then Force Commander, Lt Gen V.K. Jetley, describes a build-up on 13–14 July using contracted and Indian aviation, with the operation order issued on 12 July. Public accounts stress secrecy, weather-aware airlift, links between dispersed groups, and a clear humanitarian objective: extract the besieged UN personnel and re-establish freedom of movement.",
+    execution:"The Lok Sabha reply dated 16 August 2000 says UNAMSIL launched the operation under Maj Gen V.K. Jetley on 15 July and completed it on 16 July 2000. The UN Force included Indian troops and military observers; the parliamentary answer states that seven Indian soldiers received minor injuries and one Indian soldier, Havildar Krishan Kumar, died. Different published sources use different shorthand totals for the personnel involved, so this dossier retains the parliamentary wording.",
+    friction:"The Force Commander's published after-action account documents bad weather delaying some helicopter tasks, coordination between ground movement and aviation, the difficulty of extracting dispersed and besieged peacekeepers, and the need to conceal the timing of the operation. These are documented operational constraints; a full assessment should compare the commander's account, UN reports and the parliamentary answer.",
+    lessons:"Peacekeeping does not guarantee consent or safety. Contingency planning must address the possibility that a peacekeeping force becomes besieged; aviation and ground elements need rehearsed communications and alternate weather plans; a rescue mission must stay aligned to the UN mandate and civilian risk. Use after-action evidence to separate adaptation under pressure from preventable planning error.",
+    chronology:[
+      {date:"12 Jul 2000",title:"Operational order issued",detail:"The published Force Commander account says the order was issued on 12 July, after the plan had been developed."},
+      {date:"13–14 Jul 2000",title:"Build-up and movement",detail:"The Force Commander describes a staged build-up using Indian and UN-contracted aviation; weather and secrecy shaped the movement."},
+      {date:"15 Jul 2000",title:"Operation begins",detail:"The official parliamentary reply records the start of the UNAMSIL rescue operation to restore freedom of movement to besieged Indian troops and observers."},
+      {date:"16 Jul 2000",title:"Rescue operation completed",detail:"The Lok Sabha answer records completion on 16 July. It reports seven minor injuries among Indian soldiers and the death of Havildar Krishan Kumar."}
+    ],
+    sources:[
+      {title:"Lok Sabha answer — Injury to Indian Soldiers, 16 Aug 2000",url:"https://eparlib.sansad.in/bitstream/123456789/465566/1/10002.pdf",kind:"Official parliamentary answer"},
+      {title:"Op Khukri — The United Nations Operation Fought in Sierra Leone, Part I",url:"https://usiofindia.org/pdf/USI-Journal-Jan-Mar-2007-89-102.pdf",kind:"After-action account by the former Force Commander"},
+      {title:"Op Khukri — The United Nations Operation Fought in Sierra Leone, Part II",url:"https://usiofindia.org/pdf/USI-Journal-Apr-Jun-2007-74-85.pdf",kind:"After-action account by the former Force Commander"},
+      {title:"MEA Annual Report 2000–01 — Sierra Leone",url:"https://www.mea.gov.in/uploads/publicationdocs/163_annual-report-2000-2001.pdf",kind:"Government annual report"}
+    ]
+  },
+  {
+    id:"sarp-vinash-2003",title:"Operation Sarp Vinash",period:"Apr–May 2003 · reported dates vary",type:"internal-security",service:"Indian Army / Rashtriya Rifles",
+    place:"Hill Kaka, Surankote, Poonch, Jammu & Kashmir",lat:33.55,lng:74.32,scope:"Inside India · counter-insurgency in mountainous terrain",
+    summary:"A major counter-insurgency operation in the Hill Kaka area of Poonch, where armed groups had established camps in rugged, forested terrain south of the Pir Panjal range. Public sources give differing duration and casualty / hideout figures; the dossier preserves those differences instead of choosing one aggregate as definitive.",
+    plan:"The Indian Express retrospective says preparations began in January 2003 after intelligence indicated that armed groups had established bases in the area; it describes a roughly 150-square-kilometre mountainous area bounded by ridges and a concern about the threat to movement and supply lines. The public record does not contain a full daily operations order or a complete after-action inquiry.",
+    execution:"Accounts place the operation between April and May 2003, with one contemporary report giving 21 April–18 May and a later DRDO news compilation describing operations from April onward and a duration of around two weeks. Reports cited by the press give differing force strengths and totals for militants or hideouts; the scope and wording of each report must travel with the figure.",
+    friction:"The sources document rugged ground, forested ridgelines, dispersed hideouts and the difficulty of establishing lasting control after a clearance. Counts differ between contemporary Army statements and later retrospectives; those differences make it inappropriate to present one casualty or hideout total without attribution. The public sources here do not establish a complete day-by-day list of incidents.",
+    lessons:"Mountain counter-insurgency requires dependable local intelligence, sustainment across difficult routes, civilian protection, careful evidence collection, and an explicit plan for holding and administering terrain after a clearance. Track immediate activity separately from lasting security outcomes; avoid converting a reported count into proof of overall success.",
+    chronology:[
+      {date:"Jan 2003",title:"Preparations reported",detail:"The Indian Express retrospective says preparations began in January after intelligence indicated the presence of established militant camps in the Hill Kaka area."},
+      {date:"21 Apr 2003",title:"Reported start date",detail:"A contemporary report records the Rashtriya Rifles operation as starting on 21 April. Other public accounts describe the period more broadly as April–May."},
+      {date:"Apr–May 2003",title:"Clearance operations",detail:"Reports describe activity across rugged, forested terrain; a full daily source-backed log is not available in the linked public accounts."},
+      {date:"18 May 2003",title:"End date in one contemporary account",detail:"A contemporary report gives 18 May as the end of the main operation, while another report describes a longer April–June period. The differing scopes remain visible here."},
+      {date:"Jul 2003",title:"Public claims debated",detail:"Contemporary Army statements and media coverage debated casualty and hideout totals. Figures should be quoted with the source and date rather than combined."}
+    ],
+    sources:[
+      {title:"Indian Express — Operation Sarp Vinash / Hill Kaka historical explainer",url:"https://indianexpress.com/article/explained/jammu-kashmir-poonch-encounter-army-militants-search-operation-7582447/",kind:"Secondary research / campaign context"},
+      {title:"DRDO News — Sarp Vinash retrospective",url:"https://www.drdo.gov.in/drdo/sites/default/files/drdo-news-documents/NPC25Jan2024.pdf",kind:"Government research publication carrying a retrospective"},
+      {title:"Army defends Operation Sarp Vinash — Times of India, 9 Jul 2003",url:"https://timesofindia.indiatimes.com/india/army-defends-operation-sarp-vinash/articleshow/66259.cms",kind:"Contemporary reporting of Army statements"}
+    ]
+  },
+  {
     id:"official-history-catalogue",title:"Official-history index / campaign gaps",period:"Multiple conflicts and operations",type:"research",service:"Research collection · Government of India",
     place:"India and overseas missions",lat:22.9734,lng:78.6569,scope:"Evidence index, not a single operation",
     summary:"The Government of India's official-history catalogue includes not only wars but also Operation Polo, Goa's Operation Vijay, the Congo Operation, India's Custodian Force in Korea, Jammu & Kashmir 1947–48 and peace-mission history. It is an essential route into more complete archival research.",
