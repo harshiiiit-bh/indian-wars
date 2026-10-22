@@ -60,6 +60,11 @@
     else { savedIds.add(id); showToast('Added to field notes'); }
     saveIds();
     renderTimeline();
+    renderSectors();
+    renderOperations();
+    renderLeaders();
+    renderHeroes();
+    renderReforms();
     renderSources();
     renderVault();
     renderSearchResults($('#globalSearch') ? $('#globalSearch').value : '');
@@ -108,9 +113,11 @@
     if (typeof OPERATIONS !== 'undefined') OPERATIONS.forEach(function (o, i) {
       globalIndex.push({ id: 'operation:' + i, type: 'Operation', title: o.name, detail: o.who + ' · ' + o.desc, target: 'operations', raw: o });
     });
-    if (typeof LEADERS_INDIA !== 'undefined') LEADERS_INDIA.concat(typeof LEADERS_PAK !== 'undefined' ? LEADERS_PAK : []).forEach(function (p, i) {
-      var side = LEADERS_INDIA.indexOf(p) !== -1 ? 'india' : 'pak';
-      globalIndex.push({ id: 'leader:' + side + ':' + i, type: 'Commander', title: p.name, detail: p.role + ' · ' + p.desc, target: 'people', side: side, raw: p });
+    if (typeof LEADERS_INDIA !== 'undefined') LEADERS_INDIA.forEach(function (p, i) {
+      globalIndex.push({ id: 'leader:india:' + i, type: 'Commander', title: p.name, detail: p.role + ' · ' + p.desc, target: 'people', side: 'india', raw: p });
+    });
+    if (typeof LEADERS_PAK !== 'undefined') LEADERS_PAK.forEach(function (p, i) {
+      globalIndex.push({ id: 'leader:pak:' + i, type: 'Commander', title: p.name, detail: p.role + ' · ' + p.desc, target: 'people', side: 'pak', raw: p });
     });
     if (typeof HEROES !== 'undefined') HEROES.forEach(function (p, i) {
       globalIndex.push({ id: 'hero:' + i, type: 'Gallantry profile', title: p.name, detail: p.unit + ' · ' + p.theatre + ' · ' + p.bio + ' ' + p.action + ' ' + p.legacy, target: 'people', raw: p });
@@ -266,7 +273,7 @@
         }
       }
       if (!item) return '';
-      return '<div class="saved-item"><strong>' + escapeHTML(item.title) + '</strong><small>' + escapeHTML(item.type || 'Saved item') + ' · ' + escapeHTML(item.detail || '') .slice(0, 180) + '</small><div style="display:flex;gap:7px"><button class="bookmark-btn" data-open-id="' + escapeHTML(id) + '">Open item ↗</button><button class="bookmark-btn" data-save-id="' + escapeHTML(id) + '">Remove</button></div></div>';
+      return '<div class="saved-item"><strong>' + escapeHTML(item.title) + '</strong><small>' + escapeHTML(item.type || 'Saved item') + ' · ' + escapeHTML(String(item.detail || '').slice(0, 180)) + '</small><div style="display:flex;gap:7px"><button class="bookmark-btn" data-open-id="' + escapeHTML(id) + '">Open item ↗</button><button class="bookmark-btn" data-save-id="' + escapeHTML(id) + '">Remove</button></div></div>';
     }).join('');
     $('#fieldNotes').value = safeStoreGet('iw-field-notes', '');
   }
@@ -323,9 +330,12 @@
     sectionJump(item.target || 'overview');
     if (item.id.indexOf('event:') === 0) {
       var evIdx = item.id.split(':')[1];
+      activePhase = 'all';
+      $('#timelineSearch').value = '';
+      $('#phaseFilters .filter-btn').forEach(function (b) { b.classList.toggle('active', b.dataset.phase === 'all'); });
+      renderTimeline();
       var eventEl = $('#timeline-event-' + evIdx);
       if (eventEl) eventEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      else { $('#timelineSearch').value = item.raw.date; renderTimeline(); var newEl = $('#timeline-event-' + evIdx); if (newEl) newEl.scrollIntoView({ behavior: 'smooth', block: 'center' }); }
     }
     if (item.id.indexOf('source:') === 0 && item.raw && item.raw.url) window.open(item.raw.url, '_blank', 'noopener');
   }
