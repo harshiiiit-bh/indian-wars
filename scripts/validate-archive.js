@@ -75,11 +75,11 @@ check(/timelinePage = 1;[\s\S]{0,100}renderTimeline\(\)/.test(app) && /campaignP
 for (const id of ['atlasSort', 'atlasViewCards', 'atlasViewList', 'atlasCompareTray', 'atlasCompareCount', 'atlasCompareSelected', 'atlasCompareRun', 'atlasCompareClear', 'atlasCompareBackdrop', 'atlasCompareShell', 'atlasCompareTitle', 'atlasCompareClose', 'atlasCompareBody']) {
   check(html.includes(`id="${id}"`), `Missing Operations Atlas refinement control: ${id}`);
 }
-check(/function\\s+sortAtlasItems\\s*\\(/.test(app), 'Operations Atlas sort logic is missing.');
-check(/function\\s+toggleAtlasCompare\\s*\\(/.test(app), 'Operation selection for comparison is missing.');
-check(/function\\s+renderAtlasCompareTray\\s*\\(/.test(app), 'Comparison tray renderer is missing.');
-check(/function\\s+renderAtlasComparison\\s*\\(/.test(app), 'Side-by-side operation comparison is missing.');
-check(/function\\s+openAtlasComparison\\s*\\(/.test(app) && /function\\s+closeAtlasComparison\\s*\\(/.test(app), 'Comparison modal open/close controls are missing.');
+check(app.includes('function sortAtlasItems('), 'Operations Atlas sort logic is missing.');
+check(app.includes('function toggleAtlasCompare('), 'Operation selection for comparison is missing.');
+check(app.includes('function renderAtlasCompareTray('), 'Comparison tray renderer is missing.');
+check(app.includes('function renderAtlasComparison('), 'Side-by-side operation comparison is missing.');
+check(app.includes('function openAtlasComparison(') && app.includes('function closeAtlasComparison('), 'Comparison modal open/close controls are missing.');
 check(/data-compare-operation/.test(app) && /data-remove-compare/.test(app) && /data-run-comparison/.test(app) && /data-clear-comparison/.test(app) && /data-close-comparison/.test(app), 'Comparison actions are not fully delegated.');
 check(/atlas-list-view/.test(html), 'Responsive operations list view styles are missing.');
 check(/var ATLAS_COMPARE_LIMIT = 3/.test(app), 'Operation comparison limit must be explicit and bounded.');
