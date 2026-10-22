@@ -500,6 +500,7 @@ function closeWarStudy() {
   var warStudyReturnFocus = null;
 
   function openWarStudy(studyId) {
+    hideSearch();
     var study = findWarStudy(studyId);
     var body = $('#warStudyBody');
     var backdrop = $('#warStudyBackdrop');
