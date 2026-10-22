@@ -6,6 +6,43 @@
   var $ = function (selector, root) { return (root || document).querySelector(selector); };
   var $$ = function (selector, root) { return Array.prototype.slice.call((root || document).querySelectorAll(selector)); };
   var PHASE_LABELS = { infiltration: 'Infiltration', detection: 'Detection', mobilization: 'Mobilization', battles: 'Key battle', endgame: 'Endgame' };
+  var ROUTE_TITLES = {
+    home: 'Home',
+    'operations-atlas': 'Operations Atlas',
+    campaigns: 'Campaign Library',
+    kargil: 'Kargil War 1999',
+    academy: 'Academy',
+    analysis: 'Analysis',
+    sources: 'Sources'
+  };
+  var sectionRouteMap = {
+    home: 'home',
+    'operations-atlas': 'operations-atlas',
+    atlas: 'operations-atlas',
+    campaigns: 'campaigns',
+    kargil: 'kargil',
+    overview: 'kargil',
+    'overview-brief': 'kargil',
+    timeline: 'kargil',
+    timelineCount: 'kargil',
+    phaseFilters: 'kargil',
+    timelineList: 'kargil',
+    theatre: 'kargil',
+    sectorSelector: 'kargil',
+    sectorDetail: 'kargil',
+    highwaysList: 'kargil',
+    operations: 'kargil',
+    opsGrid: 'kargil',
+    people: 'kargil',
+    sideSwitch: 'kargil',
+    leadersGrid: 'kargil',
+    heroesGrid: 'kargil',
+    academy: 'academy',
+    intelligence: 'analysis',
+    analysis: 'analysis',
+    sources: 'sources'
+  };
+  var currentRoute = 'home';
   var SOURCE_LIBRARY = [
     { id: 'nwm-operation-vijay', title: 'Operation Vijay — War Depictions', org: 'National War Memorial', kind: 'Official memorial record', year: 'Government of India', url: 'https://nationalwarmemorial.gov.in/war-depictions/details/8', summary: 'Official memorial overview of the Kargil operation, the recapture of heights, gallantry awards, and the Indian fatality figure stated on this page.' },
     { id: 'pib-2009-kargil', title: 'The Nation Remembers Kargil War Heroes', org: 'Press Information Bureau · Ministry of Defence', kind: 'Government release', year: '26 Jul 2009', url: 'https://www.pib.gov.in/newsite/erelcontent.aspx?lang=2&reg=48&relid=50974', summary: 'Government overview of Operation Vijay and Operation Safed Sagar, aircraft employed, high-altitude missions, and the Line of Control restriction.' },
@@ -90,10 +127,88 @@
     renderSearchResults($('#globalSearch') ? $('#globalSearch').value : '');
   }
 
+  function resolveRoute(hash) {
+    var key = String(hash || '').replace(/^#/, '').split('?')[0];
+    if (ROUTE_TITLES[key]) return key;
+    if (sectionRouteMap[key]) return sectionRouteMap[key];
+    var target = document.getElementById(key);
+    var view = target && (target.matches('[data-view]') ? target : target.closest('[data-view]'));
+    return view && ROUTE_TITLES[view.dataset.view] ? view.dataset.view : 'home';
+  }
+
+  function syncRouteNavigation(route) {
+    $$('.top-nav [data-route]').forEach(function (button) {
+      var active = button.dataset.route === route;
+      button.classList.toggle('active', active);
+      if (active) button.setAttribute('aria-current', 'page');
+      else button.removeAttribute('aria-current');
+    });
+    var more = $('#navMore');
+    if (more) {
+      var moreActive = route === 'analysis' || route === 'sources';
+      var summary = $('summary', more);
+      if (summary) summary.classList.toggle('active', moreActive);
+      if (!moreActive) more.open = false;
+    }
+  }
+
+  function activateRoute(route, options) {
+    options = options || {};
+    route = ROUTE_TITLES[route] ? route : 'home';
+    currentRoute = route;
+    document.body.dataset.route = route;
+    $$('[data-view]').forEach(function (view) {
+      var visible = view.dataset.view === route;
+      view.hidden = !visible;
+      view.classList.toggle('route-hidden', !visible);
+      view.setAttribute('aria-hidden', visible ? 'false' : 'true');
+    });
+    syncRouteNavigation(route);
+    document.title = ROUTE_TITLES[route] + ' — Indian Wars Field Archive';
+    if (route === 'operations-atlas' && atlasMap && typeof atlasMap.invalidateSize === 'function') {
+      window.setTimeout(function () { if (atlasMap) atlasMap.invalidateSize({ pan: false }); }, 70);
+    }
+    if (options.scrollTo) {
+      var target = document.getElementById(options.scrollTo);
+      if (target) target.scrollIntoView({ behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start' });
+      else window.scrollTo({ top: 0, behavior: 'auto' });
+      if (options.focus && target && target.matches('h1,h2,h3')) target.focus({ preventScroll: true });
+    } else if (options.resetScroll) {
+      window.scrollTo({ top: 0, behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
+      if (options.focus) {
+        var title = $('[data-view="' + route + '"] h1, [data-view="' + route + '"] h2');
+        if (title) {
+          title.setAttribute('tabindex', '-1');
+          title.focus({ preventScroll: true });
+        }
+      }
+    }
+  }
+
+  function handleLocationChange() {
+    var key = window.location.hash.replace(/^#/, '');
+    var route = resolveRoute(key);
+    var target = key ? document.getElementById(key) : null;
+    var targetView = target && (target.matches('[data-view]') ? target : target.closest('[data-view]'));
+    var scrollTo = target && targetView && targetView.dataset.view === route ? key : null;
+    activateRoute(route, { scrollTo: scrollTo, resetScroll: !scrollTo && !!key, focus: !!key && !scrollTo });
+  }
+
+  function navigateRoute(route) {
+    if (!ROUTE_TITLES[route]) route = 'home';
+    hideSearch();
+    var nextHash = '#' + route;
+    if (window.location.hash !== nextHash) window.location.hash = route;
+    else activateRoute(route, { resetScroll: true, focus: true });
+  }
+
   function sectionJump(id) {
     var target = document.getElementById(id);
-    if (target) target.scrollIntoView({ behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start' });
-    $$('.nav-link').forEach(function (nav) { nav.classList.toggle('active', nav.dataset.jump === id); });
+    var view = target && (target.matches('[data-view]') ? target : target.closest('[data-view]'));
+    var route = view && ROUTE_TITLES[view.dataset.view] ? view.dataset.view : (sectionRouteMap[id] || 'home');
+    var nextHash = '#' + id;
+    if (window.location.hash !== nextHash) window.history.pushState(null, '', nextHash);
+    activateRoute(route, { scrollTo: target ? id : null, resetScroll: !target, focus: !!target });
     hideSearch();
   }
   function googleLink(query) {
@@ -664,7 +779,7 @@
 
   function exportArchive() {
     var payload = {
-      title: 'Indian Wars — Kargil War Field Archive',
+      title: 'Indian Wars — Historical Military Atlas',
       exportedAt: new Date().toISOString(),
       scopeNote: 'Research export from a static educational dossier. Verify claims against the listed original sources.',
       chronology: typeof TIMELINE !== 'undefined' ? TIMELINE : [],
@@ -682,7 +797,7 @@
     };
     var blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json;charset=utf-8' });
     var url = URL.createObjectURL(blob);
-    var a = document.createElement('a'); a.href = url; a.download = 'indian-wars-kargil-dossier.json'; document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
+    var a = document.createElement('a'); a.href = url; a.download = 'indian-wars-archive.json'; document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
     showToast('Dossier exported as JSON');
   }
 
@@ -690,7 +805,7 @@
     var host = $('.top-actions');
     if (!host || $('#searchToggle')) return;
     var btn = document.createElement('button');
-    btn.type = 'button'; btn.className = 'icon-btn'; btn.id = 'searchToggle'; btn.title = 'Search the archive (Ctrl/⌘ + K)'; btn.setAttribute('aria-label', 'Search the archive'); btn.textContent = '⌕';
+    btn.type = 'button'; btn.className = 'quiet-btn utility-btn'; btn.id = 'searchToggle'; btn.title = 'Search the archive (Ctrl/⌘ + K)'; btn.setAttribute('aria-label', 'Search the archive'); btn.innerHTML = '<span aria-hidden="true">⌕</span><span class="label">Search</span>';
     host.insertBefore(btn, $('#savedOpen'));
     btn.addEventListener('click', function () {
       if ($('#globalSearchWrap').style.display === 'block') hideSearch(); else openSearch();
@@ -701,9 +816,17 @@
     $$('[data-jump]').forEach(function (button) {
       button.addEventListener('click', function () { sectionJump(button.dataset.jump); });
     });
-    $$('.nav-link').forEach(function (button) {
-      button.addEventListener('click', function () { sectionJump(button.dataset.jump); });
+    $$('[data-route]').forEach(function (button) {
+      button.addEventListener('click', function () { navigateRoute(button.dataset.route); });
     });
+    window.addEventListener('hashchange', handleLocationChange);
+    window.addEventListener('popstate', handleLocationChange);
+    var navMore = $('#navMore');
+    if (navMore) {
+      navMore.addEventListener('click', function (event) {
+        if (event.target.closest('button[data-route]')) navMore.open = false;
+      });
+    }
 
     $('#phaseFilters').addEventListener('click', function (event) {
       var button = event.target.closest('[data-phase]');
@@ -813,7 +936,7 @@
       if (event.key === 'Enter') {
         var first = $('.search-hit', $('#searchPanel'));
         if (first) openIndexed(first.dataset.openId);
-        else window.open(googleLink(this.value + ' Kargil War 1999'), '_blank', 'noopener');
+        else window.open(googleLink(this.value + ' Indian military history'), '_blank', 'noopener');
       }
     });
     document.addEventListener('keydown', function (event) {
@@ -823,24 +946,19 @@
       else if (event.key === '/' && !typing) { event.preventDefault(); openSearch(); }
       else if (event.key === 'Escape') { hideSearch(); closeVault(); closeOperationDetail(); }
     });
-    window.addEventListener('scroll', function () {
-      var scrollable = document.documentElement.scrollHeight - window.innerHeight;
-      var percent = scrollable > 0 ? (window.scrollY / scrollable) * 100 : 0;
-      $('#readingProgress').style.width = Math.min(100, Math.max(0, percent)) + '%';
-      var sections = ['overview', 'campaigns', 'atlas', 'timeline', 'theatre', 'operations', 'people', 'academy', 'intelligence', 'sources'];
-      var current = 'overview';
-      sections.forEach(function (id) {
-        var element = document.getElementById(id);
-        if (element && element.getBoundingClientRect().top < 180) current = id;
-      });
-      $$('.nav-link').forEach(function (nav) { nav.classList.toggle('active', nav.dataset.jump === current); });
-    }, { passive: true });
     document.addEventListener('click', function (event) {
       var wrap = $('#globalSearchWrap');
       if (wrap && wrap.style.display === 'block' && !wrap.contains(event.target) && event.target.id !== 'searchToggle') {
         $('#searchPanel').classList.remove('show');
       }
     });
+  }
+
+  function updateHomeMetrics() {
+    var operationsCount = $('#homeOperationCount');
+    var campaignsCount = $('#homeCampaignCount');
+    if (operationsCount) operationsCount.textContent = typeof OPERATIONS_ATLAS !== 'undefined' ? OPERATIONS_ATLAS.filter(function (item) { return item.type !== 'research'; }).length : '—';
+    if (campaignsCount) campaignsCount.textContent = typeof CAMPAIGNS !== 'undefined' ? CAMPAIGNS.length : '—';
   }
 
   function init() {
@@ -858,8 +976,10 @@
     renderSources();
     renderVault();
     renderQuizHome();
+    updateHomeMetrics();
     wireEvents();
     initOperationsMap();
+    handleLocationChange();
     var stats = $$('.metric strong');
     if (stats.length) stats[0].setAttribute('title', 'Date range from first detection reported on 3 May to official end date on 26 July. Counting conventions vary.');
   }
