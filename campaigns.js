@@ -684,6 +684,85 @@ const OPERATIONS_ATLAS = [
     ]
   },
   {
+    id:"steeplechase-1971",title:"Operation Steeplechase",period:"Jul–Aug 1971",type:"internal-security",service:"Indian Army with civil / paramilitary law-enforcement elements",
+    place:"Eastern India · West Bengal and adjoining areas",lat:23.6850,lng:87.7070,scope:"Inside India · counter-insurgency during President's Rule",
+    summary:"A joint campaign against Naxalite insurgency in eastern India in July and August 1971, led by the Army with police and paramilitary participation under the political context of President's Rule in West Bengal. The atlas treats it as an internal-security case with major legal, political and civilian dimensions.",
+    plan:"A U.S. Army War College strategic study describes the use of Army elements alongside police during President's Rule, with rural operations focused on areas including Birbhum. The public record is not a single complete Indian after-action file; this overview therefore sticks to the broad stated period and political context.",
+    execution:"The cited historical study places the main campaign in July–August 1971 and says the rural component of the insurgency was suppressed while urban political violence continued into later years. This is a secondary historical interpretation; the page does not treat its summary as a full daily operational chronology.",
+    friction:"The episode sits at the intersection of military aid to civil authority, policing, political violence and civil liberties. A responsible review must examine arrest and detention procedures, civilian impact, source bias and what happened after the campaign. The sources linked here do not establish a comprehensive, independently verified incident-by-incident list.",
+    lessons:"Domestic security operations need clear lawful authority, accountable detention processes, reliable intelligence and coordination with civil administration. Measures of immediate disruption should be separated from long-term political and public-safety outcomes; a campaign's military result does not resolve its social or political causes.",
+    chronology:[
+      {date:"Jul 1971",title:"Main campaign begins",detail:"The U.S. Army War College study places the beginning of Operation Steeplechase in July 1971 under President's Rule in West Bengal."},
+      {date:"Jul–Aug 1971",title:"Joint security campaign",detail:"The cited study describes Army-led action with police in the rural component of the Naxalite insurgency. It does not supply a fully sourced daily log."},
+      {date:"After Aug 1971",title:"Insurgency and political violence continue",detail:"The same study states that urban violence continued beyond the rural campaign; this cautions against equating the end of an operation with a total end to the broader conflict."}
+    ],
+    sources:[
+      {title:"U.S. Army War College / Strategic Studies Institute — strategic history of the Naxalite insurgency",url:"https://www.govinfo.gov/content/pkg/GOVPUB-D5-PURL-gpo74311/pdf/GOVPUB-D5-PURL-gpo74311.pdf",kind:"Secondary military-strategic study"},
+      {title:"Official History of Indian Armed Forces — government history catalogue",url:"https://www.pib.gov.in/newsite/PrintRelease.aspx?lang=2&reg=48&relid=177064",kind:"Government history catalogue"}
+    ]
+  },
+  {
+    id:"snow-leopard-2020",title:"Operation Snow Leopard",period:"2020 · Eastern Ladakh crisis",type:"combat",service:"Indian Army · high-altitude border deployment",
+    place:"Eastern Ladakh / Line of Actual Control",lat:34.20,lng:78.05,scope:"Inside India · public record of the 2020 border crisis; marker is a broad theatre only",
+    summary:"Operation Snow Leopard is named in official Ladakh administration records concerning Army personnel killed or injured in action in June 2020. It is used here as a broad public campaign label for the 2020 Eastern Ladakh crisis—not as a complete list of deployments or tactical positions.",
+    plan:"The Defence Minister's 15 September 2020 statement says Indian and Chinese senior commanders met on 6 June and agreed to a disengagement process; the statement describes prior buildup, contested LAC perceptions and the need for military and diplomatic channels. This is the Indian government's account and should be read alongside the Chinese position and independent reporting.",
+    execution:"The official Indian timeline publicly identifies a violent clash at Galwan on 15 June 2020 and later reports military movements on the southern bank of Pangong Tso on the night of 29–30 August. These are public milestones; the exact plans, units, orders and all tactical details are not reproduced in open sources here.",
+    friction:"The public record confirms that a disengagement understanding preceded the June clash and that the boundary alignment is not commonly delineated in all sectors. A rigorous review must distinguish the government's public narrative from each side's position, the evidence independently available, and the unknown details of tactical decisions.",
+    lessons:"For high-altitude border crises, analyse agreement verification, reliable communications, shared understanding of disengagement terms, medical evacuation, escalation management and diplomatic channels. When sources are contested, attribute each claim and avoid inventing a single definitive account of events that the public evidence cannot resolve.",
+    chronology:[
+      {date:"Apr–May 2020",title:"Build-up and face-offs described",detail:"The Defence Minister's statement to Parliament describes a buildup and face-offs in several parts of Eastern Ladakh during April and May."},
+      {date:"6 Jun 2020",title:"Senior commanders agree a disengagement process",detail:"The Indian government's statement says both sides agreed on reciprocal actions and respecting the LAC."},
+      {date:"15–16 Jun 2020",title:"Galwan clash",detail:"Official Ladakh administration records refer to Army personnel killed or injured in enemy action during Operation Snow Leopard on the night of 15/16 June."},
+      {date:"29–30 Aug 2020",title:"Southern Pangong Tso public update",detail:"An Indian Army spokesperson's PIB update says Indian troops took measures after movements by PLA troops on the southern bank of Pangong Tso."},
+      {date:"15 Sep 2020",title:"Government statement to Parliament",detail:"The Defence Minister laid out India's account of the boundary dispute, prior agreements, commander meetings and subsequent developments."}
+    ],
+    sources:[
+      {title:"PIB / Ministry of Defence — Situation Update: Eastern Ladakh, 31 Aug 2020",url:"https://www.pib.gov.in/PressReleasePage.aspx?PRID=1649940&lang=2&reg=48",kind:"Official Indian Army update"},
+      {title:"PIB — Defence Minister's statement in Lok Sabha, 15 Sep 2020",url:"https://www.pib.gov.in/PressReleasePage.aspx?PRID=1654484&lang=2&reg=48",kind:"Official parliamentary statement"},
+      {title:"Ladakh Administration — Operation Snow Leopard ex-gratia orders",url:"https://ladakh.gov.in/document/order-no-29-home-of-2023-grant-of-ex-gratia-relief-of-rs-600000-rupees-six-lakhs-only-in-favour-of-army-personnel-who-weredisabled-in-enemy-actionduringoperation-snow-leopard-on-15-1/",kind:"Official local-government record"}
+    ]
+  },
+  {
+    id:"brahma-2025",title:"Operation Brahma",period:"From 29 Mar 2025 · Myanmar earthquake relief",type:"hadr",service:"Indian Army field hospital + tri-service / whole-of-government support",
+    place:"Myanmar · Yangon and earthquake-affected areas",lat:21.9588,lng:96.0891,scope:"Outside India · humanitarian assistance and disaster relief",
+    summary:"India's relief response after the 28 March 2025 earthquake in Myanmar. The Army deployed medical responders and a field hospital, while the wider operation integrated MEA coordination, the Armed Forces, NDRF and relief delivered by air and sea.",
+    plan:"The Ministry of Defence's 29 March announcement described a 118-member Army medical response team and an initial 60-bed treatment centre for trauma, emergency surgery and medical care. Coordination with Myanmar authorities and the MEA was an explicit part of the deployment.",
+    execution:"The initial Army announcement was made on 29 March 2025; Navy relief ships sailed on 29–30 March. A later PIB government overview states that the Army field hospital treated over 2,500 earthquake victims within two weeks, while six aircraft and five Navy ships delivered approximately 750 tonnes of relief material.",
+    friction:"Early-response constraints in a major earthquake include damaged access routes, uncertain casualty locations, overwhelmed local health facilities, power/communications disruption and the challenge of combining medical teams with heavy logistics. The public releases provide dated snapshots, not a complete daily clinical or movement log.",
+    lessons:"Rapid deployment needs a medical logistics chain, triage and onward referral, coordination with local health authorities, reliable supply lists, a clear shift from emergency care to handover, and a way to reconcile figures across Army, Navy, Air Force and civilian relief agencies.",
+    chronology:[
+      {date:"28 Mar 2025",title:"Earthquake strikes Myanmar",detail:"The government identifies the earthquake as the triggering event for Operation Brahma."},
+      {date:"29 Mar 2025",title:"Army medical team announced",detail:"The Ministry of Defence announces a 118-member medical response team and an initial 60-bed treatment centre."},
+      {date:"29–30 Mar 2025",title:"Maritime relief begins",detail:"The Ministry of Defence reports Indian Navy ships sailing with food, water, medicines and emergency stores for Yangon."},
+      {date:"Early–mid Apr 2025",title:"Medical treatment and supplies continue",detail:"The later government overview reports more than 2,500 people treated over two weeks and approximately 750 tonnes of relief delivered by air and sea."}
+    ],
+    image:{src:"https://static.pib.gov.in/WriteReadData/userfiles/image/Image-23KWD.jpg",alt:"Indian Army personnel loading emergency relief supplies into a C-17 transport aircraft for Operation Brahma",caption:"Indian Army personnel and humanitarian supplies inside a C-17 during the Myanmar earthquake response, published by PIB on 29 March 2025.",credit:"Press Information Bureau / Ministry of Defence, Government of India",page:"https://www.pib.gov.in/PressReleaseIframePage.aspx?PRID=2116635&lang=2&reg=48",license:"Official government press image; attribution is provided. Check applicable PIB reuse terms before redistribution."},
+    sources:[
+      {title:"PIB / Ministry of Defence — Operation Brahma: Army medical assistance, 29 Mar 2025",url:"https://www.pib.gov.in/PressReleaseIframePage.aspx?PRID=2116635&lang=2&reg=48",kind:"Official operation announcement"},
+      {title:"PIB / Ministry of Defence — Navy ships sail with relief material, 30 Mar 2025",url:"https://www.pib.gov.in/pressreleasepage.aspx?lang=2&prid=2116801&reg=48",kind:"Official maritime relief update"},
+      {title:"PIB — Beyond Battlefield: Indian Armed Forces in HADR, 15 Feb 2026",url:"https://www.pib.gov.in/PressReleasePage.aspx?PRID=2228319&lang=1&reg=3",kind:"Government after-action overview"}
+    ]
+  },
+  {
+    id:"sagar-bandhu-2025",title:"Operation Sagar Bandhu",period:"From 28 Nov 2025 · Sri Lanka cyclone relief",type:"hadr",service:"Indian Army engineers + tri-service / whole-of-government response",
+    place:"Sri Lanka · Mahiyanganaya and northern connectivity routes",lat:7.8731,lng:80.7718,scope:"Outside India · disaster relief and infrastructure restoration",
+    summary:"India's humanitarian response after Cyclone Ditwah in Sri Lanka, launched on 28 November 2025. The Army's publicly described role included engineering support for bridges and connectivity, alongside wider naval logistics, Air Force evacuation and medical response.",
+    plan:"The public government overview describes a combined response involving relief supplies, emergency medical care, evacuation of stranded people and restoration of critical connectivity. For the Army engineering component, the central task is to restore routes that relief teams and affected communities depend on without compromising bridge-site safety.",
+    execution:"The PIB's 2026 retrospective says that by 9 December 2025 about 1,058 tonnes of relief had been delivered and over 2,500 stranded Indians evacuated. It reports a 120-foot dual-carriageway Bailey bridge opened on 23 December 2025 in Kilinochchi District, with bridge equipment and Army engineers supporting the recovery effort.",
+    friction:"Cyclone damage affects roads, bridges, hospitals and communications at the same time. Restoring one connection does not itself prove the whole network is safe; work needs engineering assessment, load control, weather monitoring, coordination with Sri Lankan authorities and clear prioritisation of essential routes.",
+    lessons:"Disaster operations need an end-to-end logistics picture: supplies, medical access, evacuation, bridge/road restoration and handover. Report daily versus cumulative tonnes and evacuees separately, coordinate with the host government, and measure restoration by safe access for communities—not simply by structures completed.",
+    chronology:[
+      {date:"28 Nov 2025",title:"Operation launched",detail:"The PIB retrospective dates the launch of Operation Sagar Bandhu to 28 November following Cyclone Ditwah."},
+      {date:"By 9 Dec 2025",title:"Relief and evacuation totals published",detail:"The same government account reports roughly 1,058 tonnes of relief and more than 2,500 stranded Indians evacuated by the stated cut-off."},
+      {date:"23 Dec 2025",title:"Bailey bridge opened",detail:"The PIB account states that a 120-foot dual-carriageway Bailey bridge opened in Kilinochchi District, restoring a critical connection."}
+    ],
+    sources:[
+      {title:"PIB — Beyond Battlefield: Indian Armed Forces in HADR, 15 Feb 2026",url:"https://www.pib.gov.in/PressReleasePage.aspx?PRID=2228319&lang=1&reg=3",kind:"Government retrospective with dated milestones"},
+      {title:"Ministry of External Affairs — Operation Sagar Bandhu statement",url:"https://www.mea.gov.in/press-releases.htm?dtl%2F40354%2FIndia+Undertakes+Operation+Sagar+Bandhu+for+Emergency+HADR+Assistance+to+Sri+Lanka+following+Cyclone+Ditwah",kind:"Government diplomatic record"},
+      {title:"High Commission of India, Colombo — Sagar Bandhu relief materials",url:"https://www.hcicolombo.gov.in/section/press-releases/2under-operation-sagar-bandhu-1000-tonnes-of-relief-material-fromtamil-nadu-arrives-in-sri-lanka",kind:"Official mission update"}
+    ]
+  },
+  {
     id:"official-history-catalogue",title:"Official-history index / campaign gaps",period:"Multiple conflicts and operations",type:"research",service:"Research collection · Government of India",
     place:"India and overseas missions",lat:22.9734,lng:78.6569,scope:"Evidence index, not a single operation",
     summary:"The Government of India's official-history catalogue includes not only wars but also Operation Polo, Goa's Operation Vijay, the Congo Operation, India's Custodian Force in Korea, Jammu & Kashmir 1947–48 and peace-mission history. It is an essential route into more complete archival research.",
