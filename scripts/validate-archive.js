@@ -47,5 +47,11 @@ check(/var isKargilRoute = route === 'kargil' \|\| route.indexOf\('kargil-'\) ==
 for (const [section, route] of Object.entries({timeline:'kargil-timeline',theatre:'kargil-theatre',operations:'kargil-operations',people:'kargil-people'})) {
   check(new RegExp(section + `:\\s*'` + route + `'`).test(app), `Legacy hash ${section} does not route to ${route}.`);
 }
+for (const id of ['timelinePagination', 'campaignPagination', 'atlasPagination']) {
+  check(html.includes(`id="${id}"`), `Missing pagination control: ${id}`);
+}
+check(/function\s+renderPagination\s*\(/.test(app), 'Pagination renderer is missing.');
+check(['timelinePage', 'campaignPage', 'atlasPage'].every(name => app.includes(name)), 'A result-list page state is missing.');
+check(/data-page-action/.test(app) && /data-page-list/.test(app), 'Previous/Next pagination controls are not handled.');
 if (failures.length) { console.error(`Archive validation failed (${failures.length}):`); for (const failure of failures) console.error(` - ${failure}`); process.exitCode = 1; }
 else { console.log(`Archive validation passed. ${ids.length} HTML IDs are unique; 7 routes, legacy routing, core controls and script order are present.`); }
