@@ -1,63 +1,61 @@
-# Indian Wars — Field Archive
+# Indian Wars — Historical Military Atlas
 
-An interactive, source-led educational archive for Indian military history. The Kargil War (1999) remains the deep-dive dossier; the campaign library now links concise historical guides across earlier conflicts and operations.
+An independent, source-led educational project exploring major publicly documented Indian Army operations and selected joint-service, peacekeeping, evacuation, and disaster-response missions. The original Kargil War dossier remains intact; the Operations Atlas adds broad coverage across more periods and theatres.
 
-## What's included
+## Explore
 
-### Campaign library
-- Jammu & Kashmir conflict (1947–49)
-- Operation Vijay — Goa liberation (1961)
-- Sino-Indian War (1962)
-- India–Pakistan War (1965)
-- India–Pakistan War / Bangladesh Liberation context (1971)
-- Operation Meghdoot (launched 1984)
-- Operation Cactus (1988)
-- Kargil War (1999), with the original in-depth dossier
+### Operations Atlas
+The map-led catalogue currently covers major open-source examples including Operation Polo (1948), Operation Bison / Zoji La (1948), Goa's Operation Vijay (1961), Operation Blue Star (1984), Operation Meghdoot (launched 1984), Operation Pawan / the IPKF deployment in Sri Lanka (1987–90), Operation Cactus (1988), Operations Bajrang and Rhino (1990–91), Operation Rakshak (broad campaign context), Operation Sadbhavana (1998 onward), Operation Parakram (2001–02), Operation All Clear (Bhutan-led, 2003), Operation Sea Wave (2004), Operation Surya Hope (2013), Operation Megh Rahat (2014), Operation Maitri (2015), Operation Devi Shakti (2021), Operation Ganga (2022), Operation Dost (2023), Operation Kaveri (2023), Operation Ajay (2023), Operation Sindoor (2025), and Operation Sindhu (2025). It also includes index entries for the Congo / ONUC mission and Custodian Force India in Korea.
 
-Each guide identifies its period, theatre, category, key point, and direct official/archival source links. Campaign summaries are orientation notes rather than substitutes for full source documents.
+This is a curated open-source index of major publicly documented missions, not a claim that every Indian Army operation, small-unit action, classified activity or incomplete archival record is exhaustively listed. Some entries are Army-led; others are joint, whole-of-government, host-nation-led or UN missions. Each entry labels its scope.
 
-### Interactive tools
-- Responsive interface with dark/light themes and reading-progress bar.
-- Global archive search across the timeline, campaigns, theatre features, operations, leadership, gallantry profiles, reforms, and sources.
-- Timeline phase filters and keyword search.
-- Campaign filter/search for wars vs. operations, year, theatre, and subject.
-- Interactive sector navigator, named battlefield features, and logistics / highway references.
-- Switchable Indian/Pakistani leadership profiles and expandable gallantry records.
-- **Academy study mode**: 15 multiple-choice questions spanning the campaign library, immediate answer feedback, source citations, shuffled order, topic filters, review of incorrect responses, score and local best score.
-- Browser-local saved field items and personal notes.
-- Export the curated archive as JSON, or print/save the website as PDF.
-- Keyboard archive search: Ctrl/Command + K or /. Press Esc to close search or the field-notes drawer.
+### Each operation dossier
+- Theatre marker on an interactive OpenStreetMap-based map using Leaflet.
+- Clear separation between plan, documented execution, friction / mistakes / evidence gaps, and lessons for future study.
+- Dated chronology entries where linked public sources support them.
+- Primary/official and secondary source links with image attribution and licence notes where a photo is included.
+- Original pictorial teaching schematics when an event-specific photograph is not available or would misrepresent the event.
+- Search/filter by name, period, location, category, and lesson; browser-local bookmarks; source-linked global search; JSON export.
 
-## Files
+### Existing learning features
+- Kargil War 1999 deep-dive: chronology, sector profiles, operations, leadership, gallantry records, aftermath, and comparative analysis.
+- Campaign library: 1947–49, 1961, 1962, 1965, 1971, Meghdoot, Cactus and Kargil.
+- Academy mode: 15 multiple-choice questions with immediate explanations, source links, topic filters, missed-question review and local best score.
+- Dark/light modes, mobile layout, reading-progress indicator, field notes and print/save as PDF.
 
-- index.html — layout, styles, campaign library, quiz interface, source and evidence panels.
-- app.js — rendering and interaction layer, local search, saved items, and study scoring.
-- data.js — original Kargil chronology, theatre sectors, operations, people, reforms, and analysis.
-- campaigns.js — campaign catalogue and the source-linked quiz question bank.
-- README.md — setup and product documentation.
-- SOURCES.md — source register, provenance, and data-integrity notes.
+## Important chronology rule
 
-## Research and source policy
+“Day-by-day” means day-level entries where a dated public source supports a specific milestone. For operations with only a short official retrospective, the dossier says so instead of inventing daily events. A campaign may last years or be an ongoing deployment; its initial launch date is not the end date of the mission.
 
-The source library prioritises official Indian government/service records, parliamentary catalogues, and contemporaneous diplomatic/archival documents where available. Interpretive summaries are identified as such; consult the linked original materials for details.
+The sections titled “Friction, mistakes & evidence gaps” separate documented constraints or critiques from general analytical questions. A failed outcome alone does not prove which decision was mistaken; a lesson should be traceable to evidence and, when accounts differ, attributed to its source.
 
-Two scope issues are deliberately visible rather than silently reconciled:
+## Image policy
 
-1. The long-cited Kargil fatality figure of 527 differs from the 674 stated on the National War Memorial's Operation Vijay page. Check the source wording and scope before citing either figure.
-2. Official IAF summaries group missions differently (strike, reconnaissance/ELINT, escort, helicopter, air transport, casualty evacuation). Totals with different category definitions should not be compared as if they measured the same activity.
+Images are used when their provenance and context are clear. Each photographic exhibit links to its Commons source page and displays the stated author, caption and licence. Creative Commons images are attributed under their licence; Government Open Data Licence (India) material is linked with attribution; a modern contextual image is explicitly labelled as such and not portrayed as a historic combat photograph. If no appropriate historical photo is available, the interface shows a clearly labelled conceptual SVG diagram. A picture is removed if its context could mislead readers.
 
-This is an independent educational project, not an official government publication. Historical conflicts may have contested narratives; the archive favours careful wording, citations, and explicit scope labels.
+## Source and data integrity
 
-## Live research vs. static content
+The source register is in SOURCES.md. The site includes official Indian government/service sources, parliamentary material, disaster-response reports, UN history, contemporary diplomatic documents and selected secondary historical analysis. This is an educational project, not a Government of India publication.
 
-This is a static GitHub Pages application. Archive search queries the committed local dataset and source catalogue; “Web research” links open Google queries and source cards open original institutions. The site does **not** scrape Google or ingest arbitrary pages automatically.
+The Kargil dossier visibly flags that the long-cited 527 Indian fatalities figure differs from the 674 stated on the National War Memorial's Operation Vijay page. Consult each source's wording and scope before citing either number. Official air-operation sortie counts also vary by category definition; those totals should not be treated as interchangeable.
 
-For automated research ingestion, choose an API or licensed source with documented access, create a server-side retrieval and citation pipeline, deduplicate and date sources, validate claims, respect rate limits and copyright, and keep secret API credentials out of this public frontend.
+For recent or contested episodes, distinguish an official statement from independently verified facts. Operational details may be disputed, not public, or incomplete. Do not infer classified information.
 
-## Local development
+## Technical stack
 
-Open index.html in a browser or serve this folder with a static web server. No package installation or build step is required. Scripts must load in this order: data.js, campaigns.js, app.js.
+- index.html — responsive UI, map section, teaching view, modal dossiers and styles.
+- app.js — search, rendering, map interaction, saved items, study mode and JSON export.
+- data.js — original Kargil dossier dataset, retained unchanged.
+- campaigns.js — campaign summaries, quiz question bank, and the extended operations atlas.
+- SOURCES.md — source register, image provenance, research and chronology policy.
+- Leaflet 1.9.4 and OpenStreetMap — third-party map library and basemap. Network access is needed for the interactive map and remotely hosted images.
+
+The site is static and works without a build step. Open index.html through a static server or publish the repository through GitHub Pages. Scripts load in this order: data.js, campaigns.js, app.js. The interactive basemap uses third-party network services; if they are unavailable, the operation cards and dossier content remain available.
+
+## Live research limitation
+
+Search covers the content committed to this repository. Google links open external research queries; the website does not scrape Google or automatically ingest all webpages. Automated ingestion would require a selected provider/API, server-side fetching, attribution, source validation, duplicate detection, freshness checks, rate-limit handling and secret API keys kept outside this public frontend.
 
 ## Credits
 
-Independent educational project by Harshit Chaubey. Use the linked sources to verify claims before relying on the material for publication or exam reference.
+Independent educational project by Harshit Chaubey. Check original sources before citing any specific number or interpreting a disputed historical event.
