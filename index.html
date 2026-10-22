@@ -216,6 +216,76 @@ body.light-mode .hero-side,body.light-mode .card,body.light-mode .operation-card
 body.light-mode .signal-card{background:#d8f36a}
 body.light-mode .metric{background:rgba(255,255,255,.4)}
 body.light-mode .operation-card::after{color:rgba(25,38,25,.05)}
+
+/* Campaign explorer */
+.campaign-toolbar{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;margin:16px 0 7px}
+.campaign-toolbar .filter-row{margin:0}
+.campaign-search{width:min(370px,100%)}
+.campaign-summary{font:10px "DM Mono",monospace;color:var(--subtle);margin:12px 0}
+.campaign-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.campaign-card{border:1px solid var(--line);background:linear-gradient(150deg,rgba(23,33,29,.98),rgba(13,20,17,.98));border-radius:17px;padding:21px;min-width:0;display:flex;flex-direction:column;position:relative;overflow:hidden;transition:border-color .2s,transform .2s}
+.campaign-card:hover{border-color:var(--line2);transform:translateY(-3px)}
+.campaign-card.is-core{border-color:rgba(216,243,106,.36);background:linear-gradient(145deg,rgba(216,243,106,.06),rgba(19,28,25,.98) 52%)}
+.campaign-year{font:600 34px/.95 "Space Grotesk",sans-serif;letter-spacing:-.065em;color:var(--lime);margin:17px 0 4px}
+.campaign-card h3{font:600 18px/1.25 "Space Grotesk",sans-serif;letter-spacing:-.025em;margin:7px 0 8px}
+.campaign-meta{font:10px "DM Mono",monospace;color:var(--gold);margin-bottom:12px}
+.campaign-card p{font-size:12px;line-height:1.85;color:var(--muted);margin:0}
+.campaign-insight{border-top:1px solid var(--line);margin-top:14px;padding-top:12px;font-size:11px;line-height:1.75;color:var(--text)}
+.campaign-insight span{display:block;font:9px "DM Mono",monospace;letter-spacing:.1em;color:var(--subtle);text-transform:uppercase;margin-bottom:4px}
+.campaign-links{display:flex;flex-wrap:wrap;gap:7px;margin-top:auto;padding-top:14px}
+.campaign-links a,.campaign-links button{font:10px "DM Mono",monospace;border:1px solid var(--line);background:transparent;border-radius:8px;padding:7px 9px;color:var(--lime);cursor:pointer}
+.campaign-links a:hover,.campaign-links button:hover{background:var(--surface2);text-decoration:none}
+.campaign-card .bookmark-btn{margin-top:12px;align-self:flex-start}
+.campaign-empty{grid-column:1/-1}
+.academy-banner{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(320px,.95fr);gap:0;overflow:hidden;border:1px solid var(--line);border-radius:22px;background:linear-gradient(130deg,rgba(25,38,31,.95),rgba(15,23,20,.98))}
+.academy-intro{padding:30px;border-right:1px solid var(--line)}
+.academy-intro h3{font:600 clamp(30px,4vw,47px)/1.02 "Space Grotesk",sans-serif;letter-spacing:-.06em;margin:20px 0 12px}
+.academy-intro h3 span{color:var(--lime)}
+.academy-intro>p{font-size:13px;line-height:1.9;color:var(--muted);max-width:540px}
+.academy-facts{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:25px;padding-top:18px;border-top:1px solid var(--line)}
+.academy-facts strong{display:block;font:600 24px "Space Grotesk",sans-serif;letter-spacing:-.04em}
+.academy-facts span{display:block;font:9px "DM Mono",monospace;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-top:4px;line-height:1.6}
+.academy-side{padding:26px;display:flex;flex-direction:column;justify-content:center}
+.topic-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px;margin-top:12px}
+.topic-btn{padding:9px 10px;border:1px solid var(--line);background:var(--surface);color:var(--muted);border-radius:9px;cursor:pointer;text-align:left;font-size:11px}
+.topic-btn:hover{border-color:var(--line2);color:var(--text)}
+.topic-btn.active{border-color:var(--lime);background:rgba(216,243,106,.09);color:var(--lime)}
+.quiz-shell{border:1px solid var(--line);border-radius:20px;background:var(--surface);padding:24px;margin-top:17px}
+.quiz-topline{display:flex;justify-content:space-between;align-items:center;gap:12px}
+.quiz-progress{height:4px;border-radius:99px;background:var(--surface3);overflow:hidden;margin:16px 0 25px}
+.quiz-progress div{height:100%;width:0;background:var(--lime);transition:width .25s}
+.quiz-question-row{display:grid;grid-template-columns:48px 1fr;gap:13px;align-items:start}
+.quiz-q-num{font:500 22px "DM Mono",monospace;color:var(--lime)}
+.quiz-question-row h3{font:600 clamp(21px,3vw,31px)/1.25 "Space Grotesk",sans-serif;letter-spacing:-.04em;margin:7px 0 21px}
+.quiz-options{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;margin-left:61px}
+.quiz-option{display:flex;gap:11px;align-items:start;text-align:left;width:100%;padding:14px;border:1px solid var(--line);border-radius:12px;background:var(--bg2);color:var(--text);cursor:pointer;font-size:13px;line-height:1.6;transition:border-color .18s,background .18s}
+.quiz-option:hover:not(:disabled){border-color:var(--line2);background:var(--surface2)}
+.quiz-option .letter{display:grid;place-items:center;flex:0 0 25px;width:25px;height:25px;border:1px solid var(--line);border-radius:7px;color:var(--muted);font:10px "DM Mono",monospace}
+.quiz-option.correct{border-color:#78bd7b;background:rgba(120,189,123,.1)}
+.quiz-option.correct .letter{color:#88db8b;border-color:#78bd7b}
+.quiz-option.wrong{border-color:var(--orange);background:rgba(238,131,91,.08)}
+.quiz-option:disabled{cursor:default}
+.quiz-feedback{margin:17px 0 0 61px;padding:15px;border:1px solid var(--line);border-radius:12px;background:var(--surface2);font-size:12px;line-height:1.85}
+.quiz-feedback.correct{border-color:rgba(120,189,123,.4)}
+.quiz-feedback.wrong{border-color:rgba(238,131,91,.38)}
+.quiz-feedback strong{display:block;margin-bottom:5px}
+.quiz-feedback a{display:inline-block;margin-top:7px}
+.quiz-actions{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-top:22px;padding-top:16px;border-top:1px solid var(--line)}
+.quiz-actions .primary-btn:disabled{opacity:.35;cursor:not-allowed;transform:none}
+.quiz-result-number{font:700 clamp(54px,9vw,90px)/1 "Space Grotesk",sans-serif;letter-spacing:-.08em;color:var(--lime);margin:22px 0 10px}
+#quizResultStage>h3{font:600 26px "Space Grotesk",sans-serif;margin:0 0 9px}
+#quizResultText{color:var(--muted);font-size:13px}
+.quiz-review-item{padding:13px 0;border-top:1px solid var(--line);font-size:12px;line-height:1.8}
+.quiz-review-item strong{display:block}
+.quiz-review-item .miss{color:var(--orange)}
+.quiz-review-item .hit{color:#88db8b}
+.quiz-review-item a{font-size:11px}
+body.light-mode .campaign-card,body.light-mode .academy-banner{background:linear-gradient(150deg,#fff,#f4f7ef)}
+body.light-mode .quiz-option{background:#f8faf5}
+@media(max-width:1000px){.campaign-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.academy-banner{grid-template-columns:1fr}.academy-intro{border-right:0;border-bottom:1px solid var(--line)}}
+@media(max-width:600px){.campaign-grid{grid-template-columns:1fr}.academy-intro,.academy-side{padding:19px}.academy-facts strong{font-size:20px}.quiz-shell{padding:16px}.quiz-options{grid-template-columns:1fr;margin-left:0}.quiz-question-row{grid-template-columns:35px 1fr}.quiz-q-num{font-size:17px}.quiz-feedback{margin-left:0}.quiz-topline{align-items:start;flex-direction:column}.campaign-toolbar{align-items:stretch}.campaign-search{width:100%}}
+@media print{.campaign-grid{grid-template-columns:repeat(2,1fr)}.academy-side,.quiz-shell,.campaign-toolbar{display:none!important}}
+
 @media(max-width:1100px){.brand{min-width:auto}.brand small{display:none}.topbar{gap:12px}.top-nav{gap:0}.nav-link{padding:8px}.top-actions .label{display:none}.shell{padding-left:24px;padding-right:24px}.topbar{margin-left:-24px;margin-right:-24px;padding-left:24px;padding-right:24px}.hero{gap:22px}.sources-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:800px){.topbar{height:66px;gap:8px}.brand strong{font-size:12px}.brand-mark{height:33px;width:33px}.top-nav{position:absolute;top:65px;left:0;right:0;padding:8px 20px;background:rgba(11,16,15,.94);border-bottom:1px solid var(--line)}body.light-mode .top-nav{background:rgba(241,243,236,.96)}.nav-link{padding:8px 10px;font-size:10px}.top-actions{margin-left:auto}.hero{grid-template-columns:1fr;padding-top:38px}.hero-side{min-height:280px}.schematic{height:150px}.metrics{grid-template-columns:repeat(2,1fr)}.metric:nth-child(2){border-right:0}.metric:nth-child(-n+2){border-bottom:1px solid var(--line)}.section{padding-top:48px}.section-head{align-items:start;flex-direction:column;gap:12px}.section-head p{max-width:none}.timeline-layout{grid-template-columns:1fr}.timeline-aside{position:static;display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.aside-stat{border-bottom:0;border-right:1px solid var(--line);padding:12px}.quick-layout{grid-template-columns:1fr}.sector-grid{grid-template-columns:1fr}.sector-selector{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}.sector-btn{padding:11px}.theatre-banner{grid-template-columns:1fr}.dual-columns{grid-template-columns:1fr}.ops-grid{grid-template-columns:1fr}.grid-3{grid-template-columns:repeat(2,minmax(0,1fr))}.search-wrap{min-width:0;width:100%}.hero-desc{font-size:15px}}
 @media(max-width:520px){.shell{padding-left:15px;padding-right:15px}.topbar{margin-left:-15px;margin-right:-15px;padding-left:15px;padding-right:15px}.brand{gap:7px}.brand strong{font-size:10px;letter-spacing:.04em}.top-actions{gap:5px}.icon-btn{width:35px;min-height:35px}.top-actions #exportBtn{display:none}.hero h1{font-size:58px}.hero{padding-top:30px}.hero-side{padding:16px;min-height:240px}.metrics{border-radius:13px}.metric{padding:14px}.metric strong{font-size:28px}.metric span{font-size:9px;line-height:1.5}.section-head h2{font-size:33px}.card{padding:17px}.fact-list{grid-template-columns:1fr 1fr}.timeline-aside{grid-template-columns:1fr 1fr}.aside-stat strong{font-size:21px}.event{grid-template-columns:1fr;gap:11px;padding:15px}.event-date{border-right:0;border-bottom:1px solid var(--line);padding:0 0 8px;display:flex;align-items:center;gap:12px}.event-date span{margin-top:0}.sector-selector{grid-template-columns:1fr 1fr}.peak-list li{grid-template-columns:1fr;gap:4px}.grid-3,.grid-2{grid-template-columns:1fr}.sources-grid{grid-template-columns:1fr}.source-card{min-height:0}.reform-row{grid-template-columns:1fr;gap:4px}.footer{flex-direction:column}.section{padding-top:40px}.search-wrap kbd{display:none}.hero-ctas .primary-btn,.hero-ctas .outline-btn{width:100%}}
@@ -233,10 +303,12 @@ body.light-mode .operation-card::after{color:rgba(25,38,25,.05)}
     </a>
     <nav class="top-nav" aria-label="Primary navigation">
       <button class="nav-link active" data-jump="overview">Overview</button>
-      <button class="nav-link" data-jump="timeline">Timeline</button>
+      <button class="nav-link" data-jump="campaigns">Campaigns</button>
+      <button class="nav-link" data-jump="timeline">Kargil timeline</button>
       <button class="nav-link" data-jump="theatre">Theatre</button>
       <button class="nav-link" data-jump="operations">Operations</button>
       <button class="nav-link" data-jump="people">People</button>
+      <button class="nav-link" data-jump="academy">Academy</button>
       <button class="nav-link" data-jump="intelligence">Analysis</button>
       <button class="nav-link" data-jump="sources">Sources</button>
     </nav>
@@ -310,6 +382,22 @@ body.light-mode .operation-card::after{color:rgba(25,38,25,.05)}
       </div>
     </section>
 
+
+    <section class="section" id="campaigns">
+      <div class="section-head"><div><div class="kicker">02 / Campaign library</div><h2>India's military history, connected.</h2></div><p>Expand beyond one conflict. Explore curated wars and operations with source trails, clear date scope, and links to the underlying record.</p></div>
+      <div class="caveat"><div class="warn">i</div><div><h3>A growing archive, not a flat list.</h3><p>Wars, short operations, and continuing deployments are not the same thing. Each card labels its category and scope. The Kargil dossier remains the deepest case study; the other campaigns start as concise, source-linked guides for further research.</p></div></div>
+      <div class="campaign-toolbar">
+        <div class="filter-row" id="campaignFilters" aria-label="Filter campaigns">
+          <button class="filter-btn active" data-campaign-filter="all">All campaigns</button>
+          <button class="filter-btn" data-campaign-filter="war">Wars</button>
+          <button class="filter-btn" data-campaign-filter="operation">Operations</button>
+        </div>
+        <div class="search-wrap campaign-search"><span class="search-icon">⌕</span><input id="campaignSearch" class="search-input" placeholder="Find a campaign, theatre or year…" autocomplete="off"></div>
+      </div>
+      <div class="campaign-summary" id="campaignSummary"></div>
+      <div class="campaign-grid" id="campaignGrid"></div>
+    </section>
+
     <section class="section" id="timeline">
       <div class="section-head"><div><div class="kicker">02 / Chronology</div><h2>Follow the campaign.</h2></div><div class="head-count" id="timelineCount">Loading events…</div></div>
       <div class="search-wrap" style="max-width:620px">
@@ -366,6 +454,52 @@ body.light-mode .operation-card::after{color:rgba(25,38,25,.05)}
       <div class="grid grid-3" id="leadersGrid"></div>
       <div style="display:flex;justify-content:space-between;gap:15px;align-items:end;margin:38px 0 16px"><div><div class="kicker">Gallantry record</div><h3 style="font:600 25px 'Space Grotesk';letter-spacing:-.04em;margin:6px 0 0">Courage at the ridgelines</h3></div><span class="tag gold">Open each profile</span></div>
       <div class="grid grid-3" id="heroesGrid"></div>
+    </section>
+
+
+    <section class="section" id="academy">
+      <div class="section-head"><div><div class="kicker">07 / Academy</div><h2>Know the history. Test the details.</h2></div><p>A source-linked study mode for history learners, defence-exam candidates, and curious researchers.</p></div>
+      <div class="academy-banner">
+        <div class="academy-intro">
+          <div class="smallcaps">Campaign knowledge / field test 01</div>
+          <h3>Not just recall.<br><span>Learn where facts come from.</span></h3>
+          <p>Answer each question, read the explanation, and open the cited source. The question bank covers historical campaigns, operation names, dates, and responsible use of evidence.</p>
+          <div class="academy-facts"><div><strong id="academyQuestionTotal">15</strong><span>Source-linked questions</span></div><div><strong>4</strong><span>Answer choices</span></div><div><strong id="academyBestScore">—</strong><span>Personal best / this device</span></div></div>
+        </div>
+        <div class="academy-side">
+          <div class="smallcaps">Choose your scope</div>
+          <div class="topic-grid" id="quizTopicFilters">
+            <button class="topic-btn active" data-quiz-topic="all">Mixed campaign test</button>
+            <button class="topic-btn" data-quiz-topic="Kargil">Kargil</button>
+            <button class="topic-btn" data-quiz-topic="1947–48">1947–48</button>
+            <button class="topic-btn" data-quiz-topic="1961">Goa · 1961</button>
+            <button class="topic-btn" data-quiz-topic="1965">1965</button>
+            <button class="topic-btn" data-quiz-topic="1971">1971</button>
+            <button class="topic-btn" data-quiz-topic="1984">1984</button>
+            <button class="topic-btn" data-quiz-topic="1988">1988</button>
+            <button class="topic-btn" data-quiz-topic="Research skills">Research skills</button>
+          </div>
+          <button class="primary-btn" id="quizStart" style="width:100%;margin-top:16px">Start field test <span>↗</span></button>
+          <p style="font-size:10px;color:var(--subtle);margin-top:10px">Progress is saved locally only as your best score. No login is needed.</p>
+        </div>
+      </div>
+      <div class="quiz-shell" id="quizShell" hidden>
+        <div class="quiz-topline"><span class="tag" id="quizTopicLabel">Mixed campaign test</span><span class="smallcaps" id="quizProgressText">Question 1 / 15</span></div>
+        <div class="quiz-progress"><div id="quizProgressBar"></div></div>
+        <div id="quizQuestionStage">
+          <div class="quiz-question-row"><span class="quiz-q-num" id="quizQuestionNumber">01</span><div><div class="smallcaps" id="quizTopicMeta">CAMPAIGN KNOWLEDGE</div><h3 id="quizQuestion"></h3></div></div>
+          <div class="quiz-options" id="quizOptions"></div>
+          <div class="quiz-feedback" id="quizFeedback" hidden aria-live="polite"></div>
+          <div class="quiz-actions"><span class="smallcaps" id="quizScoreText">Score: 0</span><button class="primary-btn" id="quizNext" disabled>Next question →</button></div>
+        </div>
+        <div id="quizResultStage" hidden>
+          <div class="quiz-result-number" id="quizResultNumber">0 / 15</div>
+          <h3 id="quizResultTitle">Field test complete</h3>
+          <p id="quizResultText"></p>
+          <div id="quizReview"></div>
+          <div class="quiz-actions"><button class="outline-btn" id="quizBackToTopics">Change topic</button><button class="primary-btn" id="quizRetake">Retake test ↻</button></div>
+        </div>
+      </div>
     </section>
 
     <section class="section" id="intelligence">
@@ -425,6 +559,7 @@ body.light-mode .operation-card::after{color:rgba(25,38,25,.05)}
 </aside>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 <script src="data.js"></script>
+<script src="campaigns.js"></script>
 <script src="app.js"></script>
 </body>
 </html>
