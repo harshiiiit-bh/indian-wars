@@ -88,6 +88,12 @@
   }
   var savedIds = new Set(safeJSON(safeStoreGet('iw-field-saved', '[]'), []).filter(function (x) { return typeof x === 'string'; }));
   var activePhase = 'all';
+  var TIMELINE_PAGE_SIZE = 10;
+  var CAMPAIGN_PAGE_SIZE = 6;
+  var ATLAS_PAGE_SIZE = 9;
+  var timelinePage = 1;
+  var campaignPage = 1;
+  var atlasPage = 1;
   var activeSector = (typeof SECTORS !== 'undefined' && SECTORS.length) ? SECTORS[0].id : '';
   var activeSide = 'india';
   var activeCampaignFilter = 'all';
@@ -299,13 +305,16 @@
       var e = item.raw;
       return (activePhase === 'all' || e.phase === activePhase) && (!query || (e.date + ' ' + e.text + ' ' + PHASE_LABELS[e.phase]).toLowerCase().indexOf(query) !== -1);
     });
-    $('#timelineCount').textContent = filtered.length + ' / ' + TIMELINE.length + ' ENTRIES';
+    timelinePage = renderPagination('timelinePagination', 'timeline', timelinePage, filtered.length, TIMELINE_PAGE_SIZE);
+    var totalPages = Math.max(1, Math.ceil(filtered.length / TIMELINE_PAGE_SIZE));
+    $('#timelineCount').textContent = filtered.length + ' / ' + TIMELINE.length + ' ENTRIES · PAGE ' + timelinePage + ' / ' + totalPages;
     $('#eventTotal').textContent = TIMELINE.length;
     if (!filtered.length) {
       list.innerHTML = '<div class="empty-state">No entries match that filter. Try a broader phrase or switch to “All phases”.</div>';
       return;
     }
-    list.innerHTML = filtered.map(function (item) {
+    var pageItems = filtered.slice((timelinePage - 1) * TIMELINE_PAGE_SIZE, timelinePage * TIMELINE_PAGE_SIZE);
+    list.innerHTML = pageItems.map(function (item) {
       var e = item.raw;
       var id = 'event:' + item.index;
       return '<article class="event" id="timeline-event-' + item.index + '">' +
@@ -316,7 +325,6 @@
         '<a class="bookmark-btn" href="' + googleLink(e.date + ' Kargil War ' + shortHeadline(e.text)) + '" target="_blank" rel="noopener noreferrer">↗ Research web</a></div></div></article>';
     }).join('');
   }
-
   function renderSectors() {
     if (typeof SECTORS === 'undefined') return;
     var selector = $('#sectorSelector');
@@ -343,12 +351,15 @@
       var searchable = [campaign.title, campaign.period, campaign.dates, campaign.theatre, campaign.tag, campaign.summary, campaign.keyPoint, campaign.type].join(' ').toLowerCase();
       return byType && (!query || searchable.indexOf(query) !== -1);
     });
-    $('#campaignSummary').textContent = items.length + ' OF ' + CAMPAIGNS.length + ' CAMPAIGNS · SOURCE LINKS INCLUDED';
+    campaignPage = renderPagination('campaignPagination', 'campaigns', campaignPage, items.length, CAMPAIGN_PAGE_SIZE);
+    var totalPages = Math.max(1, Math.ceil(items.length / CAMPAIGN_PAGE_SIZE));
+    $('#campaignSummary').textContent = items.length + ' OF ' + CAMPAIGNS.length + ' CAMPAIGNS · PAGE ' + campaignPage + ' / ' + totalPages + ' · SOURCE LINKS INCLUDED';
     if (!items.length) {
       grid.innerHTML = '<div class="empty-state campaign-empty">No campaign matches this filter. Try a year, theatre, or operation name.</div>';
       return;
     }
-    grid.innerHTML = items.map(function (campaign) {
+    var pageItems = items.slice((campaignPage - 1) * CAMPAIGN_PAGE_SIZE, campaignPage * CAMPAIGN_PAGE_SIZE);
+    grid.innerHTML = pageItems.map(function (campaign) {
       var core = campaign.id === 'kargil-1999';
       var id = 'campaign:' + campaign.id;
       var researchQuery = googleLink(campaign.title + ' ' + campaign.period + ' official history');
@@ -364,8 +375,6 @@
         '</div>' + bookmarkButton(id, 'Save campaign') + '</article>';
     }).join('');
   }
-
-
   function atlasColor(op) {
     if (op.type === 'hadr' || op.type === 'evacuation') return '#8bc9e8';
     if (op.type === 'peacekeeping' || op.type === 'stabilisation') return '#e3be72';
@@ -414,7 +423,9 @@
     var grid = $('#atlasGrid');
     if (!grid || typeof OPERATIONS_ATLAS === 'undefined') return;
     var items = getAtlasItems();
-    $('#atlasSummary').textContent = items.length + ' DOSSIERS MATCH · ' + OPERATIONS_ATLAS.length + ' IN THE OPEN-SOURCE INDEX';
+    atlasPage = renderPagination('atlasPagination', 'atlas', atlasPage, items.length, ATLAS_PAGE_SIZE);
+    var totalPages = Math.max(1, Math.ceil(items.length / ATLAS_PAGE_SIZE));
+    $('#atlasSummary').textContent = items.length + ' DOSSIERS MATCH · PAGE ' + atlasPage + ' / ' + totalPages + ' · ' + OPERATIONS_ATLAS.length + ' IN THE OPEN-SOURCE INDEX';
     $('#atlasCount').textContent = OPERATIONS_ATLAS.filter(function (op) { return op.type !== 'research'; }).length;
     $('#atlasImageCount').textContent = OPERATIONS_ATLAS.filter(function (op) { return !!op.image; }).length;
     if (!items.length) {
@@ -422,7 +433,8 @@
       renderAtlasMap();
       return;
     }
-    grid.innerHTML = items.map(function (op) {
+    var pageItems = items.slice((atlasPage - 1) * ATLAS_PAGE_SIZE, atlasPage * ATLAS_PAGE_SIZE);
+    grid.innerHTML = pageItems.map(function (op) {
       var imageBlock = op.image
         ? '<img loading="lazy" src="' + escapeHTML(op.image.src) + '" alt="' + escapeHTML(op.image.alt) + '" onerror="this.remove();">'
         : atlasArtwork(op);
@@ -439,7 +451,6 @@
     }).join('');
     renderAtlasMap();
   }
-
   function initOperationsMap() {
     var el = $('#operationsMap');
     if (!el) return;
@@ -786,6 +797,7 @@
     if (item.id.indexOf('event:') === 0) {
       var evIdx = item.id.split(':')[1];
       activePhase = 'all';
+      timelinePage = 1;
       $('#timelineSearch').value = '';
       $$('#phaseFilters .filter-btn').forEach(function (b) { b.classList.toggle('active', b.dataset.phase === 'all'); });
       renderTimeline();
@@ -844,10 +856,11 @@
       var button = event.target.closest('[data-phase]');
       if (!button) return;
       activePhase = button.dataset.phase;
-      $$('#phaseFilters .filter-btn').forEach(function (b) { b.classList.toggle('active', b === button); });
+      timelinePage = 1;
+      $('#phaseFilters .filter-btn').forEach(function (b) { b.classList.toggle('active', b === button); });
       renderTimeline();
     });
-    $('#timelineSearch').addEventListener('input', renderTimeline);
+    $('#timelineSearch').addEventListener('input', function () { timelinePage = 1; renderTimeline(); });
     $('#timelineClearFilters').addEventListener('click', function () {
       activePhase = 'all';
       $('#timelineSearch').value = '';
@@ -859,12 +872,14 @@
       var button = event.target.closest('[data-campaign-filter]');
       if (!button) return;
       activeCampaignFilter = button.dataset.campaignFilter;
-      $$('#campaignFilters [data-campaign-filter]').forEach(function (b) { b.classList.toggle('active', b === button); });
+      campaignPage = 1;
+      $('#campaignFilters [data-campaign-filter]').forEach(function (b) { b.classList.toggle('active', b === button); });
       renderCampaigns();
     });
-    $('#campaignSearch').addEventListener('input', renderCampaigns);
+    $('#campaignSearch').addEventListener('input', function () { campaignPage = 1; renderCampaigns(); });
     $('#campaignClearFilters').addEventListener('click', function () {
       activeCampaignFilter = 'all';
+      campaignPage = 1;
       $('#campaignSearch').value = '';
       $$('#campaignFilters [data-campaign-filter]').forEach(function (button) { button.classList.toggle('active', button.dataset.campaignFilter === 'all'); });
       renderCampaigns();
@@ -874,12 +889,14 @@
       var button = event.target.closest('[data-atlas-filter]');
       if (!button) return;
       activeAtlasFilter = button.dataset.atlasFilter;
-      $$('#atlasFilters [data-atlas-filter]').forEach(function (b) { b.classList.toggle('active', b === button); });
+      atlasPage = 1;
+      $('#atlasFilters [data-atlas-filter]').forEach(function (b) { b.classList.toggle('active', b === button); });
       renderAtlas();
     });
-    $('#atlasSearch').addEventListener('input', renderAtlas);
+    $('#atlasSearch').addEventListener('input', function () { atlasPage = 1; renderAtlas(); });
     $('#atlasClearFilters').addEventListener('click', function () {
       activeAtlasFilter = 'all';
+      atlasPage = 1;
       $('#atlasSearch').value = '';
       $$('#atlasFilters [data-atlas-filter]').forEach(function (b) { b.classList.toggle('active', b.dataset.atlasFilter === 'all'); });
       renderAtlas();
@@ -919,6 +936,19 @@
     });
 
     document.addEventListener('click', function (event) {
+      var pageButton = event.target.closest('[data-page-action][data-page-list]');
+      if (pageButton) {
+        if (pageButton.disabled) return;
+        var listName = pageButton.dataset.pageList;
+        var direction = pageButton.dataset.pageAction === 'next' ? 1 : -1;
+        if (listName === 'timeline') { timelinePage = clampPage(timelinePage + direction, TIMELINE.length, TIMELINE_PAGE_SIZE); renderTimeline(); }
+        else if (listName === 'campaigns') { campaignPage = clampPage(campaignPage + direction, CAMPAIGNS.length, CAMPAIGN_PAGE_SIZE); renderCampaigns(); }
+        else if (listName === 'atlas') { atlasPage = clampPage(atlasPage + direction, OPERATIONS_ATLAS.length, ATLAS_PAGE_SIZE); renderAtlas(); }
+        var targetId = listName === 'timeline' ? 'timelineList' : (listName === 'campaigns' ? 'campaignGrid' : 'atlasGrid');
+        var pageTarget = document.getElementById(targetId);
+        if (pageTarget) pageTarget.scrollIntoView({ behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start' });
+        return;
+      }
       var jumpButton = event.target.closest('[data-jump]');
       if (jumpButton) { sectionJump(jumpButton.dataset.jump); return; }
       var routeButton = event.target.closest('[data-route]');
