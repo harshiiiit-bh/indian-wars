@@ -2,737 +2,408 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Kargil War 1999 — Complete Interactive Dossier</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#0b100f">
+<meta name="description" content="An interactive, source-led Kargil War 1999 research dossier: campaign timeline, theatre sectors, operations, commanders, gallantry and official archives.">
+<title>Kargil War 1999 — Indian Wars Field Archive</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,400;0,500;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;500;600;700&family=Barlow+Condensed:wght@500;600;700&display=swap');
-
 :root{
-  --bg: #14170f;
-  --bg-2: #1b1f16;
-  --panel: #20241a;
-  --panel-2: #262b1e;
-  --line: #3a4130;
-  --contour: #2a3122;
-  --sand: #cfc7a8;
-  --sand-dim: #9a9478;
-  --paper: #e9e4d0;
-  --signal: #b5402d;
-  --signal-bright: #d8552f;
-  --amber: #c99a3d;
-  --blue-flag: #4c7a8c;
-  --india: #d8552f;
-  --pak: #4c6b8c;
-  --ok: #6f8f5a;
+  color-scheme:dark;
+  --bg:#0b100f;--bg2:#101715;--surface:#131c19;--surface2:#18231f;--surface3:#202d27;
+  --line:#2a3b33;--line2:#3b5145;--text:#e9eee7;--muted:#9baaa0;--subtle:#6f8276;
+  --lime:#d8f36a;--orange:#ee835b;--blue:#8bc9e8;--red:#ed7f78;--gold:#e3be72;
+  --radius:18px;--shadow:0 20px 55px rgba(0,0,0,.23);--max:1440px;
 }
-
-*{box-sizing:border-box; margin:0; padding:0;}
-
-body{
-  background:
-    radial-gradient(ellipse at 20% -10%, rgba(201,154,61,0.06), transparent 45%),
-    var(--bg);
-  color: var(--sand);
-  font-family: 'Barlow Condensed', sans-serif;
-  font-size: 17px;
-  line-height: 1.5;
-  overflow-x: hidden;
-}
-
-/* contour texture background */
-.contour-bg{
-  position: fixed; inset:0; z-index:0; pointer-events:none; opacity:0.5;
-  background-image:
-    repeating-radial-gradient(circle at 15% 20%, transparent 0, transparent 38px, var(--contour) 39px, transparent 40px),
-    repeating-radial-gradient(circle at 85% 70%, transparent 0, transparent 52px, var(--contour) 53px, transparent 54px);
-}
-
-.wrap{ position:relative; z-index:1; max-width:1180px; margin:0 auto; padding: 0 28px 120px; }
-
-/* ===== HERO ===== */
-.hero{
-  padding: 56px 0 30px;
-  border-bottom: 1px solid var(--line);
-  margin-bottom: 0;
-}
-.hero-eyebrow{
-  font-family:'JetBrains Mono', monospace;
-  font-size: 12px; letter-spacing: 3px; text-transform:uppercase;
-  color: var(--amber); display:flex; gap:14px; align-items:center; margin-bottom:18px;
-}
-.hero-eyebrow::before{ content:''; width:26px; height:1px; background:var(--amber); display:inline-block; }
-.hero h1{
-  font-family:'Spectral', serif; font-weight:700; font-size: clamp(48px, 9vw, 108px);
-  line-height: 0.95; color: var(--paper); letter-spacing: -1px;
-}
-.hero h1 em{ font-style:italic; color: var(--signal-bright); font-weight:500; }
-.hero-sub{
-  margin-top:14px; font-family:'JetBrains Mono',monospace; font-size:14px; color:var(--sand-dim);
-  display:flex; flex-wrap:wrap; gap: 6px 22px;
-}
-.hero-sub b{ color:var(--sand); font-weight:600; }
-
-.stat-strip{
-  display:grid; grid-template-columns: repeat(5,1fr); gap:0;
-  margin-top:34px; border-top:1px solid var(--line);
-}
-.stat{
-  padding: 18px 16px; border-right:1px solid var(--line);
-}
-.stat:last-child{ border-right:none; }
-.stat .num{ font-family:'Spectral',serif; font-weight:700; font-size:30px; color:var(--paper); }
-.stat .num span{ font-size:16px; color: var(--amber); font-weight:600;}
-.stat .lbl{ font-family:'JetBrains Mono',monospace; font-size:10.5px; letter-spacing:1px; text-transform:uppercase; color:var(--sand-dim); margin-top:4px; }
-
-@media(max-width:820px){
-  .stat-strip{ grid-template-columns: repeat(2,1fr); }
-  .stat:nth-child(2){ border-right:none; }
-  .stat{ border-bottom:1px solid var(--line); }
-}
-
-/* ===== NAV TABS ===== */
-.tabbar{
-  position: sticky; top:0; z-index:50;
-  background: rgba(20,23,15,0.96); backdrop-filter: blur(6px);
-  border-bottom:1px solid var(--line);
-  margin: 0 -28px 40px; padding: 0 28px;
-  overflow-x:auto; white-space:nowrap;
-  scrollbar-width:none;
-}
-.tabbar::-webkit-scrollbar{ display:none; }
-.tabbar-inner{ display:flex; gap:2px; max-width:1180px; margin:0 auto; }
-.tab-btn{
-  background:none; border:none; cursor:pointer;
-  font-family:'JetBrains Mono',monospace; font-size:12.5px; letter-spacing:1px; text-transform:uppercase;
-  color: var(--sand-dim); padding: 16px 16px 13px; border-bottom:3px solid transparent;
-  transition: color .15s, border-color .15s;
-}
-.tab-btn:hover{ color: var(--sand); }
-.tab-btn.active{ color: var(--signal-bright); border-bottom-color: var(--signal-bright); }
-
-.section{ display:none; animation: fadein .35s ease; }
-.section.active{ display:block; }
-@keyframes fadein{ from{opacity:0; transform:translateY(6px);} to{opacity:1; transform:translateY(0);} }
-
-.section-head{ margin-bottom: 28px; }
-.section-head .tag{
-  font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:2px; text-transform:uppercase;
-  color:var(--amber);
-}
-.section-head h2{
-  font-family:'Spectral',serif; font-weight:600; font-size: clamp(30px,4vw,44px); color:var(--paper); margin-top:6px;
-}
-.section-head p{ color:var(--sand-dim); max-width:760px; margin-top:10px; font-size:16px; }
-
-/* ===== CARDS / PANELS ===== */
-.panel{
-  background: var(--panel); border:1px solid var(--line); border-radius:3px; padding: 22px 24px;
-}
-.grid-2{ display:grid; grid-template-columns: 1.3fr 1fr; gap:20px; }
-.grid-3{ display:grid; grid-template-columns: repeat(3,1fr); gap:16px; }
-@media(max-width:900px){ .grid-2,.grid-3{ grid-template-columns:1fr; } }
-
-h3.h{ font-family:'Spectral',serif; font-weight:600; font-size:20px; color:var(--paper); margin-bottom:10px; }
-p.body-text, li.body-text{ color: var(--sand); font-size:16px; line-height:1.6; }
-.dim{ color: var(--sand-dim); }
-.mono{ font-family:'JetBrains Mono',monospace; }
-
-.divider{ height:1px; background:var(--line); margin: 34px 0; }
-
-/* Causes accordion */
-.cause-item{
-  border-bottom:1px solid var(--line);
-}
-.cause-q{
-  display:flex; justify-content:space-between; align-items:center; gap:16px;
-  padding: 18px 0; cursor:pointer;
-}
-.cause-q .num{ font-family:'JetBrains Mono',monospace; color:var(--amber); font-size:13px; min-width:34px; }
-.cause-q h4{ font-family:'Spectral',serif; font-weight:600; font-size:19px; color:var(--paper); flex:1; }
-.cause-q .chev{ color:var(--sand-dim); font-size:20px; transition:transform .2s; }
-.cause-item.open .chev{ transform:rotate(45deg); color:var(--signal-bright); }
-.cause-a{ max-height:0; overflow:hidden; transition:max-height .3s ease; }
-.cause-item.open .cause-a{ max-height:600px; }
-.cause-a-inner{ padding: 0 0 20px 46px; color:var(--sand); font-size:15.5px; line-height:1.65; }
-
-/* ===== TIMELINE ===== */
-.tl-filters{ display:flex; flex-wrap:wrap; gap:8px; margin-bottom:26px; }
-.tl-filter{
-  font-family:'JetBrains Mono',monospace; font-size:11.5px; letter-spacing:0.5px; text-transform:uppercase;
-  padding:7px 14px; border:1px solid var(--line); background:var(--panel); color:var(--sand-dim);
-  border-radius:20px; cursor:pointer; transition:.15s;
-}
-.tl-filter:hover{ color:var(--sand); }
-.tl-filter.active{ background:var(--signal); border-color:var(--signal); color:var(--paper); }
-
-.timeline{ position:relative; padding-left: 26px; }
-.timeline::before{
-  content:''; position:absolute; left:6px; top:6px; bottom:6px; width:2px; background:var(--line);
-}
-.tl-entry{ position:relative; padding-bottom: 26px; }
-.tl-entry::before{
-  content:''; position:absolute; left:-26px; top:6px; width:11px; height:11px; border-radius:50%;
-  background: var(--bg); border:2px solid var(--signal-bright);
-}
-.tl-entry[data-phase="infiltration"]::before{ border-color: var(--pak); }
-.tl-entry[data-phase="detection"]::before{ border-color: var(--amber); }
-.tl-entry[data-phase="mobilization"]::before{ border-color: var(--blue-flag); }
-.tl-entry[data-phase="battles"]::before{ border-color: var(--signal-bright); }
-.tl-entry[data-phase="endgame"]::before{ border-color: var(--ok); }
-
-.tl-date{
-  font-family:'JetBrains Mono',monospace; font-weight:700; font-size:13px; color:var(--paper);
-  display:inline-block; margin-bottom:4px;
-}
-.tl-phase-tag{
-  font-family:'JetBrains Mono',monospace; font-size:9.5px; letter-spacing:1px; text-transform:uppercase;
-  color:var(--sand-dim); margin-left:10px; padding:2px 7px; border:1px solid var(--line); border-radius:10px;
-}
-.tl-text{ color:var(--sand); font-size:15.5px; margin-top:4px; }
-.tl-entry.hide{ display:none; }
-
-/* ===== LOCATIONS ===== */
-.sector-tabs{ display:flex; flex-wrap:wrap; gap:8px; margin-bottom:22px; }
-.sector-btn{
-  font-family:'JetBrains Mono',monospace; font-size:12px; padding:9px 15px; border:1px solid var(--line);
-  background:var(--panel); color:var(--sand-dim); cursor:pointer; border-radius:3px;
-}
-.sector-btn.active{ background:var(--panel-2); color:var(--signal-bright); border-color:var(--signal-bright); }
-.sector-panel{ display:none; }
-.sector-panel.active{ display:block; animation:fadein .3s ease; }
-.peak-list{ list-style:none; margin-top:14px; }
-.peak-list li{
-  display:flex; gap:14px; padding:10px 0; border-bottom:1px dashed var(--line); font-size:15.5px;
-}
-.peak-list .h8{ font-family:'JetBrains Mono',monospace; color:var(--amber); min-width:90px; font-size:13px; }
-
-.mapstrip{
-  display:flex; align-items:center; gap:6px; margin: 26px 0; overflow-x:auto; padding-bottom:8px;
-}
-.mapnode{
-  flex:0 0 auto; text-align:center; font-family:'JetBrains Mono',monospace; font-size:11px; color:var(--sand-dim);
-  padding:10px 14px; border:1px solid var(--line); border-radius:3px; background:var(--panel); cursor:pointer;
-}
-.mapnode.active{ color:var(--paper); border-color:var(--signal-bright); background:var(--panel-2); }
-.mapline{ flex:1 1 20px; height:1px; background:var(--line); min-width:16px; }
-
-/* ===== OPERATIONS ===== */
-.op-card{
-  border-left: 3px solid var(--signal-bright); padding: 4px 0 4px 20px; margin-bottom:22px;
-}
-.op-card.pak{ border-left-color: var(--pak); }
-.op-card h4{ font-family:'Spectral',serif; font-size:22px; color:var(--paper); }
-.op-card .who{ font-family:'JetBrains Mono',monospace; font-size:11.5px; color:var(--amber); text-transform:uppercase; letter-spacing:1px; margin-top:2px;}
-.op-card p{ margin-top:8px; color:var(--sand); font-size:15.5px; }
-
-/* ===== LEADERS ===== */
-.side-head{
-  display:flex; align-items:center; gap:10px; margin-bottom:16px;
-  font-family:'JetBrains Mono',monospace; font-size:13px; text-transform:uppercase; letter-spacing:2px;
-}
-.flag-dot{ width:10px; height:10px; border-radius:50%; }
-.flag-dot.india{ background:var(--india); }
-.flag-dot.pak{ background:var(--pak); }
-.leader{
-  padding:14px 0; border-bottom:1px solid var(--line);
-}
-.leader b{ font-family:'Spectral',serif; font-size:17.5px; color:var(--paper); display:block; }
-.leader .role{ font-family:'JetBrains Mono',monospace; font-size:12px; color:var(--sand-dim); margin:2px 0 6px;}
-.leader p{ font-size:14.5px; color:var(--sand); }
-
-/* ===== CASUALTIES ===== */
-table.data-table{ width:100%; border-collapse:collapse; margin-top:10px; }
-.data-table th, .data-table td{
-  text-align:left; padding:11px 12px; border-bottom:1px solid var(--line); font-size:14.5px;
-}
-.data-table th{
-  font-family:'JetBrains Mono',monospace; font-size:11px; text-transform:uppercase; letter-spacing:1px; color:var(--amber);
-}
-.data-table td.num-cell{ font-family:'JetBrains Mono',monospace; color:var(--paper); font-weight:600; }
-
-.bar-row{ display:flex; align-items:center; gap:12px; margin:10px 0; }
-.bar-label{ width:190px; font-size:13.5px; font-family:'JetBrains Mono',monospace; color:var(--sand-dim); flex-shrink:0; }
-.bar-track{ flex:1; height:20px; background:var(--panel-2); border-radius:2px; overflow:hidden; }
-.bar-fill{ height:100%; background:linear-gradient(90deg, var(--signal), var(--signal-bright)); }
-.bar-val{ font-family:'JetBrains Mono',monospace; font-size:13px; color:var(--paper); min-width:70px; text-align:right; }
-
-.medal-grid{ display:grid; grid-template-columns:repeat(2,1fr); gap:16px; margin-top:16px; }
-@media(max-width:700px){ .medal-grid{ grid-template-columns:1fr; } }
-.medal{ background:var(--panel-2); border:1px solid var(--line); padding:16px; border-radius:3px; }
-.medal .n{ font-family:'Spectral',serif; font-size:34px; color:var(--paper); font-weight:700; }
-.medal .t{ font-family:'JetBrains Mono',monospace; font-size:12px; color:var(--amber); text-transform:uppercase; letter-spacing:1px; margin-top:2px;}
-.medal .d{ color:var(--sand-dim); font-size:13.5px; margin-top:6px; }
-
-/* hero profile cards */
-.hero-card{
-  background: var(--panel); border:1px solid var(--line); border-left:3px solid var(--amber);
-  border-radius:3px; padding:22px 24px; margin-bottom:20px;
-}
-.hero-card h4{ font-family:'Spectral',serif; font-weight:700; font-size:22px; color:var(--paper); }
-.hero-card .unit{ font-family:'JetBrains Mono',monospace; font-size:12px; color:var(--amber); margin-top:3px; text-transform:uppercase; letter-spacing:0.5px;}
-.hero-card .theatre{ font-family:'JetBrains Mono',monospace; font-size:12px; color:var(--sand-dim); margin-top:2px; }
-.hero-card .hb{ margin-top:12px; }
-.hero-card .hb-label{ font-family:'JetBrains Mono',monospace; font-size:10.5px; text-transform:uppercase; letter-spacing:1px; color:var(--signal-bright); margin-bottom:3px; }
-.hero-card .hb-text{ font-size:15px; color:var(--sand); line-height:1.6; }
-.hero-card.pak{ border-left-color: var(--pak); }
-
-/* reforms list */
-.reform-item{
-  display:grid; grid-template-columns: 190px 1fr; gap:18px; padding:16px 0; border-bottom:1px solid var(--line);
-}
-.reform-item .rt{ font-family:'JetBrains Mono',monospace; font-size:11.5px; color:var(--amber); text-transform:uppercase; }
-.reform-item h4{ font-family:'Spectral',serif; font-size:18px; color:var(--paper); margin-top:2px; }
-.reform-item p{ font-size:14.5px; color:var(--sand); margin-top:6px; }
-@media(max-width:700px){ .reform-item{ grid-template-columns:1fr; } }
-
-/* badr comparison */
-.badr-row{ display:grid; grid-template-columns:90px 1fr; gap:20px; padding:18px 0; border-bottom:1px solid var(--line); }
-.badr-row .yr{ font-family:'Spectral',serif; font-weight:700; font-size:30px; color:var(--amber); }
-.badr-row h4{ font-family:'Spectral',serif; font-size:18px; color:var(--paper); margin-bottom:6px; }
-.badr-row p{ font-size:14.5px; color:var(--sand); }
-@media(max-width:700px){ .badr-row{ grid-template-columns:1fr; } .badr-row .yr{ font-size:22px; } }
-
-.vuln-item{ padding:12px 0; border-bottom:1px solid var(--line); }
-.vuln-item b{ color:var(--paper); font-family:'Spectral',serif; font-size:15.5px; }
-.vuln-item p{ color:var(--sand); font-size:14px; margin-top:4px; }
-
-.hero-title-row{ display:flex; align-items:flex-start; gap:18px; }
-.hero-flag{ width:44px; height:52px; margin-top:14px; flex-shrink:0; }
-.flagwave-big{ fill:var(--signal-bright); transform-origin: 4px 12px; animation: waveBig 2.6s ease-in-out infinite; }
-@keyframes waveBig{
-  0%,100%{ d: path("M4,6 L54,12 L44,22 L54,32 L4,26 Z"); }
-  50%{ d: path("M4,6 L50,10 L42,22 L50,34 L4,26 Z"); }
-}
-@media(max-width:600px){ .hero-flag{ display:none; } }
-
-/* animated mountain scene */
-.svg-scene{ margin: 8px 0 30px; border:1px solid var(--line); border-radius:3px; overflow:hidden; background:var(--panel); }
-.mountain-svg{ width:100%; height:140px; display:block; }
-.mountain-svg .cloud{ fill: rgba(233,228,208,0.12); }
-.mountain-svg .c1{ animation: driftCloud 26s linear infinite; }
-.mountain-svg .c2{ animation: driftCloud 34s linear infinite reverse; }
-.mountain-svg .c3{ animation: driftCloud 20s linear infinite; }
-@keyframes driftCloud{
-  0%{ transform: translateX(-40px); }
-  50%{ transform: translateX(40px); }
-  100%{ transform: translateX(-40px); }
-}
-.mountain-svg .climber{ animation: climbUp 5s ease-in-out infinite; }
-@keyframes climbUp{
-  0%{ transform: translate(150px,60px) translateY(0); }
-  45%{ transform: translate(150px,60px) translateY(-24px); }
-  50%{ transform: translate(150px,60px) translateY(-24px); }
-  100%{ transform: translate(150px,60px) translateY(0); }
-}
-.mountain-svg .flagwave{ animation: waveSmall 1.8s ease-in-out infinite; transform-origin:0px -26px; }
-@keyframes waveSmall{
-  0%,100%{ d: path("M0,-26 L16,-24 L12,-19 L16,-14 L0,-12 Z"); }
-  50%{ d: path("M0,-26 L14,-22 L10,-19 L14,-16 L0,-12 Z"); }
-}
-
-/* op-card animated icons */
-.op-anim{ width:64px; height:40px; flex-shrink:0; }
-.jet-svg .body{ animation: flyAcross 6s linear infinite; }
-@keyframes flyAcross{
-  0%{ transform: translateX(-70px); opacity:0; }
-  8%{ opacity:1; }
-  92%{ opacity:1; }
-  100%{ transform: translateX(70px); opacity:0; }
-}
-.ship-svg .hull{ animation: bobShip 3.2s ease-in-out infinite; }
-@keyframes bobShip{
-  0%,100%{ transform: translateY(0); }
-  50%{ transform: translateY(-3px); }
-}
-.ship-svg .wave{ animation: waveScroll 2.4s linear infinite; }
-@keyframes waveScroll{
-  0%{ transform: translateX(0); }
-  100%{ transform: translateX(-24px); }
-}
-.op-card-head{ display:flex; align-items:center; gap:14px; }
-
-/* highways list */
-.hw-item{ padding:16px 0; border-bottom:1px solid var(--line); }
-.hw-item h4{ font-family:'Spectral',serif; font-size:18px; color:var(--paper); }
-.hw-item .len{ font-family:'JetBrains Mono',monospace; font-size:12px; color:var(--amber); margin:3px 0 6px; }
-.hw-item p{ font-size:14.5px; color:var(--sand); }
-
-/* hero cards svg badge */
-.hero-card-icon{ float:right; width:36px; height:36px; opacity:0.8; }
-.marchfig path{ animation: marchBob 1s ease-in-out infinite; transform-origin:center; }
-@keyframes marchBob{ 0%,100%{ transform:translateY(0); } 50%{ transform:translateY(-2px); } }
-
-/* footer */
-.footer{ margin-top:60px; padding-top:24px; border-top:1px solid var(--line); color:var(--sand-dim); font-size:13px; font-family:'JetBrains Mono',monospace;}
-.footer a{ color:var(--amber); }
-
-/* scroll to top */
-.totop{
-  position:fixed; bottom:22px; right:22px; z-index:60; background:var(--signal); color:var(--paper);
-  border:none; width:44px; height:44px; border-radius:50%; cursor:pointer; font-size:18px;
-  opacity:0; pointer-events:none; transition:opacity .2s;
-}
-.totop.show{ opacity:1; pointer-events:auto; }
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:110px}
+body{margin:0;background:radial-gradient(ellipse at 82% -18%,rgba(216,243,106,.075),transparent 40%),radial-gradient(ellipse at 0% 25%,rgba(139,201,232,.045),transparent 40%),var(--bg);color:var(--text);font:15px/1.65 "DM Sans",sans-serif;letter-spacing:-.01em;overflow-x:hidden}
+body::before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.17;z-index:-1;background-image:linear-gradient(rgba(151,178,158,.12) 1px,transparent 1px),linear-gradient(90deg,rgba(151,178,158,.12) 1px,transparent 1px);background-size:48px 48px;mask-image:linear-gradient(to bottom,black,transparent 80%)}
+a{color:var(--lime);text-decoration:none}a:hover{text-decoration:underline}
+button,input,textarea{font:inherit}button{color:inherit}
+button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible{outline:2px solid var(--lime);outline-offset:3px}
+::selection{background:var(--lime);color:#101510}
+.top-progress{height:3px;position:fixed;top:0;left:0;width:0;background:var(--lime);z-index:120;box-shadow:0 0 18px rgba(216,243,106,.4)}
+.shell{width:min(var(--max),100%);margin:0 auto;padding:0 34px 70px}
+.topbar{height:76px;display:flex;align-items:center;gap:24px;border-bottom:1px solid rgba(155,170,160,.17);position:sticky;top:0;z-index:100;background:rgba(11,16,15,.9);backdrop-filter:blur(18px);margin:0 -34px;padding:0 34px}
+.brand{display:flex;align-items:center;gap:12px;min-width:230px;color:var(--text)}
+.brand-mark{height:37px;width:37px;border:1px solid var(--line2);border-radius:11px;display:grid;place-items:center;color:var(--lime);font:700 13px "Space Grotesk",sans-serif;background:linear-gradient(145deg,var(--surface3),var(--surface));letter-spacing:-.06em}
+.brand strong{display:block;font:700 14px "Space Grotesk",sans-serif;letter-spacing:.08em;text-transform:uppercase}
+.brand small{display:block;color:var(--subtle);font:10px "DM Mono",monospace;letter-spacing:.13em;margin-top:1px}
+.top-nav{display:flex;gap:5px;align-items:center;flex:1;overflow-x:auto;scrollbar-width:none}
+.top-nav::-webkit-scrollbar{display:none}
+.nav-link{border:1px solid transparent;background:transparent;color:var(--muted);white-space:nowrap;padding:9px 12px;border-radius:10px;cursor:pointer;font-size:12px;font-weight:600;transition:.2s}
+.nav-link:hover,.nav-link.active{color:var(--text);background:var(--surface2);border-color:var(--line)}
+.nav-link.active{box-shadow:inset 0 -2px var(--lime)}
+.top-actions{display:flex;align-items:center;gap:8px}
+.icon-btn,.quiet-btn,.primary-btn,.outline-btn{border:1px solid var(--line);background:var(--surface);border-radius:11px;min-height:39px;padding:9px 13px;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:8px;transition:transform .2s,border-color .2s,background .2s;color:var(--text);white-space:nowrap}
+.icon-btn{width:41px;padding:0;font-size:16px}
+.icon-btn:hover,.quiet-btn:hover,.outline-btn:hover{border-color:var(--line2);background:var(--surface2);transform:translateY(-1px)}
+.primary-btn{background:var(--lime);border-color:var(--lime);color:#11170f;font-weight:700}
+.primary-btn:hover{background:#e4ff85;transform:translateY(-1px)}
+.quiet-btn{background:transparent;color:var(--muted)}
+.smallcaps{font:10px "DM Mono",monospace;letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+.section{padding-top:64px;scroll-margin-top:95px}
+.hero{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(300px,.7fr);gap:38px;align-items:stretch;padding:64px 0 48px;min-height:500px}
+.eyebrow{display:inline-flex;align-items:center;gap:10px;color:var(--lime);font:11px "DM Mono",monospace;letter-spacing:.13em;text-transform:uppercase}
+.live-dot{width:7px;height:7px;background:var(--lime);border-radius:50%;box-shadow:0 0 0 4px rgba(216,243,106,.1);display:inline-block}
+.hero h1{font:700 clamp(56px,7.5vw,112px)/.9 "Space Grotesk",sans-serif;letter-spacing:-.085em;margin:24px 0 24px;max-width:900px}
+.hero h1 .accent{color:var(--lime);display:block}
+.hero-desc{font-size:17px;line-height:1.75;color:var(--muted);max-width:680px;margin:0 0 26px}
+.hero-desc strong{color:var(--text);font-weight:600}
+.hero-ctas{display:flex;flex-wrap:wrap;gap:10px}
+.hero-ctas .primary-btn,.hero-ctas .outline-btn{padding:12px 17px}
+.hero-side{position:relative;border:1px solid var(--line);background:linear-gradient(150deg,rgba(24,35,31,.96),rgba(12,18,16,.95));border-radius:24px;padding:22px;overflow:hidden;min-height:390px;display:flex;flex-direction:column;justify-content:space-between;box-shadow:var(--shadow)}
+.hero-side::before{content:"";position:absolute;width:350px;height:350px;border:1px solid rgba(216,243,106,.13);border-radius:50%;right:-130px;top:-135px;box-shadow:0 0 0 28px rgba(216,243,106,.025),0 0 0 58px rgba(216,243,106,.02),0 0 0 90px rgba(216,243,106,.015)}
+.side-head{display:flex;align-items:center;justify-content:space-between;gap:10px;position:relative}
+.pill{font:10px "DM Mono",monospace;text-transform:uppercase;letter-spacing:.12em;border:1px solid var(--line2);border-radius:999px;padding:6px 9px;color:var(--muted)}
+.status{color:var(--lime);font:10px "DM Mono",monospace;letter-spacing:.1em}
+.schematic{width:100%;height:205px;display:block;position:relative}
+.schematic path,.schematic line,.schematic circle{vector-effect:non-scaling-stroke}
+.side-foot{position:relative;border-top:1px solid var(--line);padding-top:16px;display:flex;justify-content:space-between;align-items:end;gap:16px}
+.side-foot b{display:block;font:600 17px "Space Grotesk",sans-serif}
+.side-foot small{font:10px "DM Mono",monospace;color:var(--muted);letter-spacing:.05em}
+.side-coord{font:10px "DM Mono",monospace;color:var(--subtle);text-align:right}
+.metrics{display:grid;grid-template-columns:repeat(4,1fr);border:1px solid var(--line);border-radius:17px;overflow:hidden;background:rgba(19,28,25,.83)}
+.metric{padding:19px 22px;border-right:1px solid var(--line);position:relative}
+.metric:last-child{border-right:0}
+.metric strong{font:600 clamp(27px,3vw,38px)/1 "Space Grotesk",sans-serif;letter-spacing:-.06em;display:block}
+.metric strong em{font-style:normal;color:var(--lime)}
+.metric span{display:block;margin-top:9px;color:var(--muted);font:10px "DM Mono",monospace;letter-spacing:.08em;text-transform:uppercase}
+.section-head{display:flex;justify-content:space-between;align-items:end;gap:24px;margin-bottom:23px}
+.section-head .kicker{color:var(--lime);font:10px "DM Mono",monospace;letter-spacing:.16em;text-transform:uppercase}
+.section-head h2{font:600 clamp(30px,4.3vw,49px)/1.05 "Space Grotesk",sans-serif;letter-spacing:-.055em;margin:8px 0 0}
+.section-head p{color:var(--muted);max-width:560px;margin:0;font-size:14px}
+.head-count{flex:0 0 auto;border:1px solid var(--line);border-radius:11px;padding:8px 11px;color:var(--muted);font:10px "DM Mono",monospace}
+.grid{display:grid;gap:16px}
+.grid-2{grid-template-columns:repeat(2,minmax(0,1fr))}
+.grid-3{grid-template-columns:repeat(3,minmax(0,1fr))}
+.card{border:1px solid var(--line);background:linear-gradient(155deg,rgba(23,33,29,.98),rgba(16,23,21,.98));border-radius:var(--radius);padding:23px;min-width:0}
+.card:hover{border-color:#3c5146}
+.card-top{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;margin-bottom:14px}
+.card h3{font:600 20px/1.2 "Space Grotesk",sans-serif;letter-spacing:-.035em;margin:0 0 10px}
+.card p{color:var(--muted);margin:0;line-height:1.75;font-size:14px}
+.card p+p{margin-top:12px}
+.tag{display:inline-flex;align-items:center;gap:6px;background:rgba(216,243,106,.075);border:1px solid rgba(216,243,106,.17);color:var(--lime);font:10px "DM Mono",monospace;letter-spacing:.05em;text-transform:uppercase;padding:5px 8px;border-radius:7px}
+.tag.orange{color:var(--orange);background:rgba(238,131,91,.07);border-color:rgba(238,131,91,.2)}
+.tag.blue{color:var(--blue);background:rgba(139,201,232,.07);border-color:rgba(139,201,232,.2)}
+.tag.gold{color:var(--gold);background:rgba(227,190,114,.07);border-color:rgba(227,190,114,.2)}
+.quick-layout{display:grid;grid-template-columns:1.2fr .8fr;gap:16px}
+.fact-list{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:19px}
+.fact{padding:12px 13px;border-radius:12px;background:rgba(255,255,255,.025);border:1px solid rgba(155,170,160,.11)}
+.fact span{display:block;color:var(--subtle);font:10px "DM Mono",monospace;letter-spacing:.09em;text-transform:uppercase;margin-bottom:5px}
+.fact strong{font-weight:600;font-size:13px}
+.signal-card{background:var(--lime);color:#141a12;border-radius:var(--radius);padding:24px}
+.signal-card .smallcaps{color:#58653a}
+.signal-card h3{font:600 25px/1.15 "Space Grotesk",sans-serif;letter-spacing:-.05em;margin:13px 0}
+.signal-card p{color:#374128;font-size:13px;line-height:1.8}
+.signal-card a{color:#253016;font-weight:700;text-decoration:underline}
+.search-wrap{position:relative;display:flex;gap:9px;min-width:min(450px,100%)}
+.search-input{width:100%;height:43px;background:var(--surface);color:var(--text);border:1px solid var(--line);border-radius:12px;padding:0 14px 0 41px}
+.search-icon{position:absolute;left:14px;top:11px;color:var(--subtle);pointer-events:none}
+.search-wrap kbd{position:absolute;right:12px;top:12px;color:var(--subtle);font:10px "DM Mono",monospace;border:1px solid var(--line);padding:2px 5px;border-radius:4px}
+.search-panel{display:none;position:absolute;top:calc(100% + 8px);left:0;right:0;max-height:370px;overflow:auto;background:var(--surface);border:1px solid var(--line2);border-radius:14px;box-shadow:var(--shadow);z-index:110;padding:7px}
+.search-panel.show{display:block}
+.search-hit{width:100%;display:flex;align-items:center;justify-content:space-between;text-align:left;gap:12px;border:0;background:transparent;color:var(--text);border-radius:9px;padding:11px;cursor:pointer}
+.search-hit:hover{background:var(--surface2)}
+.search-hit small{display:block;color:var(--muted);font-size:11px;margin-top:3px}
+.search-hit .type{font:9px "DM Mono",monospace;color:var(--lime);text-transform:uppercase;white-space:nowrap}
+.filter-row{display:flex;gap:7px;flex-wrap:wrap;margin:18px 0}
+.filter-btn{border:1px solid var(--line);border-radius:999px;color:var(--muted);background:var(--surface);padding:8px 12px;cursor:pointer;font:10px "DM Mono",monospace;letter-spacing:.04em;transition:.18s}
+.filter-btn:hover{border-color:var(--line2);color:var(--text)}
+.filter-btn.active{color:#131810;background:var(--lime);border-color:var(--lime)}
+.timeline-layout{display:grid;grid-template-columns:minmax(0,1fr) 280px;gap:20px;align-items:start}
+.timeline-list{display:grid;gap:11px}
+.event{position:relative;display:grid;grid-template-columns:125px minmax(0,1fr);gap:20px;padding:19px 20px;border:1px solid var(--line);background:var(--surface);border-radius:15px;transition:border-color .18s,transform .18s}
+.event:hover{border-color:var(--line2);transform:translateY(-1px)}
+.event-date{border-right:1px solid var(--line);padding-right:18px}
+.event-date b{font:500 12px/1.55 "DM Mono",monospace;color:var(--lime);display:block}
+.event-date span{display:block;font:9px "DM Mono",monospace;color:var(--subtle);text-transform:uppercase;margin-top:6px}
+.event h3{font:600 17px/1.3 "Space Grotesk",sans-serif;margin:0 0 7px;letter-spacing:-.025em}
+.event p{font-size:13px;line-height:1.8;color:var(--muted);margin:0}
+.event-foot{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:12px}
+.bookmark-btn{border:1px solid var(--line);background:transparent;border-radius:8px;padding:5px 8px;color:var(--muted);cursor:pointer;font:10px "DM Mono",monospace}
+.bookmark-btn:hover,.bookmark-btn.saved{color:var(--lime);border-color:rgba(216,243,106,.5)}
+.timeline-aside{position:sticky;top:100px}
+.aside-stat{padding:17px 0;border-bottom:1px solid var(--line)}
+.aside-stat strong{display:block;font:600 25px "Space Grotesk",sans-serif}
+.aside-stat span{display:block;font:10px "DM Mono",monospace;color:var(--muted);text-transform:uppercase;letter-spacing:.07em}
+.sector-grid{display:grid;grid-template-columns:240px minmax(0,1fr);gap:17px}
+.sector-selector{display:flex;flex-direction:column;gap:7px}
+.sector-btn{border:1px solid var(--line);background:var(--surface);color:var(--muted);padding:13px 14px;text-align:left;border-radius:12px;cursor:pointer;font-weight:600;font-size:13px}
+.sector-btn small{display:block;font:10px "DM Mono",monospace;color:var(--subtle);margin-top:3px;font-weight:400}
+.sector-btn.active{color:var(--text);border-color:rgba(216,243,106,.55);background:linear-gradient(110deg,rgba(216,243,106,.095),rgba(19,28,25,.95))}
+.sector-btn.active::before{content:"↳ ";color:var(--lime)}
+.sector-detail{min-height:320px}
+.sector-detail h3{font:600 27px "Space Grotesk",sans-serif;letter-spacing:-.04em;margin:6px 0 11px}
+.peak-list{list-style:none;padding:0;margin:18px 0 0;display:grid;gap:9px}
+.peak-list li{border-top:1px solid var(--line);padding:12px 0;display:grid;grid-template-columns:minmax(100px,.32fr) 1fr;gap:15px;font-size:12px;color:var(--muted);line-height:1.65}
+.peak-list .peak-name{font:10px "DM Mono",monospace;color:var(--gold);text-transform:uppercase;letter-spacing:.04em}
+.theatre-banner{display:grid;grid-template-columns:1fr 1fr;gap:18px;align-items:center;margin-bottom:16px}
+.theatre-graphic{width:100%;height:120px;background:var(--surface);border:1px solid var(--line);border-radius:14px}
+.highway-item{padding:15px 0;border-top:1px solid var(--line)}
+.highway-item h4{font-size:14px;margin:0 0 2px}
+.highway-item span{display:block;font:10px "DM Mono",monospace;color:var(--gold);margin-bottom:6px}
+.highway-item p{font-size:12px}
+.ops-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.operation-card{padding:24px;border:1px solid var(--line);border-radius:17px;background:linear-gradient(130deg,rgba(25,37,31,.96),rgba(16,23,21,.96));position:relative;overflow:hidden}
+.operation-card::after{content:attr(data-index);position:absolute;right:16px;top:0;font:700 72px/.95 "Space Grotesk",sans-serif;color:rgba(233,238,231,.035);pointer-events:none}
+.operation-card h3{position:relative;font:600 23px "Space Grotesk",sans-serif;letter-spacing:-.04em;margin:14px 0 4px}
+.operation-card .op-meta{position:relative;color:var(--gold);font:10px "DM Mono",monospace;text-transform:uppercase;letter-spacing:.08em;margin-bottom:12px}
+.operation-card p{position:relative;color:var(--muted);font-size:13px;line-height:1.85;margin:0}
+.people-toolbar{display:flex;align-items:center;justify-content:space-between;gap:15px;margin-bottom:16px;flex-wrap:wrap}
+.segmented{display:inline-flex;padding:4px;background:var(--surface);border:1px solid var(--line);border-radius:12px;gap:3px}
+.segmented button{border:0;background:transparent;border-radius:8px;padding:8px 12px;font-size:11px;color:var(--muted);cursor:pointer}
+.segmented button.active{background:var(--surface3);color:var(--text)}
+.leader-card{padding:18px;border:1px solid var(--line);background:var(--surface);border-radius:15px}
+.leader-card h3{font:600 17px "Space Grotesk",sans-serif;margin:0 0 4px}
+.leader-role{font:10px "DM Mono",monospace;text-transform:uppercase;letter-spacing:.05em;color:var(--gold);margin-bottom:10px}
+.leader-card p{color:var(--muted);font-size:12px;margin:0;line-height:1.8}
+.hero-card{padding:20px;border:1px solid var(--line);background:var(--surface);border-radius:15px;display:flex;flex-direction:column;gap:12px}
+.hero-card h3{font:600 18px "Space Grotesk",sans-serif;margin:0}
+.hero-card .unit{font:10px "DM Mono",monospace;color:var(--lime);text-transform:uppercase;letter-spacing:.04em}
+.hero-card details{border-top:1px solid var(--line);padding-top:10px}
+.hero-card summary{cursor:pointer;color:var(--muted);font-size:11px;font-weight:700}
+.hero-card details p{margin:8px 0 0;font-size:12px;color:var(--muted)}
+.dual-columns{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.reform-row{display:grid;grid-template-columns:130px 1fr;gap:14px;padding:14px 0;border-top:1px solid var(--line)}
+.reform-row:first-child{border-top:0}
+.reform-time{font:10px "DM Mono",monospace;color:var(--gold)}
+.reform-row h4{font-size:14px;margin:0 0 5px}
+.reform-row p{font-size:12px}
+.analysis-row{display:grid;grid-template-columns:65px 1fr;gap:14px;padding:15px 0;border-top:1px solid var(--line)}
+.analysis-year{font:600 21px "Space Grotesk",sans-serif;color:var(--lime)}
+.analysis-row h4{font-size:14px;margin:0 0 5px}
+.vuln{padding:12px 0;border-top:1px solid var(--line)}
+.vuln b{font-size:12px;color:var(--gold)}
+.vuln p{font-size:12px;margin-top:5px}
+.sources-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:13px}
+.source-card{border:1px solid var(--line);background:var(--surface);border-radius:15px;padding:18px;display:flex;flex-direction:column;align-items:start;min-height:210px}
+.source-card h3{font:600 16px/1.3 "Space Grotesk",sans-serif;margin:13px 0 8px}
+.source-card p{font-size:12px;line-height:1.8;color:var(--muted);margin:0 0 16px}
+.source-card .source-bottom{display:flex;justify-content:space-between;align-items:center;gap:10px;width:100%;margin-top:auto}
+.source-card a{font-size:11px;font-weight:700}
+.source-bottom small{font:9px "DM Mono",monospace;color:var(--subtle)}
+.caveat{display:grid;grid-template-columns:36px 1fr;gap:13px;padding:18px;border:1px solid rgba(227,190,114,.22);background:rgba(227,190,114,.045);border-radius:14px;margin-bottom:14px}
+.caveat .warn{display:grid;place-items:center;border-radius:10px;background:rgba(227,190,114,.12);color:var(--gold);font-weight:700}
+.caveat h3{font-size:14px;margin:0 0 5px}
+.caveat p{font-size:12px;line-height:1.8;color:var(--muted);margin:0}
+.inline-link{color:var(--lime);font-weight:600}
+.footer{margin-top:75px;border-top:1px solid var(--line);padding:24px 0 0;display:flex;justify-content:space-between;gap:20px;color:var(--subtle);font:10px "DM Mono",monospace;letter-spacing:.06em}
+.footer strong{color:var(--muted);font-weight:500}
+.toast{position:fixed;bottom:22px;left:50%;transform:translate(-50%,20px);opacity:0;pointer-events:none;z-index:200;background:var(--lime);color:#11170f;border-radius:11px;padding:11px 16px;font-size:12px;font-weight:700;box-shadow:var(--shadow);transition:.22s}
+.toast.show{transform:translate(-50%,0);opacity:1}
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:150;opacity:0;pointer-events:none;transition:opacity .2s}
+.overlay.show{opacity:1;pointer-events:auto}
+.drawer{position:fixed;z-index:160;right:0;top:0;bottom:0;width:min(480px,100%);background:var(--bg2);border-left:1px solid var(--line);padding:25px;overflow:auto;transform:translateX(100%);transition:transform .25s ease}
+.drawer.show{transform:translateX(0)}
+.drawer-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px}
+.drawer h2{font:600 25px "Space Grotesk",sans-serif;margin:0}
+.saved-item{padding:14px 0;border-bottom:1px solid var(--line)}
+.saved-item strong{display:block;font-size:13px}
+.saved-item small{font:10px "DM Mono",monospace;color:var(--muted)}
+.saved-item button{margin-top:7px}
+.notes-label{font:10px "DM Mono",monospace;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;display:block;margin:22px 0 8px}
+#fieldNotes{width:100%;min-height:130px;resize:vertical;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px;color:var(--text)}
+.note-help{font-size:11px;color:var(--subtle);margin-top:7px}
+.empty-state{text-align:center;padding:35px 20px;border:1px dashed var(--line);border-radius:14px;color:var(--muted);font-size:13px}
+body.light-mode{color-scheme:light;--bg:#f1f3ec;--bg2:#e8ede5;--surface:#fff;--surface2:#eef2e9;--surface3:#e0e9d6;--line:#d5dfd3;--line2:#b5c5b6;--text:#172019;--muted:#526255;--subtle:#788679;--shadow:0 20px 55px rgba(35,55,36,.12)}
+body.light-mode{background:radial-gradient(ellipse at 82% -18%,rgba(110,147,42,.10),transparent 40%),var(--bg)}
+body.light-mode .topbar{background:rgba(241,243,236,.9)}
+body.light-mode .hero-side,body.light-mode .card,body.light-mode .operation-card{background:linear-gradient(155deg,rgba(255,255,255,.98),rgba(244,247,239,.98))}
+body.light-mode .signal-card{background:#d8f36a}
+body.light-mode .metric{background:rgba(255,255,255,.4)}
+body.light-mode .operation-card::after{color:rgba(25,38,25,.05)}
+@media(max-width:1100px){.brand{min-width:auto}.brand small{display:none}.topbar{gap:12px}.top-nav{gap:0}.nav-link{padding:8px}.top-actions .label{display:none}.shell{padding-left:24px;padding-right:24px}.topbar{margin-left:-24px;margin-right:-24px;padding-left:24px;padding-right:24px}.hero{gap:22px}.sources-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:800px){.topbar{height:66px;gap:8px}.brand strong{font-size:12px}.brand-mark{height:33px;width:33px}.top-nav{position:absolute;top:65px;left:0;right:0;padding:8px 20px;background:rgba(11,16,15,.94);border-bottom:1px solid var(--line)}body.light-mode .top-nav{background:rgba(241,243,236,.96)}.nav-link{padding:8px 10px;font-size:10px}.top-actions{margin-left:auto}.hero{grid-template-columns:1fr;padding-top:38px}.hero-side{min-height:280px}.schematic{height:150px}.metrics{grid-template-columns:repeat(2,1fr)}.metric:nth-child(2){border-right:0}.metric:nth-child(-n+2){border-bottom:1px solid var(--line)}.section{padding-top:48px}.section-head{align-items:start;flex-direction:column;gap:12px}.section-head p{max-width:none}.timeline-layout{grid-template-columns:1fr}.timeline-aside{position:static;display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.aside-stat{border-bottom:0;border-right:1px solid var(--line);padding:12px}.quick-layout{grid-template-columns:1fr}.sector-grid{grid-template-columns:1fr}.sector-selector{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}.sector-btn{padding:11px}.theatre-banner{grid-template-columns:1fr}.dual-columns{grid-template-columns:1fr}.ops-grid{grid-template-columns:1fr}.grid-3{grid-template-columns:repeat(2,minmax(0,1fr))}.search-wrap{min-width:0;width:100%}.hero-desc{font-size:15px}}
+@media(max-width:520px){.shell{padding-left:15px;padding-right:15px}.topbar{margin-left:-15px;margin-right:-15px;padding-left:15px;padding-right:15px}.brand{gap:7px}.brand strong{font-size:10px;letter-spacing:.04em}.top-actions{gap:5px}.icon-btn{width:35px;min-height:35px}.top-actions #exportBtn{display:none}.hero h1{font-size:58px}.hero{padding-top:30px}.hero-side{padding:16px;min-height:240px}.metrics{border-radius:13px}.metric{padding:14px}.metric strong{font-size:28px}.metric span{font-size:9px;line-height:1.5}.section-head h2{font-size:33px}.card{padding:17px}.fact-list{grid-template-columns:1fr 1fr}.timeline-aside{grid-template-columns:1fr 1fr}.aside-stat strong{font-size:21px}.event{grid-template-columns:1fr;gap:11px;padding:15px}.event-date{border-right:0;border-bottom:1px solid var(--line);padding:0 0 8px;display:flex;align-items:center;gap:12px}.event-date span{margin-top:0}.sector-selector{grid-template-columns:1fr 1fr}.peak-list li{grid-template-columns:1fr;gap:4px}.grid-3,.grid-2{grid-template-columns:1fr}.sources-grid{grid-template-columns:1fr}.source-card{min-height:0}.reform-row{grid-template-columns:1fr;gap:4px}.footer{flex-direction:column}.section{padding-top:40px}.search-wrap kbd{display:none}.hero-ctas .primary-btn,.hero-ctas .outline-btn{width:100%}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}
+@media print{body,body.light-mode{background:white;color:#111;--bg:white;--bg2:white;--surface:white;--surface2:#f2f2f2;--surface3:#eee;--line:#ccc;--line2:#aaa;--text:#111;--muted:#444;--subtle:#666;--lime:#486b12;--gold:#755500}.topbar,.hero-ctas,.top-actions,.top-nav,.filter-row,.search-wrap,.people-toolbar,.bookmark-btn,.footer .no-print,.overlay,.drawer,.toast,.icon-btn,.primary-btn,.outline-btn{display:none!important}.shell{width:100%;padding:0}.hero{padding:25px 0;min-height:0}.hero h1{font-size:46px}.hero-side{min-height:0}.section{padding-top:25px;break-inside:avoid}.card,.event,.source-card,.operation-card,.leader-card,.hero-card{break-inside:avoid;box-shadow:none}.metrics{break-inside:avoid}.grid-3,.sources-grid{grid-template-columns:repeat(2,1fr)}a{color:#111;text-decoration:underline}.section-head h2{font-size:26px}}
 </style>
 </head>
 <body>
-<div class="contour-bg"></div>
-
-<div class="wrap">
-
-  <!-- HERO -->
-  <div class="hero">
-    <div class="hero-eyebrow">Ladakh · Line of Control · Jammu &amp; Kashmir</div>
-    <div class="hero-title-row">
-      <h1>KARGIL <em>WAR</em></h1>
-      <svg class="hero-flag" viewBox="0 0 60 70" aria-hidden="true">
-        <line x1="4" y1="4" x2="4" y2="66" stroke="#9a9478" stroke-width="2"/>
-        <path class="flagwave-big" d="M4,6 L54,12 L44,22 L54,32 L4,26 Z" />
-      </svg>
+<div class="top-progress" id="readingProgress"></div>
+<div class="shell">
+  <header class="topbar">
+    <a class="brand" href="#overview" aria-label="Indian Wars Field Archive home">
+      <span class="brand-mark">IW<span style="color:var(--orange)">.</span></span>
+      <span><strong>Indian Wars</strong><small>FIELD ARCHIVE / 01</small></span>
+    </a>
+    <nav class="top-nav" aria-label="Primary navigation">
+      <button class="nav-link active" data-jump="overview">Overview</button>
+      <button class="nav-link" data-jump="timeline">Timeline</button>
+      <button class="nav-link" data-jump="theatre">Theatre</button>
+      <button class="nav-link" data-jump="operations">Operations</button>
+      <button class="nav-link" data-jump="people">People</button>
+      <button class="nav-link" data-jump="intelligence">Analysis</button>
+      <button class="nav-link" data-jump="sources">Sources</button>
+    </nav>
+    <div class="top-actions">
+      <button class="icon-btn" id="savedOpen" title="Open saved field notes" aria-label="Open saved field notes">▤</button>
+      <button class="icon-btn" id="themeToggle" title="Toggle light and dark theme" aria-label="Toggle theme">◐</button>
+      <button class="quiet-btn" id="exportBtn"><span>↓</span><span class="label">Export</span></button>
     </div>
-    <div class="hero-sub">
-      <span><b>3 May</b> – <b>26 July 1999</b></span>
-      <span>84 days</span>
-      <span>India vs. Pakistan</span>
-      <span>Operation Vijay · Operation Safed Sagar · Operation Talwar</span>
-      <span>Result: <b style="color:var(--india)">Indian victory</b> — LoC restored</span>
-    </div>
+  </header>
 
-    <div class="stat-strip">
-      <div class="stat"><div class="num">84</div><div class="lbl">Days of conflict</div></div>
-      <div class="stat"><div class="num">527</div><div class="lbl">Indian soldiers killed</div></div>
-      <div class="stat"><div class="num">1,363</div><div class="lbl">Indian wounded</div></div>
-      <div class="stat"><div class="num">~5,000<span>ft</span></div><div class="lbl">Combat altitude range (16–18k ft)</div></div>
-      <div class="stat"><div class="num">30,000</div><div class="lbl">Indian troops engaged</div></div>
-    </div>
-  </div>
-
-  <!-- TABS -->
-  <div class="tabbar">
-    <div class="tabbar-inner" id="tabbarInner">
-      <button class="tab-btn active" data-tab="overview">Overview</button>
-      <button class="tab-btn" data-tab="causes">Causes</button>
-      <button class="tab-btn" data-tab="timeline">Day-by-Day Timeline</button>
-      <button class="tab-btn" data-tab="locations">War Zones</button>
-      <button class="tab-btn" data-tab="operations">Operations</button>
-      <button class="tab-btn" data-tab="leaders">Leaders &amp; Command</button>
-      <button class="tab-btn" data-tab="heroes">Heroes &amp; Gallantry</button>
-      <button class="tab-btn" data-tab="casualties">Casualties &amp; Honours</button>
-      <button class="tab-btn" data-tab="aftermath">Diplomacy &amp; Aftermath</button>
-      <button class="tab-btn" data-tab="analysis">Strategic Analysis</button>
-    </div>
-  </div>
-
-  <!-- ================= OVERVIEW ================= -->
-  <div class="section active" id="tab-overview">
-    <div class="section-head">
-      <div class="tag">01 — Overview</div>
-      <h2>A war fought above the clouds</h2>
-      <p>Fought between May and July 1999 in the Kargil district of Ladakh, then part of Jammu &amp; Kashmir, the Kargil War is one of only two conventional wars ever fought between two nuclear-armed states. Pakistani troops and paramilitary forces, disguised as Kashmiri militants, covertly occupied over 130 vacated Indian high-altitude posts along the Line of Control during the winter of 1998–99. India's response — Operation Vijay on land and Operation Safed Sagar in the air — recaptured every position within 84 days.</p>
-    </div>
-
-    <div class="grid-2">
-      <div class="panel">
-        <h3 class="h">The strategic problem</h3>
-        <p class="body-text">Kargil sits along National Highway 1 (NH-1A), the only land route connecting Srinagar to Leh and the Siachen Glacier. The ridgelines above the highway rise to 5,000–5,485 m (16,000–18,000 ft). Whoever held those ridges could see — and shell — every vehicle on the road below. Pakistani infiltrators occupied more than 130 observation posts across roughly 130–200 km² of Indian-administered territory, aiming to sever Kashmir from Ladakh and force India to negotiate over Siachen and the wider Kashmir dispute.</p>
-        <p class="body-text" style="margin-top:12px;">Because the terrain ruled out large armoured or corps-level manoeuvres, almost all the fighting was done at battalion and brigade level — infantry climbing near-vertical rock faces at night, often into direct machine-gun and mortar fire from above, at altitudes where the air itself has roughly half the oxygen of sea level.</p>
+  <main>
+    <section class="hero" id="overview">
+      <div>
+        <div class="eyebrow"><span class="live-dot"></span> Historical dossier · 1999 · Ladakh theatre</div>
+        <h1>KARGIL<span class="accent">WAR / 99</span></h1>
+        <p class="hero-desc">A source-led, interactive field archive of the 1999 Kargil conflict: <strong>the campaign, the terrain, the people, and the decisions</strong> that shaped its outcome. Built for exploration—not just a chronology.</p>
+        <div class="hero-ctas">
+          <button class="primary-btn" data-jump="timeline">Explore the timeline <span>↗</span></button>
+          <button class="outline-btn" data-jump="sources">Open primary-source archive <span>↗</span></button>
+          <button class="outline-btn" id="printBtn">Print / save PDF <span>↗</span></button>
+        </div>
       </div>
-      <div class="panel">
-        <h3 class="h">Snapshot</h3>
-        <ul style="list-style:none;">
-          <li class="body-text" style="padding:8px 0; border-bottom:1px solid var(--line);"><b class="mono" style="color:var(--amber)">Belligerents:</b> India vs. Pakistan (Northern Light Infantry, Special Services Group, allied militants)</li>
-          <li class="body-text" style="padding:8px 0; border-bottom:1px solid var(--line);"><b class="mono" style="color:var(--amber)">Indian codename:</b> Operation Vijay (ground) / Operation Safed Sagar (air) / Operation Talwar (navy)</li>
-          <li class="body-text" style="padding:8px 0; border-bottom:1px solid var(--line);"><b class="mono" style="color:var(--amber)">Pakistani codename:</b> Operation Badr (infiltration)</li>
-          <li class="body-text" style="padding:8px 0; border-bottom:1px solid var(--line);"><b class="mono" style="color:var(--amber)">Sectors:</b> Mushkoh Valley, Dras, Kaksar, Batalik, Chorbat La, Turtuk</li>
-          <li class="body-text" style="padding:8px 0;"><b class="mono" style="color:var(--amber)">Result:</b> Indian recapture of all posts; Pakistani withdrawal under diplomatic pressure</li>
-        </ul>
-      </div>
+      <aside class="hero-side" aria-label="Theatre schematic">
+        <div class="side-head"><span class="pill">THEATRE / NORTHERN FRONTIER</span><span class="status">● ARCHIVE ONLINE</span></div>
+        <svg class="schematic" viewBox="0 0 520 240" role="img" aria-label="Abstract ridgeline schematic representing the high-altitude Kargil theatre, not a geographic map">
+          <defs><linearGradient id="ridge" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#d8f36a" stop-opacity=".24"/><stop offset="1" stop-color="#d8f36a" stop-opacity="0"/></linearGradient></defs>
+          <g fill="none" stroke="#4b6556" stroke-width="1" opacity=".65">
+            <path d="M-10 183 C30 150 42 160 78 126 S132 153 164 108 S216 143 257 83 S305 126 344 76 S390 107 430 62 S478 90 540 42"/>
+            <path d="M-10 201 C31 168 47 179 83 145 S136 172 168 127 S221 161 261 102 S309 145 349 95 S393 126 434 81 S480 109 540 62"/>
+            <path d="M-10 218 C33 185 50 197 87 163 S140 190 172 145 S226 180 265 120 S313 163 354 113 S398 144 438 99 S483 127 540 82"/>
+            <path d="M-10 165 C26 133 40 144 74 111 S129 137 159 93 S213 127 252 67 S301 110 341 60 S386 91 426 47 S474 75 540 27"/>
+          </g>
+          <path d="M-10 190 C30 156 42 166 78 132 S132 159 164 114 S216 149 257 89 S305 132 344 82 S390 113 430 68 S478 96 540 48 L540 240 L-10 240Z" fill="url(#ridge)"/>
+          <path d="M20 38 L500 208 M16 85 L477 25 M73 10 L388 230" stroke="#31453a" stroke-dasharray="3 7" fill="none"/>
+          <g fill="#d8f36a"><circle cx="166" cy="115" r="4"/><circle cx="258" cy="90" r="4"/><circle cx="346" cy="82" r="4"/><circle cx="431" cy="69" r="4"/></g>
+          <g stroke="#d8f36a" stroke-width="1" opacity=".7"><circle cx="166" cy="115" r="10" fill="none"/><circle cx="258" cy="90" r="10" fill="none"/><circle cx="346" cy="82" r="10" fill="none"/><circle cx="431" cy="69" r="10" fill="none"/></g>
+          <g fill="#e9eee7" font-family="DM Mono, monospace" font-size="10"><text x="126" y="98">DRAS</text><text x="227" y="70">TOL﻿OLING</text><text x="309" y="62">TIGER HILL</text><text x="397" y="48">BATALIK</text></g>
+          <text x="18" y="222" fill="#7f9686" font-family="DM Mono, monospace" font-size="9" letter-spacing="2">RIDGELINE SCHEMATIC · NOT TO SCALE</text>
+        </svg>
+        <div class="side-foot"><div><b>Operation Vijay</b><small>GROUND CAMPAIGN · MAY—JULY 1999</small></div><div class="side-coord">34°N / 76°E<br>HIGH ALTITUDE<br>LO C RESTORED</div></div>
+      </aside>
+    </section>
+
+    <div class="metrics" aria-label="Campaign summary">
+      <div class="metric"><strong>84<em> days*</em></strong><span>3 May — 26 July 1999</span></div>
+      <div class="metric"><strong>527</strong><span>Long-cited Indian fatalities†</span></div>
+      <div class="metric"><strong>4</strong><span>Param Vir Chakra recipients</span></div>
+      <div class="metric"><strong>3</strong><span>Army · Air Force · Navy operations</span></div>
     </div>
 
-    <div class="divider"></div>
-
-    <div class="grid-3">
-      <div class="panel">
-        <h3 class="h" style="font-size:17px;">Terrain &amp; conditions</h3>
-        <p class="dim" style="font-size:14.5px;">Peaks up to 5,485 m; night temperatures well below freezing even in summer; attackers faced an estimated 6:1 disadvantage climbing into fortified positions versus the usual 3:1 ratio in flat terrain.</p>
+    <section class="section" id="overview-brief">
+      <div class="section-head"><div><div class="kicker">01 / Briefing room</div><h2>More than a battle summary.</h2></div><p>Start with the core facts, then follow the evidence into each layer of the campaign.</p></div>
+      <div class="quick-layout">
+        <article class="card">
+          <div class="card-top"><span class="tag">Campaign overview</span><span class="smallcaps">01—04</span></div>
+          <h3>Terrain changed the rules.</h3>
+          <p>The conflict unfolded along high ridgelines in the Kargil–Dras–Batalik region. Positions overlooking the Srinagar–Leh road created a direct threat to a critical line of communication. Indian forces mounted a sustained campaign to retake occupied heights while keeping the conflict on India's side of the Line of Control.</p>
+          <div class="fact-list">
+            <div class="fact"><span>Ground campaign</span><strong>Operation Vijay</strong></div>
+            <div class="fact"><span>Air campaign</span><strong>Operation Safed Sagar</strong></div>
+            <div class="fact"><span>Naval posture</span><strong>Operation Talwar</strong></div>
+            <div class="fact"><span>End date</span><strong>26 July 1999</strong></div>
+          </div>
+        </article>
+        <aside class="signal-card">
+          <div class="smallcaps">Analyst's note / read critically</div>
+          <h3>Facts need provenance.</h3>
+          <p>Published official summaries do not always use the same scope or counting method. This archive keeps the underlying record visible, links out to source documents, and flags disagreements instead of quietly flattening them into one number.</p>
+          <a href="#sources">Review sources &amp; caveats →</a>
+        </aside>
       </div>
-      <div class="panel">
-        <h3 class="h" style="font-size:17px;">Media war</h3>
-        <p class="dim" style="font-size:14.5px;">Kargil was South Asia's first "live television war." Indian channels broadcast battle footage nightly; the Battle of Tiger Hill was the first battle ever telecast live in India.</p>
+    </section>
+
+    <section class="section" id="timeline">
+      <div class="section-head"><div><div class="kicker">02 / Chronology</div><h2>Follow the campaign.</h2></div><div class="head-count" id="timelineCount">Loading events…</div></div>
+      <div class="search-wrap" style="max-width:620px">
+        <span class="search-icon">⌕</span><input id="timelineSearch" class="search-input" placeholder="Filter events by place, operation, person…" autocomplete="off"><kbd>↵</kbd>
       </div>
-      <div class="panel">
-        <h3 class="h" style="font-size:17px;">Nuclear shadow</h3>
-        <p class="dim" style="font-size:14.5px;">Fought barely a year after both nations' 1998 nuclear tests, raising international fears of escalation and prompting direct U.S. intervention to end the fighting.</p>
+      <div class="filter-row" id="phaseFilters" aria-label="Filter timeline by phase">
+        <button class="filter-btn active" data-phase="all">All phases</button><button class="filter-btn" data-phase="infiltration">Infiltration</button><button class="filter-btn" data-phase="detection">Detection</button><button class="filter-btn" data-phase="mobilization">Mobilization</button><button class="filter-btn" data-phase="battles">Key battles</button><button class="filter-btn" data-phase="endgame">Endgame</button>
       </div>
-    </div>
-  </div>
-
-  <!-- ================= CAUSES ================= -->
-  <div class="section" id="tab-causes">
-    <div class="section-head">
-      <div class="tag">02 — Root Causes</div>
-      <h2>Why the war happened</h2>
-      <p>The Kargil conflict grew out of decades of unresolved dispute over Kashmir, layered with a specific, covert military plan hatched in the winter of 1998–99. Click each item to expand.</p>
-    </div>
-
-    <div id="causesAccordion">
-      <div class="cause-item open">
-        <div class="cause-q"><span class="num">01</span><h4>Partition and the unresolved Kashmir dispute</h4><span class="chev">+</span></div>
-        <div class="cause-a"><div class="cause-a-inner">Before 1947, Kargil was a tehsil of Ladakh. The Indo-Pakistani War of 1947–48 split the region along the Line of Control, with the Skardu tehsil going to Pakistan (now Gilgit-Baltistan). After Pakistan's defeat in the 1971 war, both countries signed the 1972 Simla Agreement, promising never to alter the LoC by force. Kashmir's status, however, remained bitterly contested — the underlying grievance both nations returned to for decades.</div></div>
+      <div class="timeline-layout">
+        <div class="timeline-list" id="timelineList"><div class="empty-state">Loading verified chronology from the archive…</div></div>
+        <aside class="timeline-aside card">
+          <div class="smallcaps">Timeline navigator</div>
+          <div class="aside-stat"><strong id="eventTotal">—</strong><span>Chronology entries</span></div>
+          <div class="aside-stat"><strong>May → July</strong><span>Main fighting period · 1999</span></div>
+          <div class="aside-stat"><strong>26 JUL</strong><span>Official end date</span></div>
+          <p style="font-size:11px;color:var(--muted);margin-top:17px">Use phase filters and the event search to isolate turning points. Save important entries to your field notes for later.</p>
+        </aside>
       </div>
-      <div class="cause-item">
-        <div class="cause-q"><span class="num">02</span><h4>The 1998 nuclear tests and a new, riskier calculus</h4><span class="chev">+</span></div>
-        <div class="cause-a"><div class="cause-a-inner">India conducted Pokhran-II in May 1998; Pakistan responded with its own Chagai-I tests two weeks later. Some analysts believe Pakistan's military leadership felt emboldened by its new nuclear deterrent, calculating that India would be less willing to escalate a limited conflict into full-scale war once both sides possessed nuclear weapons.</div></div>
+    </section>
+
+    <section class="section" id="theatre">
+      <div class="section-head"><div><div class="kicker">03 / Terrain &amp; logistics</div><h2>Explore the theatre.</h2></div><p>Sector selector, named heights, and the road network that made the ridgelines strategically important.</p></div>
+      <div class="theatre-banner">
+        <div class="card"><div class="smallcaps">Terrain effect</div><h3 style="margin-top:8px">The high ground was the battlefield.</h3><p>Steep slopes, thin air, cold, exposed approaches, and long resupply routes shaped both the tactical problem and the pace of the campaign.</p></div>
+        <svg class="theatre-graphic" viewBox="0 0 600 155" role="img" aria-label="Illustrative elevation profile of a mountain ridgeline, not a geographic map">
+          <defs><linearGradient id="ridgeFill" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#d8f36a" stop-opacity=".25"/><stop offset="1" stop-color="#d8f36a" stop-opacity="0"/></linearGradient></defs>
+          <path d="M0 132 L65 112 L98 83 L134 101 L183 50 L220 76 L269 22 L309 65 L360 40 L405 79 L460 53 L500 92 L547 70 L600 112 L600 155 L0 155Z" fill="url(#ridgeFill)"/>
+          <path d="M0 132 L65 112 L98 83 L134 101 L183 50 L220 76 L269 22 L309 65 L360 40 L405 79 L460 53 L500 92 L547 70 L600 112" stroke="#d8f36a" stroke-width="2" fill="none"/>
+          <g stroke="#3b5145" stroke-width="1" stroke-dasharray="3 5"><line x1="0" y1="45" x2="600" y2="45"/><line x1="0" y1="85" x2="600" y2="85"/><line x1="0" y1="125" x2="600" y2="125"/></g>
+          <g fill="#e9eee7" font-family="DM Mono,monospace" font-size="10"><text x="16" y="22">ELEVATION PROFILE / CONCEPTUAL</text><text x="260" y="15" fill="#d8f36a">DOMINANT HEIGHTS</text></g>
+        </svg>
       </div>
-      <div class="cause-item">
-        <div class="cause-q"><span class="num">03</span><h4>The Lahore Declaration — a peace process undercut from within</h4><span class="chev">+</span></div>
-        <div class="cause-a"><div class="cause-a-inner">In February 1999, Prime Ministers Vajpayee and Nawaz Sharif signed the Lahore Declaration, committing both nations to a peaceful, bilateral resolution of Kashmir. Planning for the Kargil infiltration was already underway inside the Pakistan Army at this point — meaning the intrusion began just weeks after the two governments had publicly pledged de-escalation.</div></div>
+      <div class="sector-grid">
+        <div class="sector-selector" id="sectorSelector"></div>
+        <div class="card sector-detail" id="sectorDetail"></div>
       </div>
-      <div class="cause-item">
-        <div class="cause-q"><span class="num">04</span><h4>Operation Badr — the infiltration plan</h4><span class="chev">+</span></div>
-        <div class="cause-a"><div class="cause-a-inner">During winter 1998–99, elements of the Pakistan Army — Special Services Group commandos and four to seven battalions of the Northern Light Infantry, some reportedly disguised as mujahideen — covertly crossed the LoC and occupied more than 130 Indian posts that were lightly held or vacated for winter. The operation, codenamed Badr, aimed to: sever the road link between Kashmir and Ladakh; force India to withdraw from the Siachen Glacier by threatening its supply lines; and internationalise the Kashmir dispute by provoking a crisis. Retired Pakistani Lt. Gen. Shahid Aziz later confirmed that only regular Pakistan Army soldiers took part — "there were no Mujahideen."</div></div>
+      <article class="card" style="margin-top:16px">
+        <div class="card-top"><div><div class="smallcaps">Lines of communication</div><h3 style="margin-top:6px">Roads, passes &amp; access routes</h3></div><span class="tag blue">Logistics</span></div>
+        <div id="highwaysList"></div>
+      </article>
+    </section>
+
+    <section class="section" id="operations">
+      <div class="section-head"><div><div class="kicker">04 / Three services</div><h2>Operations, connected.</h2></div><p>Read the campaign through its ground, air, and naval dimensions—not as separate stories.</p></div>
+      <div class="ops-grid" id="opsGrid"></div>
+    </section>
+
+    <section class="section" id="people">
+      <div class="section-head"><div><div class="kicker">05 / Command &amp; gallantry</div><h2>People behind the record.</h2></div><p>Command decisions and individual actions both shaped the campaign. Open a profile to read its details.</p></div>
+      <div class="people-toolbar">
+        <div class="segmented" id="sideSwitch" role="group" aria-label="Select leadership profiles"><button class="active" data-side="india">Indian leadership</button><button data-side="pak">Pakistani leadership</button></div>
+        <span class="smallcaps" id="leaderCount"></span>
       </div>
-      <div class="cause-item">
-        <div class="cause-q"><span class="num">05</span><h4>Retaliation for Siachen (Operation Meghdoot, 1984)</h4><span class="chev">+</span></div>
-        <div class="cause-a"><div class="cause-a-inner">Some historians view Kargil partly as delayed retaliation for India's 1984 Operation Meghdoot, in which Indian troops seized the high ground of the Siachen Glacier before Pakistan could. Kargil-style infiltration plans had reportedly been proposed to Pakistani leaders Zia-ul-Haq and Benazir Bhutto in earlier decades but were shelved for fear of triggering full-scale war.</div></div>
+      <div class="grid grid-3" id="leadersGrid"></div>
+      <div style="display:flex;justify-content:space-between;gap:15px;align-items:end;margin:38px 0 16px"><div><div class="kicker">Gallantry record</div><h3 style="font:600 25px 'Space Grotesk';letter-spacing:-.04em;margin:6px 0 0">Courage at the ridgelines</h3></div><span class="tag gold">Open each profile</span></div>
+      <div class="grid grid-3" id="heroesGrid"></div>
+    </section>
+
+    <section class="section" id="intelligence">
+      <div class="section-head"><div><div class="kicker">06 / Lessons &amp; aftermath</div><h2>What changed after Kargil?</h2></div><p>Institutional response, analytical frameworks, and the strategic context around surprise and escalation.</p></div>
+      <div class="dual-columns">
+        <article class="card"><div class="card-top"><div><div class="smallcaps">After-action record</div><h3 style="margin-top:7px">Institutional reforms</h3></div><span class="tag">Policy</span></div><div id="reformsList"></div></article>
+        <article class="card"><div class="card-top"><div><div class="smallcaps">Review findings</div><h3 style="margin-top:7px">Vulnerability framework</h3></div><span class="tag orange">Analysis</span></div><div id="vulnList"></div><div style="border-top:1px solid var(--line);padding-top:16px;margin-top:10px"><div class="smallcaps">Interpretive note</div><p style="margin-top:8px">The points below summarise a framework used in the existing dossier; they are analytical interpretations, not direct quotations from a single official report. Consult the Kargil Review Committee material in the source library for the underlying record.</p></div></article>
       </div>
-      <div class="cause-item">
-        <div class="cause-q"><span class="num">06</span><h4>Favourable terrain and a narrow window</h4><span class="chev">+</span></div>
-        <div class="cause-a"><div class="cause-a-inner">The Kargil ridgelines were seasonally unoccupied by both armies each winter due to extreme cold, and Kargil itself is only 173 km from the Pakistani town of Skardu, which could supply artillery and logistics support. This made pre-emptive seizure of the empty high ground tactically attractive, exploiting a terrain where — under mountain-warfare doctrine — a defender enjoys an advantage similar to holding a fortress.</div></div>
-      </div>
-      <div class="cause-item">
-        <div class="cause-q"><span class="num">07</span><h4>A narrow circle of planners</h4><span class="chev">+</span></div>
-        <div class="cause-a"><div class="cause-a-inner">Analysts and several Pakistani officers have said the plan was known to only a handful of generals — reportedly Pervez Musharraf (appointed COAS in October 1998) and three or four close collaborators. Nawaz Sharif later claimed he learned of the operation only when Vajpayee called him directly; Musharraf countered that Sharif had been briefed weeks before the Lahore summit. This dispute over who authorised the war became one of its most contentious legacies.</div></div>
-      </div>
-    </div>
-  </div>
+      <article class="card" style="margin-top:16px"><div class="card-top"><div><div class="smallcaps">Comparative history</div><h3 style="margin-top:7px">The “Badr” pattern</h3></div><span class="tag blue">Cross-case lens</span></div><p style="margin-bottom:15px">Shared operation names do not prove a common doctrine. Compare the historical contexts, objectives, and outcomes rather than assuming the cases are equivalent.</p><div id="analysisList"></div></article>
+    </section>
 
-  <!-- ================= TIMELINE ================= -->
-  <div class="section" id="tab-timeline">
-    <div class="section-head">
-      <div class="tag">03 — Chronology</div>
-      <h2>Day-by-day progress of the war</h2>
-      <p>From the first infiltration reports to the final ceasefire — filter by phase to trace how the conflict escalated, was detected, and was ultimately reversed.</p>
-    </div>
+    <section class="section" id="sources">
+      <div class="section-head"><div><div class="kicker">07 / Evidence desk</div><h2>Sources, not just summaries.</h2></div><p>Primary and official references first, followed by context from institutions that preserve the diplomatic record.</p></div>
+      <div class="caveat"><div class="warn">!</div><div><h3>Casualty figures vary by source and scope.</h3><p>This dossier retains the long-cited figure of 527 Indian fatalities in the Kargil War. The National War Memorial's Operation Vijay page reports 674 Indian soldiers lost during the operation. Those figures should not be silently treated as identical: check each source's scope and wording before quoting a number.</p></div></div>
+      <div class="caveat"><div class="warn">↗</div><div><h3>Sortie counts are category-dependent.</h3><p>Government summaries use categories such as strike, reconnaissance/electronic intelligence, escort, helicopter, air transport, and casualty evacuation. These category totals are not necessarily comparable with an all-missions sortie count from a different account.</p></div></div>
+      <div class="sources-grid" id="sourceGrid"></div>
+      <div class="card" style="margin-top:16px"><div class="card-top"><div><div class="smallcaps">Method / provenance</div><h3 style="margin-top:6px">How to read this archive</h3></div><span class="tag gold">Read critically</span></div><p>Source cards identify the publishing institution and explain what each reference is best used for. The dossier combines structured historical summaries with selected official material. Interpretive claims, disputed details, and differing totals should be checked against the linked original sources. This is an educational research tool, not an official government publication.</p></div>
+    </section>
+  </main>
 
-    <div class="tl-filters" id="tlFilters">
-      <button class="tl-filter active" data-phase="all">All Events</button>
-      <button class="tl-filter" data-phase="infiltration">Infiltration</button>
-      <button class="tl-filter" data-phase="detection">Detection</button>
-      <button class="tl-filter" data-phase="mobilization">Mobilization</button>
-      <button class="tl-filter" data-phase="battles">Key Battles</button>
-      <button class="tl-filter" data-phase="endgame">Endgame &amp; Ceasefire</button>
-    </div>
-
-    <div class="timeline" id="timelineList"></div>
-  </div>
-
-  <!-- ================= LOCATIONS ================= -->
-  <div class="section" id="tab-locations">
-    <div class="section-head">
-      <div class="tag">04 — Geography</div>
-      <h2>Every war zone along the Line of Control</h2>
-      <p>Fighting stretched across the full 168 km Kargil sector frontage — from Kaobal Gali in the west to Chorbat La in the east — plus intrusions further east near Turtuk, across six identifiable sectors.</p>
-    </div>
-
-    <div class="svg-scene" id="mountainScene">
-      <svg viewBox="0 0 900 160" preserveAspectRatio="none" class="mountain-svg">
-        <polygon points="0,160 0,90 90,40 160,100 230,30 310,110 400,55 480,120 560,45 650,105 730,60 820,115 900,70 900,160" fill="#1b1f16"/>
-        <polygon points="0,160 0,115 100,70 190,120 270,65 350,125 430,85 520,135 600,75 690,130 780,90 900,140 900,160" fill="#262b1e"/>
-        <g class="cloud c1"><ellipse cx="120" cy="45" rx="38" ry="10"/><ellipse cx="150" cy="40" rx="26" ry="8"/></g>
-        <g class="cloud c2"><ellipse cx="520" cy="30" rx="46" ry="11"/><ellipse cx="560" cy="26" rx="28" ry="8"/></g>
-        <g class="cloud c3"><ellipse cx="760" cy="55" rx="34" ry="9"/></g>
-        <g class="climber" transform="translate(150,60)">
-          <line x1="0" y1="-40" x2="0" y2="40" stroke="#b5402d" stroke-width="1" stroke-dasharray="2 2" opacity="0.5"/>
-          <circle cx="0" cy="-6" r="3" fill="#e9e4d0"/>
-          <path d="M0,-3 L0,8 M0,0 L-6,-2 M0,0 L6,4 M0,8 L-4,18 M0,8 L4,17" stroke="#e9e4d0" stroke-width="2" fill="none" stroke-linecap="round"/>
-        </g>
-        <g class="flagpole" transform="translate(650,52)">
-          <line x1="0" y1="0" x2="0" y2="-26" stroke="#9a9478" stroke-width="1.5"/>
-          <path class="flagwave" d="M0,-26 L16,-24 L12,-19 L16,-14 L0,-12 Z" fill="#b5402d"/>
-        </g>
-      </svg>
-    </div>
-
-    <div class="mapstrip" id="sectorMapStrip"></div>
-    <div class="sector-tabs" id="sectorTabs"></div>
-    <div id="sectorPanels"></div>
-
-    <div class="divider"></div>
-
-    <h3 class="h" style="margin-bottom:14px;">Highways &amp; access routes</h3>
-    <div id="highwaysList"></div>
-  </div>
-
-  <!-- ================= OPERATIONS ================= -->
-  <div class="section" id="tab-operations">
-    <div class="section-head">
-      <div class="tag">05 — Codenamed Operations</div>
-      <h2>The operations that defined the war</h2>
-      <p>Four major codenamed operations spanned land, air, sea, and the original infiltration itself.</p>
-    </div>
-    <div id="opsList"></div>
-  </div>
-
-  <!-- ================= LEADERS ================= -->
-  <div class="section" id="tab-leaders">
-    <div class="section-head">
-      <div class="tag">06 — Command Structure</div>
-      <h2>Leaders on both sides</h2>
-      <p>Political leadership set the rules of engagement — most critically, India's decision not to cross the LoC even by air. Field command was fought at brigade and battalion level by officers named below.</p>
-    </div>
-    <div class="grid-2">
-      <div class="panel">
-        <div class="side-head"><span class="flag-dot india"></span> India</div>
-        <div id="indiaLeaders"></div>
-      </div>
-      <div class="panel">
-        <div class="side-head"><span class="flag-dot pak"></span> Pakistan</div>
-        <div id="pakLeaders"></div>
-      </div>
-    </div>
-  </div>
-
-  <!-- ================= HEROES ================= -->
-  <div class="section" id="tab-heroes">
-    <div class="section-head">
-      <div class="tag">07 — Individual Valour</div>
-      <h2>Heroes &amp; gallantry — the citations in full</h2>
-      <p>Every peak recaptured in Kargil has a name attached to it. These are the detailed, sourced citations behind the war's most decorated soldiers on both sides.</p>
-    </div>
-    <div id="heroesList"></div>
-  </div>
-
-  <!-- ================= CASUALTIES ================= -->
-  <div class="section" id="tab-casualties">
-    <div class="section-head">
-      <div class="tag">08 — The Human Cost</div>
-      <h2>Casualties &amp; gallantry</h2>
-      <p>India's official figures are well-documented; Pakistani figures vary sharply depending on the source, reflecting the country's initial denial of its army's involvement.</p>
-    </div>
-
-    <div class="grid-2">
-      <div class="panel">
-        <h3 class="h">India — official figures</h3>
-        <p class="dim" style="font-size:14px; margin-bottom:10px;">Final government tally over 83 days of fighting: <b style="color:var(--paper)">22 officers</b>, <b style="color:var(--paper)">21 junior commissioned officers</b> and <b style="color:var(--paper)">452 soldiers</b> gave their lives securing the highest battlefields on Earth.</p>
-        <table class="data-table">
-          <tr><th>Category</th><th>Figure</th></tr>
-          <tr><td>Soldiers killed</td><td class="num-cell">527</td></tr>
-          <tr><td>Soldiers wounded</td><td class="num-cell">1,363</td></tr>
-          <tr><td>Prisoners of war</td><td class="num-cell">1 (Flt. Lt. Nachiketa, released)</td></tr>
-          <tr><td>Aircraft lost</td><td class="num-cell">1 MiG-27, 1 MiG-21, 1 Mi-17 helicopter</td></tr>
-          <tr><td>Troops deployed (combat zone)</td><td class="num-cell">~30,000</td></tr>
-        </table>
-      </div>
-      <div class="panel">
-        <h3 class="h">Pakistan — disputed estimates</h3>
-        <div class="bar-row"><div class="bar-label">Musharraf (2006)</div><div class="bar-track"><div class="bar-fill" style="width:9%"></div></div><div class="bar-val">357</div></div>
-        <div class="bar-row"><div class="bar-label">US State Dept. est.</div><div class="bar-track"><div class="bar-fill" style="width:17%"></div></div><div class="bar-val">~700</div></div>
-        <div class="bar-row"><div class="bar-label">India's estimate</div><div class="bar-track"><div class="bar-fill" style="width:26%"></div></div><div class="bar-val">1,042</div></div>
-        <div class="bar-row"><div class="bar-label">Musharraf (2013 claim)</div><div class="bar-track"><div class="bar-fill" style="width:40%"></div></div><div class="bar-val">1,600</div></div>
-        <div class="bar-row"><div class="bar-label">PML(N) white paper</div><div class="bar-track"><div class="bar-fill" style="width:75%"></div></div><div class="bar-val">~3,000</div></div>
-        <div class="bar-row"><div class="bar-label">Nawaz Sharif (public claim)</div><div class="bar-track"><div class="bar-fill" style="width:100%"></div></div><div class="bar-val">~4,000</div></div>
-        <p class="dim" style="font-size:13px; margin-top:10px;">Pakistan initially denied its regular army was involved at all, which is why its own leaders have given wildly different casualty figures in the years since. Eight Pakistani soldiers were captured and repatriated on 13 August 1999.</p>
-      </div>
-    </div>
-
-    <div class="divider"></div>
-
-    <h3 class="h" style="margin-bottom:6px;">Gallantry awards</h3>
-    <div class="medal-grid">
-      <div class="medal"><div class="n">4</div><div class="t">Param Vir Chakra (India)</div><div class="d">India's highest wartime gallantry award, incl. posthumously to Capt. Vikram Batra, Lt. Manoj Pandey, Grenadier Yogendra Singh Yadav, Rifleman Sanjay Kumar.</div></div>
-      <div class="medal"><div class="n">11</div><div class="t">Maha Vir Chakra (India)</div><div class="d">India's second-highest gallantry award, awarded for the recapture of Tololing, Tiger Hill, Point 4875, and other key features.</div></div>
-      <div class="medal"><div class="n">2</div><div class="t">Nishan-e-Haider (Pakistan)</div><div class="d">Pakistan's highest military honour, awarded posthumously to Capt. Karnal Sher Khan (Sind Regiment) and Hav. Lalak Jan (Northern Light Infantry).</div></div>
-      <div class="medal"><div class="n">~90</div><div class="t">Pakistani gallantry awards</div><div class="d">Most awarded posthumously — later cited by analysts as indirect confirmation of regular Pakistan Army involvement, despite official denials.</div></div>
-    </div>
-  </div>
-
-  <!-- ================= AFTERMATH ================= -->
-  <div class="section" id="tab-aftermath">
-    <div class="section-head">
-      <div class="tag">09 — Diplomacy, Fallout &amp; Legacy</div>
-      <h2>How the war ended — and what it changed</h2>
-    </div>
-
-    <div class="grid-2">
-      <div class="panel">
-        <h3 class="h">International pressure ended it</h3>
-        <p class="body-text">As Indian counter-attacks gained momentum, Nawaz Sharif flew to Washington on 4 July 1999 seeking U.S. support. President Clinton instead rebuked him, insisting on a full Pakistani withdrawal before any American involvement, and later wrote that Pakistan had "wrecked" the Lahore peace process by crossing the LoC. G8 nations condemned the intrusion at the Cologne summit; even China, Pakistan's ally, urged a pullback to pre-conflict positions. U.S. intelligence had also detected Pakistani movement of nuclear-capable missile systems toward the border, a major factor pushing Clinton to intervene directly.</p>
-      </div>
-      <div class="panel">
-        <h3 class="h">Political earthquake in Pakistan</h3>
-        <p class="body-text">The humiliation of Kargil deepened the rift between PM Nawaz Sharif and Army Chief Pervez Musharraf. On 12 October 1999 — less than three months after the ceasefire — Musharraf staged a bloodless coup, ousting Sharif and taking power himself. Benazir Bhutto called Kargil "Pakistan's greatest blunder"; retired Lt. Gen. Ali Kuli Khan called it "a disaster bigger than the East Pakistan tragedy." No public commission of inquiry was ever held in Pakistan.</p>
-      </div>
-    </div>
-
-    <div class="divider"></div>
-
-    <div class="grid-3">
-      <div class="panel">
-        <h3 class="h" style="font-size:17px;">India's response at home</h3>
-        <p class="dim" style="font-size:14.5px;">The Subrahmanyam Committee was set up to probe intelligence failures, leading to a major restructuring of Indian intelligence agencies. The Vajpayee government was re-elected months later with a strong majority. India began fencing the entire LoC.</p>
-      </div>
-      <div class="panel">
-        <h3 class="h" style="font-size:17px;">Kargil Vijay Diwas</h3>
-        <p class="dim" style="font-size:14.5px;">26 July is observed every year in India as Kargil Vijay Diwas ("Victory Day"), with ceremonies at the Kargil War Memorial in Dras, built at the foot of Tololing Hill.</p>
-      </div>
-      <div class="panel">
-        <h3 class="h" style="font-size:17px;">Northern Light Infantry</h3>
-        <p class="dim" style="font-size:14.5px;">In recognition of its combat performance — praised even by a retired Indian general — the NLI, previously a paramilitary regiment, was formally incorporated into Pakistan's regular army after the war.</p>
-      </div>
-    </div>
-
-    <div class="divider"></div>
-
-    <div class="panel">
-      <h3 class="h">Media, markets &amp; memory</h3>
-      <p class="body-text">Kargil was the first war in South Asia carried live on television, turning it into a defining moment for 24-hour news in India. The Bombay Stock Exchange rose more than 30% in the months following the victory, and the next Union Budget included a major increase in defence spending. The conflict also improved India's relations with both the United States — which appreciated India's restraint in not crossing the LoC — and Israel, which had quietly supplied ordnance, laser-guided bombs, UAVs and satellite imagery during the fighting.</p>
-    </div>
-
-    <div class="divider"></div>
-
-    <h3 class="h" style="margin-bottom:14px;">Institutional reforms triggered by the Kargil Review Committee</h3>
-    <div id="reformsList"></div>
-  </div>
-
-  <!-- ================= STRATEGIC ANALYSIS ================= -->
-  <div class="section" id="tab-analysis">
-    <div class="section-head">
-      <div class="tag">10 — Comparative Dossier</div>
-      <h2>Kargil in a wider pattern of strategic surprise</h2>
-      <p>Remarkably, three separate wars across three decades each featured an operation named "Badr" — a shared strategic logic of using limited military surprise to shatter a status quo. Placing Kargil alongside its predecessors reveals a recurring cycle.</p>
-    </div>
-
-    <div id="badrComparison"></div>
-
-    <div class="divider"></div>
-
-    <div class="grid-2">
-      <div class="panel">
-        <h3 class="h">The vulnerability framework</h3>
-        <p class="dim" style="font-size:14px; margin-bottom:12px;">The Kargil Review Committee identified three structural pillars behind India's 1999 strategic surprise:</p>
-        <div id="vulnFramework"></div>
-      </div>
-      <div class="panel">
-        <h3 class="h">The trauma–adaptation loop</h3>
-        <p class="body-text" style="font-size:15px;">A recurring cycle across modern intelligence failures: a <b style="color:var(--paper)">strategic shock</b> (an infiltration or surprise attack) traumatises the state; an <b style="color:var(--paper)">institutional pivot</b> follows (India's creation of the CDS after Kargil is a textbook case); over time the corrective measures harden into a <b style="color:var(--paper)">new dogma</b>, generating fresh blind spots of their own — hyper-vigilance that can itself distort threat assessment, sowing the seeds of the next surprise.</p>
-        <p class="body-text" style="font-size:15px; margin-top:10px;">Kargil's own predecessor pattern is telling: Egypt's 1973 Operation Badr <i>ignored warnings</i> to avoid triggering unwanted action; some later intelligence failures have instead <i>amplified warnings</i> to justify action already desired. Structurally identical blindness, expressed in opposite directions — a caution historians and analysts apply when reading any single intelligence assessment in isolation.</p>
-      </div>
-    </div>
-
-    <div class="divider"></div>
-
-    <div class="panel">
-      <h3 class="h">Synthesis: the illusion of isolated warfare</h3>
-      <p class="body-text">Kargil proved that brilliant tactical execution is strategically useless in a vacuum. Pakistan's Operation Badr succeeded as a covert infiltration in some of the world's harshest terrain — a genuine tactical achievement. But the operation lacked logistical sustainability, parliamentary consensus at home, economic backing, and any international diplomatic support. Tactics without logistics, diplomacy, and domestic consensus is a structure without a foundation.</p>
-      <p class="body-text" style="margin-top:10px; color:var(--amber); font-weight:600;">The enduring lesson: nuclear weapons do not make conventional war safe. They ensure that when conventional war happens, the international community will move aggressively to contain and end it before it can escalate.</p>
-    </div>
-  </div>
-
+  <footer class="footer"><div><strong>INDIAN WARS / FIELD ARCHIVE</strong><br>Independent educational project · Kargil War dossier</div><div>BUILT FOR EXPLORATION, SOURCED FOR CONTEXT<br><span>*Date range convention is approximate. †See source caveat above.</span></div></footer>
 </div>
 
-<button class="totop" id="totopBtn">↑</button>
-
+<div class="search-wrap" id="globalSearchWrap" style="position:fixed;top:86px;left:50%;transform:translateX(-50%);width:min(610px,calc(100% - 28px));z-index:130;display:none">
+  <span class="search-icon">⌕</span><input id="globalSearch" class="search-input" placeholder="Search events, peaks, operations, people, sources…" autocomplete="off" aria-label="Search the archive"><kbd>ESC</kbd>
+  <div class="search-panel" id="searchPanel" role="listbox" aria-label="Search results"></div>
+</div>
+<div class="overlay" id="vaultOverlay"></div>
+<aside class="drawer" id="vaultDrawer" aria-label="Saved field notes" aria-hidden="true">
+  <div class="drawer-head"><div><div class="smallcaps">Personal workspace</div><h2>Field notes</h2></div><button class="icon-btn" id="savedClose" aria-label="Close field notes">×</button></div>
+  <p style="font-size:12px;color:var(--muted)">Save timeline events and sources here. Notes are stored only in this browser on this device.</p>
+  <div id="savedList" style="margin-top:16px"></div>
+  <label class="notes-label" for="fieldNotes">Notebook / your observations</label>
+  <textarea id="fieldNotes" placeholder="Write your observations, questions, and follow-up research here…"></textarea>
+  <div class="note-help">Saved locally in this browser. Clearing site data removes local notes.</div>
+  <div style="display:flex;gap:8px;margin-top:12px"><button class="primary-btn" id="saveNotes">Save notes</button><button class="quiet-btn" id="clearSaved">Clear saved items</button></div>
+</aside>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
 <script src="data.js"></script>
 <script src="app.js"></script>
 </body>
