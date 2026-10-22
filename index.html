@@ -415,7 +415,7 @@ body.light-mode .atlas-card{background:linear-gradient(150deg,#fff,#f4f7ef)}
 .home-destination{grid-column:span 2;min-width:0;border:1px solid var(--line);border-radius:18px;background:linear-gradient(145deg,rgba(24,35,31,.84),rgba(16,23,21,.88));padding:19px;display:flex;flex-direction:column;align-items:start;min-height:242px;transition:transform .2s,border-color .2s,background .2s}
 .home-destination:hover{transform:translateY(-3px);border-color:var(--line2);background:var(--surface2)}
 .home-destination-feature{grid-column:span 3;background:linear-gradient(135deg,rgba(35,52,43,.95),rgba(17,25,22,.94));border-color:#3d5847}
-.home-destination:nth-child(2),.home-destination:nth-child(3){grid-column:span 3}
+.home-destination:nth-child(2){grid-column:span 3}
 .home-destination-top{width:100%;display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:18px}
 .home-index{font:11px "DM Mono",monospace;color:var(--lime);letter-spacing:.14em}
 .home-destination h3{font:600 22px/1.25 "Space Grotesk",sans-serif;letter-spacing:-.04em;margin:8px 0}
@@ -592,7 +592,7 @@ body[data-route="home"] .footer{margin-top:42px}
       <p class="home-method-note"><strong>Research standard:</strong> This is an independent educational archive, not an official government publication. Coverage is limited to major publicly documented records; dates and conclusions are not invented to fill gaps.</p>
     </section>
 
-    <section class="hero" id="overview" data-view="kargil">
+    <section class="hero" id="overview" data-view="kargil" hidden>
       <div>
         <div class="eyebrow"><span class="live-dot"></span> Historical dossier · 1999 · Ladakh theatre</div>
         <h1>KARGIL<span class="accent">WAR / 99</span></h1>
@@ -624,14 +624,14 @@ body[data-route="home"] .footer{margin-top:42px}
       </aside>
     </section>
 
-    <div class="metrics" aria-label="Campaign summary" data-view="kargil">
+    <div class="metrics" aria-label="Campaign summary" data-view="kargil" hidden>
       <div class="metric"><strong>84<em> days*</em></strong><span>3 May — 26 July 1999</span></div>
       <div class="metric"><strong>527</strong><span>Long-cited Indian fatalities†</span></div>
       <div class="metric"><strong>4</strong><span>Param Vir Chakra recipients</span></div>
       <div class="metric"><strong>3</strong><span>Army · Air Force · Navy operations</span></div>
     </div>
 
-    <section class="section" id="overview-brief" data-view="kargil">
+    <section class="section" id="overview-brief" data-view="kargil" hidden>
       <div class="section-head"><div><div class="kicker">01 / Briefing room</div><h2>More than a battle summary.</h2></div><p>Start with the core facts, then follow the evidence into each layer of the campaign.</p></div>
       <div class="quick-layout">
         <article class="card">
@@ -655,7 +655,7 @@ body[data-route="home"] .footer{margin-top:42px}
     </section>
 
 
-    <section class="section" id="campaigns" data-view="campaigns">
+    <section class="section" id="campaigns" data-view="campaigns" hidden>
       <div class="section-head"><div><div class="kicker">02 / Campaign library</div><h2>India's military history, connected.</h2></div><p>Expand beyond one conflict. Explore curated wars and operations with source trails, clear date scope, and links to the underlying record.</p></div>
       <div class="caveat"><div class="warn">i</div><div><h3>A growing archive, not a flat list.</h3><p>Wars, short operations, and continuing deployments are not the same thing. Each card labels its category and scope. The Kargil dossier remains the deepest case study; the other campaigns start as concise, source-linked guides for further research.</p></div></div>
       <div class="campaign-toolbar">
@@ -671,7 +671,7 @@ body[data-route="home"] .footer{margin-top:42px}
     </section>
 
 
-    <section class="section" id="atlas" data-view="operations-atlas">
+    <section class="section" id="atlas" data-view="operations-atlas" hidden>
       <div class="section-head"><div><div class="kicker">03 / Operations atlas</div><h2>Trace the operation. Study the decisions.</h2></div><p>A map-led, source-linked catalogue of major publicly documented Indian Army operations and selected joint or whole-of-government missions at home and abroad.</p></div>
       <div class="caveat"><div class="warn">i</div><div><h3>Open-source coverage—not a claim that every mission is listed.</h3><p>The Army's history includes short battles, long-running deployments, peacekeeping, internal-security campaigns, disaster response, and classified or incomplete records. Each dossier labels Army-led, joint, host-nation-led or whole-of-government participation. Dates are shown where supported by public sources; unknown days are not invented. Map markers show broad theatres, not operational positions or disputed boundaries.</p></div></div>
       <div class="atlas-tools">
@@ -705,7 +705,7 @@ body[data-route="home"] .footer{margin-top:42px}
       <div class="atlas-grid" id="atlasGrid"><div class="empty-state">Loading operation dossiers…</div></div>
     </section>
 
-    <section class="section" id="timeline" data-view="kargil">
+    <section class="section" id="timeline" data-view="kargil" hidden>
       <div class="section-head"><div><div class="kicker">02 / Chronology</div><h2>Follow the campaign.</h2></div><div class="head-count" id="timelineCount">Loading events…</div></div>
       <div class="search-wrap" style="max-width:620px">
         <span class="search-icon">⌕</span><input id="timelineSearch" class="search-input" placeholder="Filter events by place, operation, person…" autocomplete="off"><kbd>↵</kbd>
@@ -725,7 +725,7 @@ body[data-route="home"] .footer{margin-top:42px}
       </div>
     </section>
 
-    <section class="section" id="theatre" data-view="kargil">
+    <section class="section" id="theatre" data-view="kargil" hidden>
       <div class="section-head"><div><div class="kicker">03 / Terrain &amp; logistics</div><h2>Explore the theatre.</h2></div><p>Sector selector, named heights, and the road network that made the ridgelines strategically important.</p></div>
       <div class="theatre-banner">
         <div class="card"><div class="smallcaps">Terrain effect</div><h3 style="margin-top:8px">The high ground was the battlefield.</h3><p>Steep slopes, thin air, cold, exposed approaches, and long resupply routes shaped both the tactical problem and the pace of the campaign.</p></div>
@@ -747,12 +747,12 @@ body[data-route="home"] .footer{margin-top:42px}
       </article>
     </section>
 
-    <section class="section" id="operations" data-view="kargil">
+    <section class="section" id="operations" data-view="kargil" hidden>
       <div class="section-head"><div><div class="kicker">04 / Three services</div><h2>Operations, connected.</h2></div><p>Read the campaign through its ground, air, and naval dimensions—not as separate stories.</p></div>
       <div class="ops-grid" id="opsGrid"></div>
     </section>
 
-    <section class="section" id="people" data-view="kargil">
+    <section class="section" id="people" data-view="kargil" hidden>
       <div class="section-head"><div><div class="kicker">05 / Command &amp; gallantry</div><h2>People behind the record.</h2></div><p>Command decisions and individual actions both shaped the campaign. Open a profile to read its details.</p></div>
       <div class="people-toolbar">
         <div class="segmented" id="sideSwitch" role="group" aria-label="Select leadership profiles"><button class="active" data-side="india">Indian leadership</button><button data-side="pak">Pakistani leadership</button></div>
@@ -764,7 +764,7 @@ body[data-route="home"] .footer{margin-top:42px}
     </section>
 
 
-    <section class="section" id="academy" data-view="academy">
+    <section class="section" id="academy" data-view="academy" hidden>
       <div class="section-head"><div><div class="kicker">07 / Academy</div><h2>Know the history. Test the details.</h2></div><p>A source-linked study mode for history learners, defence-exam candidates, and curious researchers.</p></div>
       <div class="academy-banner">
         <div class="academy-intro">
@@ -809,7 +809,7 @@ body[data-route="home"] .footer{margin-top:42px}
       </div>
     </section>
 
-    <section class="section" id="intelligence" data-view="analysis">
+    <section class="section" id="intelligence" data-view="analysis" hidden>
       <div class="section-head"><div><div class="kicker">06 / Lessons &amp; aftermath</div><h2>What changed after Kargil?</h2></div><p>Institutional response, analytical frameworks, and the strategic context around surprise and escalation.</p></div>
       <div class="dual-columns">
         <article class="card"><div class="card-top"><div><div class="smallcaps">After-action record</div><h3 style="margin-top:7px">Institutional reforms</h3></div><span class="tag">Policy</span></div><div id="reformsList"></div></article>
@@ -818,7 +818,7 @@ body[data-route="home"] .footer{margin-top:42px}
       <article class="card" style="margin-top:16px"><div class="card-top"><div><div class="smallcaps">Comparative history</div><h3 style="margin-top:7px">The “Badr” pattern</h3></div><span class="tag blue">Cross-case lens</span></div><p style="margin-bottom:15px">Shared operation names do not prove a common doctrine. Compare the historical contexts, objectives, and outcomes rather than assuming the cases are equivalent.</p><div id="analysisList"></div></article>
     </section>
 
-    <section class="section" id="sources" data-view="sources">
+    <section class="section" id="sources" data-view="sources" hidden>
       <div class="section-head"><div><div class="kicker">07 / Evidence desk</div><h2>Sources, not just summaries.</h2></div><p>Primary and official references first, followed by context from institutions that preserve the diplomatic record.</p></div>
       <div class="caveat"><div class="warn">!</div><div><h3>Casualty figures vary by source and scope.</h3><p>This dossier retains the long-cited figure of 527 Indian fatalities in the Kargil War. The National War Memorial's Operation Vijay page reports 674 Indian soldiers lost during the operation. Those figures should not be silently treated as identical: check each source's scope and wording before quoting a number.</p></div></div>
       <div class="caveat"><div class="warn">↗</div><div><h3>Sortie counts are category-dependent.</h3><p>Government summaries use categories such as strike, reconnaissance/electronic intelligence, escort, helicopter, air transport, and casualty evacuation. These category totals are not necessarily comparable with an all-missions sortie count from a different account.</p></div></div>
