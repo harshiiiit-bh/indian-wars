@@ -6,6 +6,7 @@
 <meta name="theme-color" content="#0b100f">
 <meta name="description" content="An interactive, source-led Kargil War 1999 research dossier: campaign timeline, theatre sectors, operations, commanders, gallantry and official archives.">
 <title>Kargil War 1999 — Indian Wars Field Archive</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -286,6 +287,100 @@ body.light-mode .quiz-option{background:#f8faf5}
 @media(max-width:600px){.campaign-grid{grid-template-columns:1fr}.academy-intro,.academy-side{padding:19px}.academy-facts strong{font-size:20px}.quiz-shell{padding:16px}.quiz-options{grid-template-columns:1fr;margin-left:0}.quiz-question-row{grid-template-columns:35px 1fr}.quiz-q-num{font-size:17px}.quiz-feedback{margin-left:0}.quiz-topline{align-items:start;flex-direction:column}.campaign-toolbar{align-items:stretch}.campaign-search{width:100%}}
 @media print{.campaign-grid{grid-template-columns:repeat(2,1fr)}.academy-side,.quiz-shell,.campaign-toolbar{display:none!important}}
 
+
+/* Operations atlas & pictorial teaching */
+.atlas-tools{display:grid;gap:10px;margin:15px 0 20px}
+.atlas-search{width:min(560px,100%)}
+#atlasFilters{margin:0}
+.atlas-map-layout{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(250px,.5fr);gap:15px;align-items:stretch;margin-bottom:28px}
+.atlas-map-card{border:1px solid var(--line);border-radius:18px;overflow:hidden;background:var(--surface)}
+.atlas-map-header{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:16px 18px;border-bottom:1px solid var(--line)}
+.atlas-map-header strong{display:block;margin-top:4px;font:600 17px "Space Grotesk",sans-serif}
+#operationsMap{height:410px;width:100%;background:#13201c;z-index:1}
+.atlas-map-footer{display:flex;flex-wrap:wrap;gap:14px;padding:12px 17px;border-top:1px solid var(--line);color:var(--muted);font:9px "DM Mono",monospace}
+.map-dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:6px;background:var(--lime)}
+.relief-dot{background:#8bc9e8}.peace-dot{background:#e3be72}
+.combat-dot{background:#d8f36a}
+.leaflet-popup-content-wrapper,.leaflet-popup-tip{background:#131c19;color:#e9eee7;border:1px solid #3b5145;box-shadow:0 15px 40px rgba(0,0,0,.24)}
+.leaflet-popup-content{font-family:"DM Sans",sans-serif;min-width:155px}
+.leaflet-popup-content strong{font-family:"Space Grotesk",sans-serif;font-size:14px;display:block;margin-bottom:5px}
+.leaflet-popup-content small{color:#9baaa0;line-height:1.5}
+.leaflet-popup-content button{background:#d8f36a;color:#101510;border:0;border-radius:7px;padding:7px 9px;font-size:11px;font-weight:700;cursor:pointer;margin-top:9px}
+body.light-mode .leaflet-popup-content-wrapper,body.light-mode .leaflet-popup-tip{background:#fff;color:#172019;border-color:#b5c5b6}
+.atlas-map-aside{display:flex;flex-direction:column}
+.atlas-map-aside h3{font:600 21px/1.25 "Space Grotesk",sans-serif;letter-spacing:-.04em;margin-bottom:9px}
+.atlas-map-aside>p{font-size:12px}
+.atlas-map-aside .aside-stat{margin-top:8px}
+.atlas-results-head{display:flex;align-items:end;justify-content:space-between;gap:15px;margin:30px 0 14px}
+.atlas-results-head h3{font:600 23px "Space Grotesk",sans-serif;letter-spacing:-.04em;margin:6px 0 0}
+.atlas-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.atlas-card{display:flex;flex-direction:column;min-width:0;overflow:hidden;border:1px solid var(--line);border-radius:17px;background:linear-gradient(150deg,rgba(23,33,29,.98),rgba(13,20,17,.98));transition:transform .2s,border-color .2s}
+.atlas-card:hover{transform:translateY(-2px);border-color:var(--line2)}
+body.light-mode .atlas-card{background:linear-gradient(150deg,#fff,#f4f7ef)}
+.atlas-thumb{height:160px;position:relative;background:radial-gradient(circle at 80% 12%,rgba(216,243,106,.15),transparent 35%),linear-gradient(140deg,#192b24,#101916);overflow:hidden}
+.atlas-thumb img{height:100%;width:100%;object-fit:cover;display:block}
+.atlas-thumb::after{content:"";position:absolute;inset:30% 0 0;background:linear-gradient(transparent,rgba(8,12,10,.5));pointer-events:none}
+.atlas-thumb .thumb-label{position:absolute;z-index:2;left:12px;bottom:10px;color:#e9eee7;font:10px "DM Mono",monospace;letter-spacing:.12em;text-transform:uppercase}
+.atlas-thumb-art{width:100%;height:100%;display:block;opacity:.92}
+.atlas-card-body{padding:18px;display:flex;flex-direction:column;gap:9px;flex:1}
+.atlas-card h3{font:600 17px/1.24 "Space Grotesk",sans-serif;letter-spacing:-.03em;margin:0}
+.atlas-card-meta{font:10px "DM Mono",monospace;color:var(--gold);line-height:1.6}
+.atlas-card p{font-size:12px;color:var(--muted);line-height:1.8;margin:0}
+.atlas-card-tags{display:flex;flex-wrap:wrap;gap:6px}
+.atlas-chip{font:9px "DM Mono",monospace;padding:5px 7px;border:1px solid var(--line);border-radius:6px;color:var(--muted)}
+.atlas-card-actions{display:flex;gap:7px;margin-top:auto;padding-top:12px}
+.atlas-card-actions button,.atlas-card-actions a{font:10px "DM Mono",monospace;border:1px solid var(--line);background:transparent;color:var(--lime);border-radius:8px;padding:8px 9px;cursor:pointer}
+.atlas-card-actions button.primary{background:var(--lime);color:#131810;border-color:var(--lime);font-weight:700;flex:1}
+.atlas-card-actions button:hover,.atlas-card-actions a:hover{border-color:var(--lime);text-decoration:none}
+.atlas-modal-backdrop{position:fixed;inset:0;background:rgba(1,5,3,.78);z-index:300;backdrop-filter:blur(7px)}
+.atlas-modal-shell{position:fixed;z-index:310;inset:3.5vh 3.5vw;max-width:1500px;margin:auto;border:1px solid var(--line2);border-radius:22px;background:var(--bg2);box-shadow:0 25px 90px rgba(0,0,0,.45);overflow:auto;padding:0 26px 30px}
+.atlas-modal-shell[hidden],.atlas-modal-backdrop[hidden]{display:none!important}
+.atlas-modal-top{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:16px 0;position:sticky;top:0;z-index:5;background:var(--bg2);border-bottom:1px solid var(--line)}
+.atlas-detail-head{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(300px,.95fr);gap:22px;padding:24px 0;border-bottom:1px solid var(--line)}
+.atlas-detail-head h2{font:700 clamp(32px,4.2vw,55px)/.98 "Space Grotesk",sans-serif;letter-spacing:-.06em;margin:13px 0}
+.atlas-detail-sub{color:var(--gold);font:11px "DM Mono",monospace;line-height:1.8}
+.atlas-detail-summary{color:var(--muted);font-size:14px;line-height:1.85;margin-top:13px}
+.atlas-detail-image{margin:0;border:1px solid var(--line);border-radius:15px;overflow:hidden;background:var(--surface);align-self:start}
+.atlas-detail-image img{display:block;width:100%;height:280px;object-fit:cover}
+.atlas-detail-image figcaption{padding:10px 12px;font-size:10px;line-height:1.6;color:var(--muted)}
+.atlas-detail-image figcaption a{display:inline-block;margin-top:4px}
+.atlas-anatomy{border:1px solid var(--line);border-radius:15px;background:var(--surface);padding:18px;margin:18px 0 22px}
+.atlas-anatomy-head{display:flex;justify-content:space-between;gap:12px;align-items:start}
+.atlas-anatomy-head h3{font:600 20px "Space Grotesk",sans-serif;letter-spacing:-.03em;margin:5px 0 15px}
+.atlas-steps{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px}
+.atlas-step{border:1px solid var(--line);border-radius:11px;padding:12px;background:rgba(255,255,255,.02);position:relative}
+.atlas-step:not(:last-child)::after{content:"→";position:absolute;right:-11px;top:20px;color:var(--lime);font-size:15px;z-index:2}
+.atlas-step .n{font:10px "DM Mono",monospace;color:var(--lime)}
+.atlas-step strong{display:block;font:600 13px "Space Grotesk",sans-serif;margin:7px 0 4px}
+.atlas-step span{display:block;font-size:10px;line-height:1.65;color:var(--muted)}
+.atlas-detail-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.atlas-analysis-card{border:1px solid var(--line);border-radius:15px;background:var(--surface);padding:18px}
+.atlas-analysis-card h3{font:600 17px "Space Grotesk",sans-serif;margin:0 0 8px;letter-spacing:-.025em}
+.atlas-analysis-card p{color:var(--muted);font-size:12px;line-height:1.9;margin:0}
+.atlas-analysis-card.plan h3{color:var(--blue)}.atlas-analysis-card.execution h3{color:var(--lime)}.atlas-analysis-card.friction h3{color:var(--orange)}.atlas-analysis-card.lesson h3{color:var(--gold)}
+.atlas-detail-section{margin-top:28px}
+.atlas-detail-section-head{display:flex;justify-content:space-between;align-items:end;gap:12px;margin-bottom:12px}
+.atlas-detail-section h3{font:600 24px "Space Grotesk",sans-serif;letter-spacing:-.04em;margin:5px 0}
+.atlas-chronology{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.atlas-event{display:grid;grid-template-columns:115px minmax(0,1fr);gap:13px;padding:15px;border:1px solid var(--line);border-radius:13px;background:var(--surface)}
+.atlas-event-date{font:10px "DM Mono",monospace;color:var(--lime);border-right:1px solid var(--line);padding-right:10px;line-height:1.7}
+.atlas-event h4{font:600 14px "Space Grotesk",sans-serif;margin:0 0 5px}
+.atlas-event p{font-size:11px;color:var(--muted);line-height:1.8;margin:0}
+.atlas-source-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.atlas-source{border:1px solid var(--line);border-radius:12px;background:var(--surface);padding:13px;display:flex;flex-direction:column;gap:8px}
+.atlas-source span{font:9px "DM Mono",monospace;color:var(--subtle);text-transform:uppercase}
+.atlas-source strong{font:600 12px/1.4 "Space Grotesk",sans-serif}
+.atlas-source a{font-size:10px;margin-top:auto}
+.atlas-research-prompts{border:1px solid rgba(227,190,114,.23);background:rgba(227,190,114,.045);border-radius:14px;padding:16px;margin-top:18px}
+.atlas-research-prompts h4{font:600 14px "Space Grotesk",sans-serif;margin:0 0 10px;color:var(--gold)}
+.atlas-prompts-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.atlas-prompts-grid div{background:rgba(255,255,255,.025);padding:10px;border-radius:9px;color:var(--muted);font-size:10px;line-height:1.7}
+.atlas-disclaimer{font-size:10px;line-height:1.8;color:var(--subtle);margin-top:15px;border-top:1px solid var(--line);padding-top:12px}
+.leaflet-container a{color:var(--lime)}
+@media(max-width:980px){.atlas-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.atlas-map-layout{grid-template-columns:1fr}.atlas-map-aside{display:grid;grid-template-columns:1fr 1fr;gap:14px}.atlas-map-aside .smallcaps,.atlas-map-aside h3,.atlas-map-aside>p:last-child{grid-column:1/-1}.atlas-map-aside .aside-stat{border-right:1px solid var(--line);padding:8px}.atlas-detail-head{grid-template-columns:1fr}.atlas-detail-image img{height:300px}.atlas-source-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:600px){#operationsMap{height:330px}.atlas-map-header{align-items:start;flex-direction:column}.atlas-grid{grid-template-columns:1fr}.atlas-thumb{height:185px}.atlas-map-aside{display:block}.atlas-results-head{align-items:start;flex-direction:column}.atlas-modal-shell{inset:0;border-radius:0;padding:0 15px 22px;border:0}.atlas-modal-top{top:0}.atlas-detail-head{padding-top:18px;gap:14px}.atlas-detail-head h2{font-size:36px}.atlas-detail-image img{height:220px}.atlas-steps{grid-template-columns:repeat(2,minmax(0,1fr))}.atlas-step:not(:last-child)::after{display:none}.atlas-detail-grid{grid-template-columns:1fr}.atlas-chronology{grid-template-columns:1fr}.atlas-event{grid-template-columns:1fr;gap:6px}.atlas-event-date{border-right:0;border-bottom:1px solid var(--line);padding:0 0 6px}.atlas-source-grid{grid-template-columns:1fr}.atlas-prompts-grid{grid-template-columns:1fr}.atlas-modal-shell .atlas-detail-section-head{align-items:start;flex-direction:column}.atlas-modal-top .smallcaps{font-size:9px}}
+@media print{#operationsMap,.atlas-map-layout,.atlas-tools,.atlas-card-actions,.atlas-modal-shell,.atlas-modal-backdrop{display:none!important}.atlas-grid{grid-template-columns:repeat(2,1fr)}.atlas-card{break-inside:avoid}.atlas-thumb{height:90px}.atlas-detail-grid,.atlas-chronology{grid-template-columns:1fr 1fr}}
+
 @media(max-width:1100px){.brand{min-width:auto}.brand small{display:none}.topbar{gap:12px}.top-nav{gap:0}.nav-link{padding:8px}.top-actions .label{display:none}.shell{padding-left:24px;padding-right:24px}.topbar{margin-left:-24px;margin-right:-24px;padding-left:24px;padding-right:24px}.hero{gap:22px}.sources-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:800px){.topbar{height:66px;gap:8px}.brand strong{font-size:12px}.brand-mark{height:33px;width:33px}.top-nav{position:absolute;top:65px;left:0;right:0;padding:8px 20px;background:rgba(11,16,15,.94);border-bottom:1px solid var(--line)}body.light-mode .top-nav{background:rgba(241,243,236,.96)}.nav-link{padding:8px 10px;font-size:10px}.top-actions{margin-left:auto}.hero{grid-template-columns:1fr;padding-top:38px}.hero-side{min-height:280px}.schematic{height:150px}.metrics{grid-template-columns:repeat(2,1fr)}.metric:nth-child(2){border-right:0}.metric:nth-child(-n+2){border-bottom:1px solid var(--line)}.section{padding-top:48px}.section-head{align-items:start;flex-direction:column;gap:12px}.section-head p{max-width:none}.timeline-layout{grid-template-columns:1fr}.timeline-aside{position:static;display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.aside-stat{border-bottom:0;border-right:1px solid var(--line);padding:12px}.quick-layout{grid-template-columns:1fr}.sector-grid{grid-template-columns:1fr}.sector-selector{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}.sector-btn{padding:11px}.theatre-banner{grid-template-columns:1fr}.dual-columns{grid-template-columns:1fr}.ops-grid{grid-template-columns:1fr}.grid-3{grid-template-columns:repeat(2,minmax(0,1fr))}.search-wrap{min-width:0;width:100%}.hero-desc{font-size:15px}}
 @media(max-width:520px){.shell{padding-left:15px;padding-right:15px}.topbar{margin-left:-15px;margin-right:-15px;padding-left:15px;padding-right:15px}.brand{gap:7px}.brand strong{font-size:10px;letter-spacing:.04em}.top-actions{gap:5px}.icon-btn{width:35px;min-height:35px}.top-actions #exportBtn{display:none}.hero h1{font-size:58px}.hero{padding-top:30px}.hero-side{padding:16px;min-height:240px}.metrics{border-radius:13px}.metric{padding:14px}.metric strong{font-size:28px}.metric span{font-size:9px;line-height:1.5}.section-head h2{font-size:33px}.card{padding:17px}.fact-list{grid-template-columns:1fr 1fr}.timeline-aside{grid-template-columns:1fr 1fr}.aside-stat strong{font-size:21px}.event{grid-template-columns:1fr;gap:11px;padding:15px}.event-date{border-right:0;border-bottom:1px solid var(--line);padding:0 0 8px;display:flex;align-items:center;gap:12px}.event-date span{margin-top:0}.sector-selector{grid-template-columns:1fr 1fr}.peak-list li{grid-template-columns:1fr;gap:4px}.grid-3,.grid-2{grid-template-columns:1fr}.sources-grid{grid-template-columns:1fr}.source-card{min-height:0}.reform-row{grid-template-columns:1fr;gap:4px}.footer{flex-direction:column}.section{padding-top:40px}.search-wrap kbd{display:none}.hero-ctas .primary-btn,.hero-ctas .outline-btn{width:100%}}
@@ -304,6 +399,7 @@ body.light-mode .quiz-option{background:#f8faf5}
     <nav class="top-nav" aria-label="Primary navigation">
       <button class="nav-link active" data-jump="overview">Overview</button>
       <button class="nav-link" data-jump="campaigns">Campaigns</button>
+      <button class="nav-link" data-jump="atlas">Operations atlas</button>
       <button class="nav-link" data-jump="timeline">Kargil timeline</button>
       <button class="nav-link" data-jump="theatre">Theatre</button>
       <button class="nav-link" data-jump="operations">Operations</button>
@@ -396,6 +492,41 @@ body.light-mode .quiz-option{background:#f8faf5}
       </div>
       <div class="campaign-summary" id="campaignSummary"></div>
       <div class="campaign-grid" id="campaignGrid"></div>
+    </section>
+
+
+    <section class="section" id="atlas">
+      <div class="section-head"><div><div class="kicker">03 / Operations atlas</div><h2>Trace the operation. Study the decisions.</h2></div><p>A map-led, source-linked catalogue of major publicly documented Indian Army operations and selected joint or whole-of-government missions at home and abroad.</p></div>
+      <div class="caveat"><div class="warn">i</div><div><h3>Open-source coverage—not a claim that every mission is listed.</h3><p>The Army's history includes short battles, long-running deployments, peacekeeping, internal-security campaigns, disaster response, and classified or incomplete records. Each dossier labels Army-led, joint, host-nation-led or whole-of-government participation. Dates are shown where supported by public sources; unknown days are not invented. Map markers show broad theatres, not operational positions or disputed boundaries.</p></div></div>
+      <div class="atlas-tools">
+        <div class="search-wrap atlas-search"><span class="search-icon">⌕</span><input class="search-input" id="atlasSearch" placeholder="Search an operation, location, lesson or period…" autocomplete="off"></div>
+        <div class="filter-row" id="atlasFilters" aria-label="Filter operations">
+          <button class="filter-btn active" data-atlas-filter="all">All dossiers</button>
+          <button class="filter-btn" data-atlas-filter="combat">Combat &amp; campaigns</button>
+          <button class="filter-btn" data-atlas-filter="internal-security">Internal security</button>
+          <button class="filter-btn" data-atlas-filter="peacekeeping">Peacekeeping</button>
+          <button class="filter-btn" data-atlas-filter="hadr">Disaster relief</button>
+          <button class="filter-btn" data-atlas-filter="evacuation">Evacuations</button>
+          <button class="filter-btn" data-atlas-filter="stabilisation">Civic action</button>
+          <button class="filter-btn" data-atlas-filter="joint">Joint / regional</button>
+        </div>
+      </div>
+      <div class="atlas-map-layout">
+        <div class="atlas-map-card">
+          <div class="atlas-map-header"><div><div class="smallcaps">Global map / theatre markers</div><strong>Where the missions took place</strong></div><span class="pill">Illustrative locations</span></div>
+          <div id="operationsMap" role="application" aria-label="Interactive map of operation theatres"></div>
+          <div class="atlas-map-footer"><span><i class="map-dot combat-dot"></i>Combat / campaign</span><span><i class="map-dot relief-dot"></i>Relief / evacuation</span><span><i class="map-dot peace-dot"></i>Peacekeeping / stabilisation</span></div>
+        </div>
+        <aside class="card atlas-map-aside">
+          <div class="smallcaps">Reading guide</div><h3 style="margin-top:9px">Map → evidence → lessons.</h3>
+          <p>Tap a marker to open its dossier. Each record distinguishes the stated plan and publicly documented execution from reported friction and analyst lessons.</p>
+          <div class="aside-stat"><strong id="atlasCount">—</strong><span>Publicly documented dossiers</span></div>
+          <div class="aside-stat"><strong id="atlasImageCount">—</strong><span>Photographic / archival exhibits</span></div>
+          <p style="font-size:11px;margin-top:15px">A short public summary rarely documents every day or every internal decision. Dossier chronologies include dated milestones and note where a full daily record was not available in the linked sources.</p>
+        </aside>
+      </div>
+      <div class="atlas-results-head"><div><div class="smallcaps">Field dossiers</div><h3 id="atlasSummary">Loading the operation index…</h3></div><button class="quiet-btn" id="atlasClearFilters">Reset filters</button></div>
+      <div class="atlas-grid" id="atlasGrid"><div class="empty-state">Loading operation dossiers…</div></div>
     </section>
 
     <section class="section" id="timeline">
@@ -547,6 +678,13 @@ body.light-mode .quiz-option{background:#f8faf5}
   <span class="search-icon">⌕</span><input id="globalSearch" class="search-input" placeholder="Search events, peaks, operations, people, sources…" autocomplete="off" aria-label="Search the archive"><kbd>ESC</kbd>
   <div class="search-panel" id="searchPanel" role="listbox" aria-label="Search results"></div>
 </div>
+
+<div class="atlas-modal-backdrop" id="atlasModalBackdrop" hidden></div>
+<section class="atlas-modal-shell" id="atlasModalShell" role="dialog" aria-modal="true" aria-labelledby="atlasModalTitle" hidden>
+  <div class="atlas-modal-top"><div class="smallcaps">Indian Wars / operation dossier</div><button class="icon-btn" id="atlasModalClose" aria-label="Close operation dossier">×</button></div>
+  <div id="atlasModalBody"></div>
+</section>
+
 <div class="overlay" id="vaultOverlay"></div>
 <aside class="drawer" id="vaultDrawer" aria-label="Saved field notes" aria-hidden="true">
   <div class="drawer-head"><div><div class="smallcaps">Personal workspace</div><h2>Field notes</h2></div><button class="icon-btn" id="savedClose" aria-label="Close field notes">×</button></div>
@@ -558,6 +696,7 @@ body.light-mode .quiz-option{background:#f8faf5}
   <div style="display:flex;gap:8px;margin-top:12px"><button class="primary-btn" id="saveNotes">Save notes</button><button class="quiet-btn" id="clearSaved">Clear saved items</button></div>
 </aside>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
 <script src="data.js"></script>
 <script src="campaigns.js"></script>
 <script src="app.js"></script>
