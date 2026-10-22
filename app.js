@@ -229,6 +229,171 @@
     }).join('');
   }
 
+
+  function atlasColor(op) {
+    if (op.type === 'hadr' || op.type === 'evacuation') return '#8bc9e8';
+    if (op.type === 'peacekeeping' || op.type === 'stabilisation') return '#e3be72';
+    if (op.type === 'internal-security') return '#ee835b';
+    return '#d8f36a';
+  }
+  function atlasTypeLabel(type) {
+    return ({
+      combat:'Combat / campaign',
+      'internal-security':'Internal security',
+      peacekeeping:'Peacekeeping',
+      hadr:'Disaster relief',
+      evacuation:'Evacuation',
+      stabilisation:'Civic action',
+      joint:'Joint / regional',
+      mobilisation:'Mobilisation',
+      research:'Research index'
+    })[type] || type;
+  }
+  function atlasArtwork(op) {
+    var color = atlasColor(op);
+    return '<svg class="atlas-thumb-art" viewBox="0 0 640 300" role="img" aria-label="Illustrative topographic teaching graphic, not a historical photograph">' +
+      '<defs><linearGradient id="fieldFade" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="' + color + '" stop-opacity=".15"/><stop offset="1" stop-color="#101916" stop-opacity=".1"/></linearGradient></defs>' +
+      '<rect width="640" height="300" fill="url(#fieldFade)"/>' +
+      '<g fill="none" stroke="' + color + '" stroke-opacity=".27" stroke-width="1.2">' +
+      '<path d="M-20 204 C65 112 112 251 198 158 S319 191 392 103 S522 170 675 57"/>' +
+      '<path d="M-20 224 C65 132 112 271 198 178 S319 211 392 123 S522 190 675 77"/>' +
+      '<path d="M-20 244 C65 152 112 291 198 198 S319 231 392 143 S522 210 675 97"/>' +
+      '<path d="M-20 264 C65 172 112 311 198 218 S319 251 392 163 S522 230 675 117"/>' +
+      '<path d="M40 32 L594 279 M-10 90 L500 -15 M155 -12 L365 322" stroke-dasharray="5 9"/>' +
+      '</g><g fill="none" stroke="' + color + '" stroke-width="2"><circle cx="405" cy="119" r="24"/><circle cx="405" cy="119" r="9" fill="' + color + '" fill-opacity=".18"/><path d="M405 102 L405 135 M388 119 L422 119"/></g>' +
+      '<g fill="#e9eee7" font-family="DM Mono,monospace" font-size="12" letter-spacing="2"><text x="24" y="34">FIELD DIAGRAM / CONCEPTUAL</text><text x="24" y="272">NOT A HISTORICAL PHOTOGRAPH OR OPERATIONAL MAP</text></g></svg>';
+  }
+
+  function getAtlasItems() {
+    if (typeof OPERATIONS_ATLAS === 'undefined') return [];
+    var query = ($('#atlasSearch') ? $('#atlasSearch').value : '').trim().toLowerCase();
+    return OPERATIONS_ATLAS.filter(function (op) {
+      var typeMatch = activeAtlasFilter === 'all' || op.type === activeAtlasFilter;
+      var searchable = [op.title, op.period, op.type, op.service, op.place, op.scope, op.summary, op.plan, op.execution, op.friction, op.lessons].join(' ').toLowerCase();
+      return typeMatch && (!query || searchable.indexOf(query) !== -1);
+    });
+  }
+
+  function renderAtlas() {
+    var grid = $('#atlasGrid');
+    if (!grid || typeof OPERATIONS_ATLAS === 'undefined') return;
+    var items = getAtlasItems();
+    $('#atlasSummary').textContent = items.length + ' DOSSIERS MATCH · ' + OPERATIONS_ATLAS.length + ' IN THE OPEN-SOURCE INDEX';
+    $('#atlasCount').textContent = OPERATIONS_ATLAS.filter(function (op) { return op.type !== 'research'; }).length;
+    $('#atlasImageCount').textContent = OPERATIONS_ATLAS.filter(function (op) { return !!op.image; }).length;
+    if (!items.length) {
+      grid.innerHTML = '<div class="empty-state" style="grid-column:1/-1">No dossier matches your search. Try a shorter phrase, another location, or reset the category filter.</div>';
+      renderAtlasMap();
+      return;
+    }
+    grid.innerHTML = items.map(function (op) {
+      var imageBlock = op.image
+        ? '<img loading="lazy" src="' + escapeHTML(op.image.src) + '" alt="' + escapeHTML(op.image.alt) + '" onerror="this.remove();">'
+        : atlasArtwork(op);
+      var dateLabel = op.period + ' · ' + op.place;
+      return '<article class="atlas-card" id="atlas-card-' + escapeHTML(op.id) + '">' +
+        '<div class="atlas-thumb">' + imageBlock + '<span class="thumb-label">' + escapeHTML(op.type === 'research' ? 'EVIDENCE INDEX' : atlasTypeLabel(op.type)) + '</span></div>' +
+        '<div class="atlas-card-body"><div class="atlas-card-tags"><span class="tag ' + (op.type === 'hadr' || op.type === 'evacuation' ? 'blue' : op.type === 'internal-security' ? 'orange' : op.type === 'peacekeeping' ? 'gold' : '') + '">' + escapeHTML(atlasTypeLabel(op.type)) + '</span>' +
+        (op.image ? '<span class="atlas-chip">Photo / archive</span>' : '<span class="atlas-chip">Pictorial schematic</span>') + '</div>' +
+        '<h3>' + escapeHTML(op.title) + '</h3><div class="atlas-card-meta">' + escapeHTML(dateLabel) + '</div>' +
+        '<p>' + escapeHTML(op.summary) + '</p>' +
+        '<div class="atlas-card-tags"><span class="atlas-chip">' + escapeHTML(op.service) + '</span><span class="atlas-chip">' + (op.sources || []).length + ' linked sources</span></div>' +
+        '<div class="atlas-card-actions"><button class="primary" type="button" data-open-operation="' + escapeHTML(op.id) + '">Open full dossier ↗</button>' +
+        bookmarkButton('atlas:' + op.id, 'Save') + '</div></div></article>';
+    }).join('');
+    renderAtlasMap();
+  }
+
+  function initOperationsMap() {
+    var el = $('#operationsMap');
+    if (!el) return;
+    if (typeof L === 'undefined') {
+      el.innerHTML = '<div class="empty-state" style="margin:18px">Interactive map could not load. The operation cards and their theatre names are still available below.</div>';
+      return;
+    }
+    if (atlasMap) return;
+    atlasMap = L.map('operationsMap', { scrollWheelZoom:false, preferCanvas:true }).setView([24, 58], 3);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom:18,
+      attribution:'&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener noreferrer">OpenStreetMap contributors</a>'
+    }).addTo(atlasMap);
+    atlasMarkerLayer = L.layerGroup().addTo(atlasMap);
+    renderAtlasMap();
+    setTimeout(function () { if (atlasMap) atlasMap.invalidateSize(); }, 150);
+  }
+
+  function renderAtlasMap() {
+    if (!atlasMap || !atlasMarkerLayer || typeof OPERATIONS_ATLAS === 'undefined') return;
+    atlasMarkerLayer.clearLayers();
+    var items = getAtlasItems().filter(function (op) { return op.type !== 'research' && Number.isFinite(op.lat) && Number.isFinite(op.lng); });
+    items.forEach(function (op) {
+      var color = atlasColor(op);
+      var marker = L.circleMarker([op.lat, op.lng], {
+        radius:7, color:'#0b100f', weight:2, fillColor:color, fillOpacity:.96
+      });
+      marker.bindPopup('<strong>' + escapeHTML(op.title) + '</strong><small>' + escapeHTML(op.period + ' · ' + op.place) + '</small><br><button type="button" data-open-operation="' + escapeHTML(op.id) + '">Open dossier ↗</button>');
+      marker.addTo(atlasMarkerLayer);
+    });
+  }
+
+  function closeOperationDetail() {
+    var backdrop = $('#atlasModalBackdrop');
+    var shell = $('#atlasModalShell');
+    if (backdrop) backdrop.hidden = true;
+    if (shell) shell.hidden = true;
+    document.body.style.overflow = '';
+  }
+
+  function openOperationDetail(operationId) {
+    if (typeof OPERATIONS_ATLAS === 'undefined') return;
+    var op = OPERATIONS_ATLAS.find(function (item) { return item.id === operationId; });
+    if (!op) return;
+    var art = op.image
+      ? '<figure class="atlas-detail-image"><img src="' + escapeHTML(op.image.src) + '" alt="' + escapeHTML(op.image.alt) + '"><figcaption>' + escapeHTML(op.image.caption) +
+        '<br><strong>' + escapeHTML(op.image.credit) + '</strong><br><span>' + escapeHTML(op.image.license) + '</span><br><a href="' + escapeHTML(op.image.page) + '" target="_blank" rel="noopener noreferrer">Open image source and licence ↗</a></figcaption></figure>'
+      : '<div class="atlas-detail-image"><svg viewBox="0 0 700 350" style="display:block;width:100%;height:280px" role="img" aria-label="Illustrative planning and terrain schematic, not a historical photograph">' +
+        '<rect width="700" height="350" fill="#101916"/><g fill="none" stroke="' + atlasColor(op) + '" stroke-opacity=".32">' +
+        '<path d="M-20 245 C65 120 135 285 225 170 S385 240 455 95 S600 205 730 60"/><path d="M-20 270 C65 145 135 310 225 195 S385 265 455 120 S600 230 730 85"/><path d="M-20 295 C65 170 135 335 225 220 S385 290 455 145 S600 255 730 110"/><path d="M60 40 L625 310 M130 5 L530 346" stroke-dasharray="6 8"/></g>' +
+        '<circle cx="465" cy="140" r="32" fill="none" stroke="' + atlasColor(op) + '" stroke-width="2"/><circle cx="465" cy="140" r="10" fill="' + atlasColor(op) + '" fill-opacity=".45"/><g fill="#e9eee7" font-family="DM Mono,monospace" font-size="14" letter-spacing="2"><text x="25" y="35">VISUAL BRIEF / CONCEPTUAL</text><text x="25" y="320" font-size="11">NO TACTICAL POSITIONS · NOT A HISTORICAL IMAGE</text></g></svg><div style="padding:10px 12px;font-size:10px;color:var(--muted)">Pictorial teaching schematic created for this page; not a source photograph or map of operational positions.</div></div>';
+
+    var chronology = (op.chronology || []).map(function (e) {
+      return '<article class="atlas-event"><div class="atlas-event-date">' + escapeHTML(e.date) + '</div><div><h4>' + escapeHTML(e.title) + '</h4><p>' + escapeHTML(e.detail) + '</p></div></article>';
+    }).join('');
+    var sources = (op.sources || []).map(function (s) {
+      return '<article class="atlas-source"><span>' + escapeHTML(s.kind || 'Source') + '</span><strong>' + escapeHTML(s.title) + '</strong><a href="' + escapeHTML(s.url) + '" target="_blank" rel="noopener noreferrer">Read source ↗</a></article>';
+    }).join('');
+    var steps = [
+      {n:'01 / INTENT',title:'Plan',body:'What problem did planners seek to solve?'},
+      {n:'02 / RECORD',title:'Execution',body:'What do dated public sources actually confirm?'},
+      {n:'03 / FRICTION',title:'Constraints',body:'What was uncertain, unavailable or contested?'},
+      {n:'04 / REVIEW',title:'Lessons',body:'What can responsibly be learned from the evidence?'}
+    ];
+    var body = '<div class="atlas-detail-head"><div><div class="atlas-card-tags"><span class="tag">' + escapeHTML(atlasTypeLabel(op.type)) + '</span><span class="atlas-chip">' + escapeHTML(op.service) + '</span></div>' +
+      '<h2 id="atlasModalTitle">' + escapeHTML(op.title) + '</h2><div class="atlas-detail-sub">' + escapeHTML(op.period) + '<br>' + escapeHTML(op.place) + '<br>' + escapeHTML(op.scope) + '</div>' +
+      '<p class="atlas-detail-summary">' + escapeHTML(op.summary) + '</p><div class="event-foot">' + bookmarkButton('atlas:' + op.id,'Save dossier') +
+      '<a class="bookmark-btn" href="' + googleLink(op.title + ' ' + op.period + ' official history') + '" target="_blank" rel="noopener noreferrer">Further web research ↗</a></div></div>' + art + '</div>' +
+      '<div class="atlas-anatomy"><div class="atlas-anatomy-head"><div><div class="smallcaps">Pictorial teaching / after-action lens</div><h3>From decision to lesson</h3></div><span class="pill">Source-led analysis</span></div>' +
+      '<div class="atlas-steps">' + steps.map(function (step) { return '<div class="atlas-step"><div class="n">' + step.n + '</div><strong>' + step.title + '</strong><span>' + step.body + '</span></div>'; }).join('') + '</div></div>' +
+      '<div class="atlas-detail-grid"><article class="atlas-analysis-card plan"><h3>01 · Planning</h3><p>' + escapeHTML(op.plan) + '</p></article>' +
+      '<article class="atlas-analysis-card execution"><h3>02 · Implementation / what is documented</h3><p>' + escapeHTML(op.execution) + '</p></article>' +
+      '<article class="atlas-analysis-card friction"><h3>03 · Mistakes, friction &amp; evidence gaps</h3><p>' + escapeHTML(op.friction) + '</p></article>' +
+      '<article class="atlas-analysis-card lesson"><h3>04 · Lessons for future study</h3><p>' + escapeHTML(op.lessons) + '</p></article></div>' +
+      '<section class="atlas-detail-section"><div class="atlas-detail-section-head"><div><div class="smallcaps">Chronology / documented milestones</div><h3>Day-by-day where the record supports it</h3></div><span class="head-count">' + (op.chronology || []).length + ' dated entries</span></div>' +
+      '<div class="atlas-chronology">' + chronology + '</div><p class="atlas-disclaimer">Scope note: this is a source-backed milestone timeline, not a fabricated log for every calendar day. Short public releases often omit daily unit movements, internal planning papers and disputed details. Use the linked primary sources for exact wording and consult fuller archives before making a firm claim about an operational mistake.</p></section>' +
+      '<section class="atlas-detail-section"><div class="atlas-detail-section-head"><div><div class="smallcaps">Source trail / provenance</div><h3>Read the evidence</h3></div><span class="tag blue">' + (op.sources || []).length + ' references</span></div>' +
+      '<div class="atlas-source-grid">' + sources + '</div></section>' +
+      '<div class="atlas-research-prompts"><h4>Questions for an after-action review</h4><div class="atlas-prompts-grid">' +
+      '<div><strong>What was known at the time?</strong><br>Separate information available to decision-makers from facts learned later.</div>' +
+      '<div><strong>What was the real constraint?</strong><br>Test terrain, weather, intelligence, communications, logistics, mandate and civilian risk.</div>' +
+      '<div><strong>Which lesson is evidenced?</strong><br>Distinguish a documented failure from a counterfactual or hindsight opinion.</div></div></div>';
+    $('#atlasModalBody').innerHTML = body;
+    $('#atlasModalBackdrop').hidden = false;
+    $('#atlasModalShell').hidden = false;
+    document.body.style.overflow = 'hidden';
+    $('#atlasModalShell').scrollTop = 0;
+    $('#atlasModalClose').focus();
+  }
+
   function renderHighways() {
     var list = $('#highwaysList');
     if (!list || typeof HIGHWAYS === 'undefined') return;
