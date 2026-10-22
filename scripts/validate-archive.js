@@ -33,8 +33,9 @@ check(/OPERATIONS_ATLAS/.test(campaigns) && /OPERATIONS_ATLAS/.test(app), 'Opera
 const scripts = [...html.matchAll(/<script\s+src="([^"]+)"/g)].map((match) => match[1]);
 const dataPos = scripts.indexOf('data.js'); const campaignsPos = scripts.indexOf('campaigns.js'); const appPos = scripts.indexOf('app.js');
 check(dataPos >= 0 && campaignsPos > dataPos && appPos > campaignsPos, 'Script dependency order must be data.js → campaigns.js → app.js.');
-check(/id="campaignSearch"/.test(html) && /id="atlasSearch"/.test(html), 'Campaign and operations search controls are missing.');
+check(/id="campaignSearch"/.test(html) && /id="atlasSearch"/.test(html) && /id="timelineSearch"/.test(html), 'Campaign, operations, or timeline search controls are missing.');
+check(/id="campaignClearFilters"/.test(html) && /id="timelineClearFilters"/.test(html) && /id="atlasClearFilters"/.test(html), 'Each searchable collection should have a clear/reset control.');
 check(/id="globalSearch"/.test(html) && /id="savedOpen"/.test(html), 'Global search or saved-notes utility is missing.');
-check(/KARGIL WAR 1999/i.test(html), 'The dedicated Kargil view must identify its historical scope.');
+check(/id="overview"[^>]*data-view="kargil"[\s\S]{0,800}1999/i.test(html), 'The dedicated Kargil view must identify its historical scope and year.');
 if (failures.length) { console.error(`Archive validation failed (${failures.length}):`); for (const failure of failures) console.error(` - ${failure}`); process.exitCode = 1; }
 else { console.log(`Archive validation passed. ${ids.length} HTML IDs are unique; 7 routes, legacy routing, core controls and script order are present.`); }
