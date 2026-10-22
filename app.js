@@ -692,7 +692,7 @@
     var correct = Number(answerIndex) === q.answer;
     if (correct) quizScore++;
     quizResponses.push({ question: q, chosen: Number(answerIndex), correct: correct });
-    $$('quizOptions [data-quiz-answer]').forEach(function (button) {
+    $$('#quizOptions [data-quiz-answer]').forEach(function (button) {
       var index = Number(button.dataset.quizAnswer);
       button.disabled = true;
       if (index === q.answer) button.classList.add('correct');
@@ -880,12 +880,13 @@
       if (!button) return;
       activePhase = button.dataset.phase;
       timelinePage = 1;
-      $('#phaseFilters .filter-btn').forEach(function (b) { b.classList.toggle('active', b === button); });
+      $$('#phaseFilters .filter-btn').forEach(function (b) { b.classList.toggle('active', b === button); });
       renderTimeline();
     });
     $('#timelineSearch').addEventListener('input', function () { timelinePage = 1; renderTimeline(); });
     $('#timelineClearFilters').addEventListener('click', function () {
       activePhase = 'all';
+      timelinePage = 1;
       $('#timelineSearch').value = '';
       $$('#phaseFilters .filter-btn').forEach(function (button) { button.classList.toggle('active', button.dataset.phase === 'all'); });
       renderTimeline();
@@ -896,7 +897,7 @@
       if (!button) return;
       activeCampaignFilter = button.dataset.campaignFilter;
       campaignPage = 1;
-      $('#campaignFilters [data-campaign-filter]').forEach(function (b) { b.classList.toggle('active', b === button); });
+      $$('#campaignFilters [data-campaign-filter]').forEach(function (b) { b.classList.toggle('active', b === button); });
       renderCampaigns();
     });
     $('#campaignSearch').addEventListener('input', function () { campaignPage = 1; renderCampaigns(); });
@@ -913,7 +914,7 @@
       if (!button) return;
       activeAtlasFilter = button.dataset.atlasFilter;
       atlasPage = 1;
-      $('#atlasFilters [data-atlas-filter]').forEach(function (b) { b.classList.toggle('active', b === button); });
+      $$('#atlasFilters [data-atlas-filter]').forEach(function (b) { b.classList.toggle('active', b === button); });
       renderAtlas();
     });
     $('#atlasSearch').addEventListener('input', function () { atlasPage = 1; renderAtlas(); });
@@ -964,9 +965,11 @@
         if (pageButton.disabled) return;
         var listName = pageButton.dataset.pageList;
         var direction = pageButton.dataset.pageAction === 'next' ? 1 : -1;
-        if (listName === 'timeline') { timelinePage = clampPage(timelinePage + direction, TIMELINE.length, TIMELINE_PAGE_SIZE); renderTimeline(); }
-        else if (listName === 'campaigns') { campaignPage = clampPage(campaignPage + direction, CAMPAIGNS.length, CAMPAIGN_PAGE_SIZE); renderCampaigns(); }
-        else if (listName === 'atlas') { atlasPage = clampPage(atlasPage + direction, OPERATIONS_ATLAS.length, ATLAS_PAGE_SIZE); renderAtlas(); }
+        var pageStatus = document.getElementById(listName + 'PageStatus');
+        var visiblePages = pageStatus ? Number(pageStatus.dataset.pages) : 1;
+        if (listName === 'timeline') { timelinePage = clampPage(timelinePage + direction, visiblePages, 1); renderTimeline(); }
+        else if (listName === 'campaigns') { campaignPage = clampPage(campaignPage + direction, visiblePages, 1); renderCampaigns(); }
+        else if (listName === 'atlas') { atlasPage = clampPage(atlasPage + direction, visiblePages, 1); renderAtlas(); }
         var targetId = listName === 'timeline' ? 'timelineList' : (listName === 'campaigns' ? 'campaignGrid' : 'atlasGrid');
         var pageTarget = document.getElementById(targetId);
         if (pageTarget) pageTarget.scrollIntoView({ behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start' });
