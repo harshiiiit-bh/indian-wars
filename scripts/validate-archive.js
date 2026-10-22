@@ -23,6 +23,7 @@ for (const route of ['home', 'operations-atlas', 'campaigns', 'kargil', 'academy
   check(new RegExp(`data-route="${route}"`).test(html), `Missing primary route control: ${route}`);
 }
 check(/function\s+resolveRoute\s*\(/.test(app), 'Route resolver is missing.');
+check(/Array\.isArray\(storedSavedIds\)/.test(app), 'Saved browser state must be type-checked before filtering to avoid crashing startup.');
 check(/function\s+activateRoute\s*\(/.test(app), 'Route activation is missing.');
 check(/addEventListener\(['"]hashchange['"]/.test(app), 'Hash navigation handler is missing.');
 check(/sectionRouteMap/.test(app), 'Legacy section-to-route map is missing.');
