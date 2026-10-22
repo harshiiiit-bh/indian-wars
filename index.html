@@ -642,6 +642,18 @@ button:not(:disabled):active{transform:translateY(0) scale(.99)}
 .source-card{scroll-margin-top:110px}
 @media(max-width:700px){.top-nav .nav-link{min-height:39px}.section-head{gap:12px}.source-reference-note{font-size:10px}}
 
+
+/* Final interaction polish: make controls legible, tappable and feedback visible above every modal */
+.toast{z-index:500}
+.top-nav .nav-link,.filter-btn,.sector-btn,.chapter-nav-links button,.chapter-nav-links a,.utility-btn{min-height:38px}
+.filter-btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;line-height:1.2}
+.sector-btn{min-height:62px;line-height:1.45}
+.atlas-card-actions button,.campaign-read-btn,.bookmark-btn{min-height:38px}
+.war-study-toc button{min-height:38px}
+.source-bottom{gap:10px;align-items:center;flex-wrap:wrap}
+button,select,input,textarea{font-family:inherit}
+@media(max-width:700px){.top-nav .nav-link,.filter-btn,.chapter-nav-links button,.chapter-nav-links a{min-height:40px}.atlas-card-actions{gap:8px}.atlas-card-actions button{min-height:42px;flex:1 1 auto}}
+
 </style>
 </head>
 <body>
