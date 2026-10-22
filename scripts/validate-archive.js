@@ -54,14 +54,14 @@ check(/function\s+renderPagination\s*\(/.test(app), 'Pagination renderer is miss
 check(['timelinePage', 'campaignPage', 'atlasPage'].every(name => app.includes(name)), 'A result-list page state is missing.');
 check(/data-page-action/.test(app) && /data-page-list/.test(app), 'Previous/Next pagination controls are not handled.');
 const wireEventsStart = app.indexOf('function wireEvents()');
-const delegatedClickStart = app.indexOf("document.addEventListener('click', function (event) {\\n      var pageButton", wireEventsStart);
+const delegatedClickStart = app.indexOf("var pageButton = event.target.closest('[data-page-action][data-page-list]');", wireEventsStart);
 const firstSpecificListener = app.indexOf("window.addEventListener('hashchange'", wireEventsStart);
 check(wireEventsStart >= 0 && delegatedClickStart > wireEventsStart && delegatedClickStart < firstSpecificListener, 'Core delegated click handling must be installed before individual listeners can fail.');
 const initStart = app.indexOf('function init()');
 const wireCall = app.indexOf('wireEvents();', initStart);
 const firstRenderStep = app.indexOf('buildIndex();', initStart);
 check(initStart >= 0 && wireCall > initStart && wireCall < firstRenderStep, 'Button and navigation listeners must be attached before archive rendering begins.');
-check(/var routeButton = event\\.target\\.closest\\('\\[data-route\\]'\\)/.test(app), 'Global delegated route-button handling is missing.');
+check(app.includes("var routeButton = event.target.closest('[data-route]');"), 'Global delegated route-button handling is missing.');
 
 check(/function\s+prepareDynamicAnchor\s*\(/.test(app), 'Dynamic list anchor resolver is missing.');
 check(/timeline-event-'\) === 0\) return 'kargil-timeline'/.test(app) && /campaign-card-'\) === 0\) return 'campaigns'/.test(app) && /atlas-card-'\) === 0\) return 'operations-atlas'/.test(app), 'Direct list-item hashes must resolve to their destination views.');
