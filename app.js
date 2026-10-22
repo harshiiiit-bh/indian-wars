@@ -901,6 +901,34 @@
   }
 
   function wireEvents() {
+    document.addEventListener('click', function (event) {
+      var pageButton = event.target.closest('[data-page-action][data-page-list]');
+      if (pageButton) {
+        if (pageButton.disabled) return;
+        var listName = pageButton.dataset.pageList;
+        var direction = pageButton.dataset.pageAction === 'next' ? 1 : -1;
+        var pageStatus = document.getElementById(listName + 'PageStatus');
+        var visiblePages = pageStatus ? Number(pageStatus.dataset.pages) : 1;
+        if (listName === 'timeline') { timelinePage = clampPage(timelinePage + direction, visiblePages, 1); renderTimeline(); }
+        else if (listName === 'campaigns') { campaignPage = clampPage(campaignPage + direction, visiblePages, 1); renderCampaigns(); }
+        else if (listName === 'atlas') { atlasPage = clampPage(atlasPage + direction, visiblePages, 1); renderAtlas(); }
+        var targetId = listName === 'timeline' ? 'timelineList' : (listName === 'campaigns' ? 'campaignGrid' : 'atlasGrid');
+        var pageTarget = document.getElementById(targetId);
+        if (pageTarget) pageTarget.scrollIntoView({ behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start' });
+        return;
+      }
+      var jumpButton = event.target.closest('[data-jump]');
+      if (jumpButton) { sectionJump(jumpButton.dataset.jump); return; }
+      var routeButton = event.target.closest('[data-route]');
+      if (routeButton) { navigateRoute(routeButton.dataset.route); return; }
+      var saveBtn = event.target.closest('[data-save-id]');
+      if (saveBtn) { toggleSaved(saveBtn.dataset.saveId); return; }
+      var operationBtn = event.target.closest('[data-open-operation]');
+      if (operationBtn) { openOperationDetail(operationBtn.dataset.openOperation); return; }
+      var openBtn = event.target.closest('[data-open-id]');
+      if (openBtn) { var id = openBtn.dataset.openId; closeVault(); openIndexed(id); }
+    });
+
     window.addEventListener('hashchange', handleLocationChange);
     window.addEventListener('popstate', handleLocationChange);
     var navMore = $('#navMore');
@@ -994,33 +1022,7 @@
       renderLeaders();
     });
 
-    document.addEventListener('click', function (event) {
-      var pageButton = event.target.closest('[data-page-action][data-page-list]');
-      if (pageButton) {
-        if (pageButton.disabled) return;
-        var listName = pageButton.dataset.pageList;
-        var direction = pageButton.dataset.pageAction === 'next' ? 1 : -1;
-        var pageStatus = document.getElementById(listName + 'PageStatus');
-        var visiblePages = pageStatus ? Number(pageStatus.dataset.pages) : 1;
-        if (listName === 'timeline') { timelinePage = clampPage(timelinePage + direction, visiblePages, 1); renderTimeline(); }
-        else if (listName === 'campaigns') { campaignPage = clampPage(campaignPage + direction, visiblePages, 1); renderCampaigns(); }
-        else if (listName === 'atlas') { atlasPage = clampPage(atlasPage + direction, visiblePages, 1); renderAtlas(); }
-        var targetId = listName === 'timeline' ? 'timelineList' : (listName === 'campaigns' ? 'campaignGrid' : 'atlasGrid');
-        var pageTarget = document.getElementById(targetId);
-        if (pageTarget) pageTarget.scrollIntoView({ behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start' });
-        return;
-      }
-      var jumpButton = event.target.closest('[data-jump]');
-      if (jumpButton) { sectionJump(jumpButton.dataset.jump); return; }
-      var routeButton = event.target.closest('[data-route]');
-      if (routeButton) { navigateRoute(routeButton.dataset.route); return; }
-      var saveBtn = event.target.closest('[data-save-id]');
-      if (saveBtn) { toggleSaved(saveBtn.dataset.saveId); return; }
-      var operationBtn = event.target.closest('[data-open-operation]');
-      if (operationBtn) { openOperationDetail(operationBtn.dataset.openOperation); return; }
-      var openBtn = event.target.closest('[data-open-id]');
-      if (openBtn) { var id = openBtn.dataset.openId; closeVault(); openIndexed(id); }
-    });
+
 
     $('#savedOpen').addEventListener('click', openVault);
     $('#savedClose').addEventListener('click', closeVault);
@@ -1082,6 +1084,7 @@
 
   function init() {
     addSearchButton();
+    wireEvents();
     buildIndex();
     renderTimeline();
     renderCampaigns();
@@ -1096,7 +1099,6 @@
     renderVault();
     renderQuizHome();
     updateHomeMetrics();
-    wireEvents();
     initOperationsMap();
     handleLocationChange();
     var stats = $$('.metric strong');
