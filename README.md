@@ -44,7 +44,7 @@ For recent or contested episodes, distinguish an official statement from indepen
 
 ## Navigation and usability
 
-The homepage introduces the whole archive and does not lead with Kargil-specific metrics. Kargil remains a focused case-study destination; the Operations Atlas and Campaign Library open as separate views so visitors do not need to scroll through the entire archive. Navigation uses hash routes compatible with GitHub Pages. Legacy links such as #timeline, #theatre, #overview and #atlas resolve into the correct destination. Browser Back/Forward follow route changes, and the map refreshes after the Operations view becomes visible.
+The homepage introduces the whole archive and does not lead with Kargil-specific metrics. Kargil remains a focused case-study destination, with separate Briefing, Timeline, Terrain, Operations and People views. The Operations Atlas, Campaign Library, Academy, Analysis and Sources open as distinct views, rather than a single document users must scroll through. The timeline, campaign and operation result lists are paginated; category/search changes return to page one. Navigation uses hash routes compatible with GitHub Pages. Legacy links such as #timeline, #theatre, #overview and #atlas resolve into the correct destination. Browser Back/Forward follow route changes, and the map refreshes after the Operations view becomes visible.
 
 Run the structural regression checks from a local checkout with Node.js:
 
