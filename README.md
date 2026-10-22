@@ -21,7 +21,8 @@ This is a curated open-source index of major publicly documented missions, not a
 - Kargil War 1999 deep-dive: chronology, sector profiles, operations, leadership, gallantry records, aftermath, and comparative analysis.
 - Campaign library: 1947–49, 1961, 1962, 1965, 1971, Meghdoot, Cactus and Kargil.
 - Academy mode: 15 multiple-choice questions with immediate explanations, source links, topic filters, missed-question review and local best score.
-- Dark/light modes, mobile layout, reading-progress indicator, field notes and print/save as PDF.
+- Neutral archive Home with distinct hash-routed destinations: Operations, Campaigns, Kargil dossier, Academy, Analysis and Sources.
+- Clear search/filter groups with visible reset controls, global search, dark/light modes, field notes, and print/save as PDF.
 
 ## Important chronology rule
 
@@ -40,6 +41,18 @@ The source register is in SOURCES.md. The site includes official Indian governme
 The Kargil dossier visibly flags that the long-cited 527 Indian fatalities figure differs from the 674 stated on the National War Memorial's Operation Vijay page. Consult each source's wording and scope before citing either number. Official air-operation sortie counts also vary by category definition; those totals should not be treated as interchangeable.
 
 For recent or contested episodes, distinguish an official statement from independently verified facts. Operational details may be disputed, not public, or incomplete. Do not infer classified information.
+
+## Navigation and usability
+
+The homepage introduces the whole archive and does not lead with Kargil-specific metrics. Kargil remains a focused case-study destination; the Operations Atlas and Campaign Library open as separate views so visitors do not need to scroll through the entire archive. Navigation uses hash routes compatible with GitHub Pages. Legacy links such as #timeline, #theatre, #overview and #atlas resolve into the correct destination. Browser Back/Forward follow route changes, and the map refreshes after the Operations view becomes visible.
+
+Run the structural regression checks from a local checkout with Node.js:
+
+```sh
+node scripts/validate-archive.js
+```
+
+The validator checks unique HTML IDs, route controls and view groups, legacy routing hooks, key interactive elements, and script load order.
 
 ## Technical stack
 
