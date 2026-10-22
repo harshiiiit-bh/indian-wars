@@ -24,6 +24,7 @@ jobs:
         run: |
           node --check app.js
           node --check campaigns.js
+          node --check war-studies.js
           node --check data.js
           node --check scripts/validate-archive.js
       - name: Validate archive structure
