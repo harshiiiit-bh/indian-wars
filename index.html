@@ -437,6 +437,12 @@ body.light-mode .atlas-card{background:linear-gradient(150deg,#fff,#f4f7ef)}
 .nav-more-panel .nav-link{text-align:left;width:100%}
 .utility-btn{padding:8px 10px;font-size:11px;gap:6px}
 .utility-btn .label{display:inline!important}
+.kargil-chapter-nav{display:flex;align-items:center;justify-content:space-between;gap:18px;padding:15px 16px;margin:0 0 12px;border:1px solid var(--line);border-radius:15px;background:var(--surface)}
+.chapter-nav-heading{flex:0 0 auto;display:grid;gap:4px}
+.chapter-nav-heading strong{font:600 14px "Space Grotesk",sans-serif;letter-spacing:-.02em}
+.chapter-nav-links{display:flex;gap:5px;flex-wrap:wrap;justify-content:flex-end}
+.chapter-nav-links button{background:var(--surface2);color:var(--muted);border:1px solid var(--line);border-radius:9px;padding:8px 10px;font-size:11px;font-weight:600;cursor:pointer}
+.chapter-nav-links button:hover,.chapter-nav-links button:focus-visible{color:var(--text);border-color:var(--line2);background:var(--surface3)}
 .route-heading{margin:8px 0 0}
 body[data-route="home"] .footer{margin-top:42px}
 @media(max-width:1100px){
@@ -452,7 +458,7 @@ body[data-route="home"] .footer{margin-top:42px}
  html{scroll-padding-top:155px}
  .topbar{height:auto;min-height:0;flex-wrap:wrap;gap:8px;padding-top:10px;padding-bottom:9px}
  .brand{order:1;min-width:0;flex:1 1 auto}
- .top-actions{order:2;margin-left:auto;gap:4px;flex:0 0 auto}
+ .top-actions{order:2;margin-left:0;gap:4px;flex:1 0 100%;justify-content:space-between}
  .top-actions .label{display:inline!important}
  .utility-btn{min-height:34px;padding:6px 7px;font-size:10px;gap:4px}
  .top-nav{order:3;position:static;top:auto;left:auto;right:auto;flex:1 0 100%;width:100%;padding:3px 0 0;background:transparent;border:0;overflow-x:auto;justify-content:flex-start}
@@ -465,6 +471,8 @@ body[data-route="home"] .footer{margin-top:42px}
  .home-visual svg{max-height:225px}
  .home-section-heading{align-items:start;flex-direction:column;gap:8px}
  .home-section-heading p{max-width:unset}
+ .kargil-chapter-nav{align-items:start;flex-direction:column;gap:12px}
+ .chapter-nav-links{justify-content:flex-start}
  .home-destination-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
  .home-destination,.home-destination-feature,.home-destination:nth-child(2),.home-destination:nth-child(3){grid-column:span 1}
  .home-destination-feature{grid-column:span 2}
@@ -634,6 +642,19 @@ body[data-route="home"] .footer{margin-top:42px}
       <div class="metric"><strong>527</strong><span>Long-cited Indian fatalities†</span></div>
       <div class="metric"><strong>4</strong><span>Param Vir Chakra recipients</span></div>
       <div class="metric"><strong>3</strong><span>Army · Air Force · Navy operations</span></div>
+    </div>
+
+    <div class="kargil-chapter-nav" data-view="kargil" hidden aria-label="Kargil dossier chapters">
+      <div class="chapter-nav-heading"><div class="smallcaps">KARGIL WAR / 1999</div><strong>Jump to a chapter</strong></div>
+      <div class="chapter-nav-links">
+        <button type="button" data-jump="overview-brief">Briefing</button>
+        <button type="button" data-jump="timeline">Timeline</button>
+        <button type="button" data-jump="theatre">Terrain</button>
+        <button type="button" data-jump="operations">Operations</button>
+        <button type="button" data-jump="people">People</button>
+        <button type="button" data-jump="intelligence">Analysis</button>
+        <button type="button" data-jump="sources">Sources</button>
+      </div>
     </div>
 
     <section class="section" id="overview-brief" data-view="kargil" hidden>
@@ -825,7 +846,7 @@ body[data-route="home"] .footer{margin-top:42px}
     </section>
 
     <section class="section" id="sources" data-view="sources" hidden>
-      <div class="section-head"><div><div class="kicker">07 / Evidence desk</div><h2>Sources, not just summaries.</h2></div><p>Primary and official references first, followed by context from institutions that preserve the diplomatic record.</p></div>
+      <div class="section-head"><div><div class="kicker">Kargil / Evidence desk</div><h2>Sources, not just summaries.</h2></div><p>This in-page source collection focuses on Kargil. The Operations Atlas links sources inside each dossier; the <a href="https://github.com/harshiiiit-bh/indian-wars/blob/main/SOURCES.md" target="_blank" rel="noopener noreferrer">full source register ↗</a> covers the wider catalogue.</p></div>
       <div class="caveat"><div class="warn">!</div><div><h3>Casualty figures vary by source and scope.</h3><p>This dossier retains the long-cited figure of 527 Indian fatalities in the Kargil War. The National War Memorial's Operation Vijay page reports 674 Indian soldiers lost during the operation. Those figures should not be silently treated as identical: check each source's scope and wording before quoting a number.</p></div></div>
       <div class="caveat"><div class="warn">↗</div><div><h3>Sortie counts are category-dependent.</h3><p>Government summaries use categories such as strike, reconnaissance/electronic intelligence, escort, helicopter, air transport, and casualty evacuation. These category totals are not necessarily comparable with an all-missions sortie count from a different account.</p></div></div>
       <div class="grid grid-3" style="margin:18px 0">
