@@ -296,6 +296,29 @@
     });
   }
 
+  function clampPage(currentPage, totalItems, pageSize) {
+    var totalPages = Math.max(1, Math.ceil(totalItems / pageSize));
+    return Math.max(1, Math.min(currentPage, totalPages));
+  }
+
+  function renderPagination(containerId, listName, currentPage, totalItems, pageSize) {
+    var container = $('#' + containerId);
+    if (!container) return 1;
+    var totalPages = Math.max(1, Math.ceil(totalItems / pageSize));
+    currentPage = Math.max(1, Math.min(currentPage, totalPages));
+    if (totalPages <= 1) {
+      container.hidden = true;
+      container.innerHTML = '';
+      return 1;
+    }
+    container.hidden = false;
+    container.innerHTML =
+      '<button type="button" data-page-action="previous" data-page-list="' + listName + '" aria-label="Previous page"' + (currentPage <= 1 ? ' disabled' : '') + '><span aria-hidden="true">←</span> Previous</button>' +
+      '<span class="pagination-status" id="' + listName + 'PageStatus" data-page="' + currentPage + '" data-pages="' + totalPages + '" aria-live="polite">Page ' + currentPage + ' of ' + totalPages + ' · ' + totalItems + ' results</span>' +
+      '<button type="button" data-page-action="next" data-page-list="' + listName + '" aria-label="Next page"' + (currentPage >= totalPages ? ' disabled' : '') + '>Next <span aria-hidden="true">→</span></button>';
+    return currentPage;
+  }
+
   function renderTimeline() {
     var list = $('#timelineList');
     var query = ($('#timelineSearch') ? $('#timelineSearch').value : '').trim().toLowerCase();
