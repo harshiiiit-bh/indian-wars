@@ -53,5 +53,8 @@ for (const id of ['timelinePagination', 'campaignPagination', 'atlasPagination']
 check(/function\s+renderPagination\s*\(/.test(app), 'Pagination renderer is missing.');
 check(['timelinePage', 'campaignPage', 'atlasPage'].every(name => app.includes(name)), 'A result-list page state is missing.');
 check(/data-page-action/.test(app) && /data-page-list/.test(app), 'Previous/Next pagination controls are not handled.');
+check(!/^\s*\$\([^;\n]+\)\.forEach/m.test(app), 'A single-element query is incorrectly used as a collection.');
+check((app.match(/var pageItems = (?:filtered|items)\.slice\(/g) || []).length >= 3, 'The three paginated lists must render only the current page.');
+check(/timelinePage = 1;[\s\S]{0,100}renderTimeline\(\)/.test(app) && /campaignPage = 1;[\s\S]{0,100}renderCampaigns\(\)/.test(app) && /atlasPage = 1;[\s\S]{0,100}renderAtlas\(\)/.test(app), 'Search/filter changes should reset result lists to page one.');
 if (failures.length) { console.error(`Archive validation failed (${failures.length}):`); for (const failure of failures) console.error(` - ${failure}`); process.exitCode = 1; }
 else { console.log(`Archive validation passed. ${ids.length} HTML IDs are unique; 7 routes, legacy routing, core controls and script order are present.`); }
