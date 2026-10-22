@@ -100,5 +100,9 @@ for (const field of ['context:', 'commanders:', 'phases:', 'timeline:', 'plannin
 }
 check((read('war-studies.js').match(/campaignId: "/g) || []).length >= 8, 'The in-page war-study library should cover all eight flagship campaigns.');
 check(app.includes('data-study-complete') && app.includes('iw-studied-wars'), 'Reading progress must be savable locally.');
+
+check(html.includes('.kargil-chapter-nav[hidden]{display:none!important}'), 'The Kargil chapter bar must be fully hidden on unrelated routes such as Academy.');
+check(app.includes('function findWarStudyForAtlasOperation('), 'Operations Atlas is missing cross-links to relevant first-party war studies.');
+check(app.includes('data-related-study'), 'Linked operation dossiers must identify their expanded on-site study action.');
 if (failures.length) { console.error(`Archive validation failed (${failures.length}):`); for (const failure of failures) console.error(` - ${failure}`); process.exitCode = 1; }
 else { console.log(`Archive validation passed. ${ids.length} HTML IDs are unique; 7 routes, legacy routing, core controls and script order are present.`); }
