@@ -627,6 +627,21 @@ body.light-mode .atlas-compare-table thead th{background:var(--surface2)}
 @media(prefers-reduced-motion:reduce){.war-study-shell{scroll-behavior:auto}}
 
 .kargil-chapter-nav[hidden]{display:none!important}
+/* Reliable controls and in-page citation presentation */
+button{touch-action:manipulation}
+button:focus-visible,a:focus-visible,select:focus-visible,input:focus-visible,textarea:focus-visible,summary:focus-visible{outline:2px solid var(--lime);outline-offset:3px}
+button:disabled,[aria-disabled="true"]{cursor:not-allowed!important;opacity:.5}
+button:not(:disabled):active{transform:translateY(0) scale(.99)}
+[data-route],.filter-btn,.sector-btn,.side-btn,.atlas-view-btn,.chapter-nav-links a,.war-study-toc button{touch-action:manipulation}
+.source-reference-note{padding:10px 12px;border-left:2px solid var(--gold);background:var(--surface);border-radius:0 8px 8px 0;color:var(--muted);font-size:11px;line-height:1.7}
+.source-local-note{display:inline-flex;align-items:center;gap:6px;color:var(--muted);font:10px "DM Mono",monospace}
+.source-local-note::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--lime)}
+.war-study-source-local{border-top:1px solid var(--line);padding-top:9px;margin-top:auto;color:var(--muted);font:9px/1.7 "DM Mono",monospace}
+.quiz-source-note{margin-top:10px;padding:9px 11px;border:1px solid var(--line);border-radius:8px;color:var(--muted);font-size:11px;line-height:1.65}
+.atlas-image-provenance{display:block;margin-top:6px;color:var(--muted);font-size:10px;line-height:1.6}
+.source-card{scroll-margin-top:110px}
+@media(max-width:700px){.top-nav .nav-link{min-height:39px}.section-head{gap:12px}.source-reference-note{font-size:10px}}
+
 </style>
 </head>
 <body>
@@ -1009,7 +1024,7 @@ body.light-mode .atlas-compare-table thead th{background:var(--surface2)}
     </section>
 
     <section class="section" id="sources" data-view="sources" hidden>
-      <div class="section-head"><div><div class="kicker">Kargil / Evidence desk</div><h2>Sources, not just summaries.</h2></div><p>This in-page source collection focuses on Kargil. The Operations Atlas links sources inside each dossier; the <a href="https://github.com/harshiiiit-bh/indian-wars/blob/main/SOURCES.md" target="_blank" rel="noopener noreferrer">full source register ↗</a> covers the wider catalogue.</p></div>
+      <div class="section-head"><div><div class="kicker">Kargil / Evidence desk</div><h2>Sources, not just summaries.</h2></div><p>This in-page evidence desk focuses on Kargil. The War Studies Library and Operations Atlas include their own source notes; this register keeps publisher, title, date, and what each reference supports on this website.</p></div>
       <div class="caveat"><div class="warn">!</div><div><h3>Casualty figures vary by source and scope.</h3><p>This dossier retains the long-cited figure of 527 Indian fatalities in the Kargil War. The National War Memorial's Operation Vijay page reports 674 Indian soldiers lost during the operation. Those figures should not be silently treated as identical: check each source's scope and wording before quoting a number.</p></div></div>
       <div class="caveat"><div class="warn">↗</div><div><h3>Sortie counts are category-dependent.</h3><p>Government summaries use categories such as strike, reconnaissance/electronic intelligence, escort, helicopter, air transport, and casualty evacuation. These category totals are not necessarily comparable with an all-missions sortie count from a different account.</p></div></div>
       <div class="grid grid-3" style="margin:18px 0">
@@ -1017,23 +1032,23 @@ body.light-mode .atlas-compare-table thead th{background:var(--surface2)}
           <div class="smallcaps">Official IAF retrospective · 2024</div>
           <h3 style="font:600 34px 'Space Grotesk';color:var(--lime);margin:12px 0 5px">5,000</h3>
           <p><strong style="color:var(--text)">Approximate strike missions</strong> reported by the Ministry of Defence's 2024 Kargil commemoration release, alongside separate reconnaissance/ELINT, escort, and helicopter sortie categories.</p>
-          <p style="margin-top:12px"><a class="inline-link" href="https://www.pib.gov.in/PressReleasePage.aspx?PRID=2033075&lang=2&reg=48" target="_blank" rel="noopener noreferrer">Read the PIB source ↗</a></p>
+          <p class="source-reference-note"><strong>In-page reference:</strong> Ministry of Defence retrospective release (2024). The sortie categories and scope note are summarised above.</p>
         </article>
         <article class="card">
           <div class="smallcaps">Diplomatic record · 4 July 1999</div>
           <h3 style="font:600 21px 'Space Grotesk';margin:12px 0 8px">Restore the Line of Control</h3>
           <p>The contemporaneous Clinton–Sharif joint statement tied de-escalation to restoration of the LoC and pointed back to the Lahore dialogue as the bilateral forum for outstanding issues.</p>
-          <p style="margin-top:12px"><a class="inline-link" href="https://clintonwhitehouse6.archives.gov/1999/07/1999-07-04-joint-statement-by-president-and-pakistan-prime-minister.html" target="_blank" rel="noopener noreferrer">Read the archived statement ↗</a></p>
+          <p class="source-reference-note"><strong>In-page reference:</strong> Clinton–Sharif joint statement, 4 July 1999. The record is summarised above as a contemporaneous diplomatic milestone.</p>
         </article>
         <article class="card">
           <div class="smallcaps">After-action record</div>
           <h3 style="font:600 21px 'Space Grotesk';margin:12px 0 8px">Kargil Review Committee</h3>
           <p>The parliamentary catalogue lists the Committee report, its executive summary, and the Government's report on action initiated in response—use these for claims about institutional findings and reforms.</p>
-          <p style="margin-top:12px"><a class="inline-link" href="https://elibrary.sansad.in/items/94154a2c-a144-4ab4-a8bc-94c76e834c04" target="_blank" rel="noopener noreferrer">Open the Sansad catalogue ↗</a></p>
+          <p class="source-reference-note"><strong>In-page reference:</strong> Sansad eLibrary catalogue for the Kargil Review Committee report, executive summary and action-taken material.</p>
         </article>
       </div>
       <div class="sources-grid" id="sourceGrid"></div>
-      <div class="card" style="margin-top:16px"><div class="card-top"><div><div class="smallcaps">Method / provenance</div><h3 style="margin-top:6px">How to read this archive</h3></div><span class="tag gold">Read critically</span></div><p>Source cards identify the publishing institution and explain what each reference is best used for. The dossier combines structured historical summaries with selected official material. Interpretive claims, disputed details, and differing totals should be checked against the linked original sources. This is an educational research tool, not an official government publication.</p></div>
+      <div class="card" style="margin-top:16px"><div class="card-top"><div><div class="smallcaps">Method / provenance</div><h3 style="margin-top:6px">How to read this archive</h3></div><span class="tag gold">Read critically</span></div><p>Source cards identify the publishing institution and explain what each reference is best used for. The dossier combines structured historical summaries with selected official material. Interpretive claims, disputed details, and differing totals are identified as such within the archive. This is an educational research tool, not an official government publication.</p></div>
     </section>
   </main>
 
