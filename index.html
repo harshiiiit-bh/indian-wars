@@ -563,6 +563,69 @@ body.light-mode .atlas-compare-table thead th{background:var(--surface2)}
 @media(max-width:600px){.atlas-list-view .atlas-card{flex-direction:column}.atlas-list-view .atlas-thumb{width:100%;height:150px;min-height:150px;flex-basis:auto}.atlas-compare-tray{bottom:8px;width:calc(100% - 16px);padding:10px}.atlas-compare-tray-copy .smallcaps{font-size:8px}.atlas-compare-tray-copy strong{font-size:11px}.atlas-compare-tray-actions .quiet-btn{display:none}.atlas-compare-shell{inset:2vh 2vw;padding:0 12px 16px}.atlas-compare-table th,.atlas-compare-table td{padding:10px}.atlas-sort-select{min-width:160px}}
 @media(prefers-reduced-motion:reduce){.atlas-card{transition:none}.atlas-card:hover{transform:none}}
 
+
+/* First-party war-study reader: information first, citations at the end */
+.war-study-backdrop[hidden],.war-study-shell[hidden]{display:none!important}
+.war-study-backdrop{position:fixed;inset:0;z-index:400;background:rgba(0,0,0,.82);backdrop-filter:blur(9px)}
+.war-study-shell{position:fixed;inset:2vh 2.5vw;z-index:410;max-width:1700px;margin:auto;overflow:auto;background:var(--bg2);border:1px solid var(--line2);border-radius:20px;box-shadow:0 30px 120px rgba(0,0,0,.6);padding:0 30px 42px;scroll-behavior:smooth}
+.war-study-topbar{position:sticky;top:0;z-index:12;display:flex;align-items:center;justify-content:space-between;gap:14px;padding:13px 0;background:var(--bg2);border-bottom:1px solid var(--line)}
+.war-study-top-note{display:block;font-size:10px;color:var(--muted);margin-top:3px}
+.war-study-hero{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(240px,.8fr);gap:25px;align-items:end;padding:34px 0 27px;border-bottom:1px solid var(--line)}
+.war-study-hero .kicker{font:10px "DM Mono",monospace;letter-spacing:.15em;text-transform:uppercase;color:var(--lime)}
+.war-study-hero h2{font:700 clamp(34px,5vw,67px)/.99 "Space Grotesk",sans-serif;letter-spacing:-.065em;margin:13px 0}
+.war-study-hero .study-period{font:11px "DM Mono",monospace;color:var(--gold);line-height:1.7}
+.war-study-thesis{max-width:850px;font-size:16px;line-height:1.85;color:var(--muted);margin:15px 0 0}
+.war-study-hero-aside{padding:18px;border:1px solid var(--line);border-radius:15px;background:var(--surface)}
+.war-study-hero-aside .smallcaps{margin-bottom:8px}
+.war-study-stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:13px 0}
+.war-study-stat{padding:10px;border:1px solid var(--line);border-radius:10px;background:var(--bg2)}
+.war-study-stat strong{display:block;font:600 23px "Space Grotesk",sans-serif;color:var(--text)}
+.war-study-stat span{display:block;font:9px/1.45 "DM Mono",monospace;text-transform:uppercase;color:var(--muted);margin-top:4px}
+.war-study-complete{width:100%;justify-content:center;margin-top:5px}
+.war-study-complete.is-complete{border-color:var(--lime);color:var(--lime);background:rgba(216,243,106,.08)}
+.war-study-toc{position:sticky;top:59px;z-index:10;display:flex;gap:7px;overflow-x:auto;padding:12px 0;background:var(--bg2);border-bottom:1px solid var(--line)}
+.war-study-toc button{flex:0 0 auto;min-height:33px;padding:7px 10px;border:1px solid var(--line);border-radius:8px;background:var(--surface);color:var(--muted);font-size:10px;cursor:pointer}
+.war-study-toc button:hover{border-color:var(--lime);color:var(--lime)}
+.war-study-section{padding:28px 0 4px;scroll-margin-top:125px}
+.war-study-section-head{display:flex;align-items:end;justify-content:space-between;gap:14px;margin-bottom:15px}
+.war-study-section-head .smallcaps{color:var(--lime)}
+.war-study-section h3{font:600 clamp(22px,3vw,34px)/1.12 "Space Grotesk",sans-serif;letter-spacing:-.045em;margin:6px 0 0}
+.war-study-prose{max-width:110ch;color:var(--text);font-size:14px;line-height:1.95}
+.war-study-prose p{margin:0 0 14px}
+.war-study-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.war-study-card{min-width:0;padding:17px;border:1px solid var(--line);border-radius:14px;background:var(--surface)}
+.war-study-card h4{font:600 16px/1.35 "Space Grotesk",sans-serif;margin:0 0 8px}
+.war-study-card p{font-size:12px;color:var(--muted);line-height:1.85;margin:0}
+.war-study-date{font:10px "DM Mono",monospace;color:var(--gold);letter-spacing:.04em;margin-bottom:8px}
+.war-study-tag{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);border-radius:6px;padding:4px 7px;color:var(--muted);font:9px "DM Mono",monospace;margin-bottom:10px}
+.war-study-leader{position:relative}
+.war-study-leader .war-study-role{color:var(--gold);font:10px/1.6 "DM Mono",monospace;text-transform:uppercase;margin:0 0 10px}
+.war-study-leader .war-study-leader-note{border-top:1px solid var(--line);padding-top:10px;margin-top:12px;color:var(--text)}
+.war-study-timeline{position:relative;display:grid;gap:0;margin-top:8px}
+.war-study-timeline:before{content:"";position:absolute;left:103px;top:10px;bottom:16px;width:1px;background:var(--line2)}
+.war-study-event{position:relative;display:grid;grid-template-columns:86px 20px minmax(0,1fr);gap:10px;padding:0 0 19px}
+.war-study-event-date{font:10px/1.6 "DM Mono",monospace;text-align:right;color:var(--gold);padding-top:2px}
+.war-study-event-dot{position:relative;z-index:1;width:9px;height:9px;border-radius:50%;margin:5px auto 0;background:var(--lime);box-shadow:0 0 0 4px var(--bg2),0 0 0 5px var(--line2)}
+.war-study-event h4{font:600 15px/1.45 "Space Grotesk",sans-serif;margin:0 0 5px}
+.war-study-event p{font-size:12px;line-height:1.85;color:var(--muted);margin:0}
+.war-study-events-note{padding:10px 12px;border-left:2px solid var(--gold);background:var(--surface);color:var(--muted);font-size:11px;line-height:1.7;margin:5px 0 0}
+.war-study-friction{border-left:2px solid var(--orange)}
+.war-study-friction .war-study-tag{color:var(--orange)}
+.war-study-lesson{border-left:2px solid var(--lime)}
+.war-study-source-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.war-study-source{display:flex;flex-direction:column;gap:9px;padding:15px;border:1px solid var(--line);border-radius:12px;background:var(--surface)}
+.war-study-source h4{font:600 14px/1.45 "Space Grotesk",sans-serif;margin:0}
+.war-study-source p{font-size:11px;color:var(--muted);line-height:1.7;margin:0;flex:1}
+.war-study-source a{color:var(--lime);font-size:11px;font-weight:600}
+.war-study-evidence-note{padding:14px 16px;margin:26px 0 0;border:1px solid var(--line);border-radius:12px;color:var(--muted);font-size:11px;line-height:1.8;background:var(--surface)}
+.campaign-read-btn{min-height:38px;padding:9px 12px!important;border:1px solid var(--lime)!important;border-radius:9px!important;background:var(--lime)!important;color:#101510!important;font:600 11px "DM Mono",monospace!important;cursor:pointer}
+.campaign-source-hint{align-self:center;color:var(--muted);font-size:10px}
+.campaign-card .campaign-study-stats{display:flex;gap:7px;flex-wrap:wrap;margin:12px 0 6px}
+.campaign-card .campaign-study-stats span{border:1px solid var(--line);border-radius:6px;padding:4px 7px;font:9px "DM Mono",monospace;color:var(--muted)}
+@media(max-width:850px){.war-study-hero{grid-template-columns:1fr}.war-study-source-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.war-study-shell{inset:1vh 1vw;padding:0 18px 30px}.war-study-toc{top:55px}}
+@media(max-width:560px){.war-study-grid,.war-study-source-grid{grid-template-columns:1fr}.war-study-shell{padding:0 12px 24px;border-radius:12px}.war-study-hero{padding-top:24px}.war-study-hero h2{font-size:34px}.war-study-stats{grid-template-columns:repeat(3,minmax(0,1fr))}.war-study-stat{padding:7px}.war-study-stat strong{font-size:18px}.war-study-stat span{font-size:8px}.war-study-timeline:before{left:74px}.war-study-event{grid-template-columns:58px 20px minmax(0,1fr);gap:8px}.war-study-event-date{font-size:9px}.war-study-section{padding-top:22px}.war-study-section-head{align-items:start;flex-direction:column}.campaign-read-btn{width:100%}}
+@media(prefers-reduced-motion:reduce){.war-study-shell{scroll-behavior:auto}}
+
 </style>
 </head>
 <body>
@@ -987,6 +1050,14 @@ body.light-mode .atlas-compare-table thead th{background:var(--surface2)}
   <div id="atlasModalBody"></div>
 </section>
 
+<div class="war-study-backdrop" id="warStudyBackdrop" data-close-study hidden></div>
+<section class="war-study-shell" id="warStudyShell" role="dialog" aria-modal="true" aria-labelledby="warStudyTitle" tabindex="-1" hidden>
+  <div class="war-study-topbar">
+    <div><div class="smallcaps">Indian Wars / in-page study reader</div><span class="war-study-top-note">Built for reading · sources cited in each chapter</span></div>
+    <button type="button" class="icon-btn" id="warStudyClose" data-close-study aria-label="Close war study">×</button>
+  </div>
+  <div id="warStudyBody" class="war-study-body"></div>
+</section>
 <div class="atlas-compare-backdrop" id="atlasCompareBackdrop" data-close-comparison hidden></div>
 <section class="atlas-compare-shell" id="atlasCompareShell" role="dialog" aria-modal="true" aria-labelledby="atlasCompareTitle" hidden>
   <div class="atlas-modal-top atlas-compare-header">
@@ -1009,6 +1080,7 @@ body.light-mode .atlas-compare-table thead th{background:var(--surface2)}
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
 <script src="data.js"></script>
 <script src="campaigns.js"></script>
+<script src="war-studies.js"></script>
 <script src="app.js"></script>
 </body>
 </html>
