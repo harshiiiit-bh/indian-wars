@@ -39,6 +39,13 @@
   var activePhase = 'all';
   var activeSector = (typeof SECTORS !== 'undefined' && SECTORS.length) ? SECTORS[0].id : '';
   var activeSide = 'india';
+  var activeCampaignFilter = 'all';
+  var activeQuizTopic = 'all';
+  var quizQuestions = [];
+  var quizPosition = 0;
+  var quizScore = 0;
+  var quizAnswered = false;
+  var quizResponses = [];
   var globalIndex = [];
   var toastTimer = null;
 
@@ -60,6 +67,7 @@
     else { savedIds.add(id); showToast('Added to field notes'); }
     saveIds();
     renderTimeline();
+    renderCampaigns();
     renderSectors();
     renderOperations();
     renderLeaders();
@@ -131,6 +139,9 @@
     SOURCE_LIBRARY.forEach(function (s) {
       globalIndex.push({ id: 'source:' + s.id, type: 'Source archive', title: s.title, detail: s.org + ' · ' + s.summary, target: 'sources', url: s.url, raw: s });
     });
+    if (typeof CAMPAIGNS !== 'undefined') CAMPAIGNS.forEach(function (campaign) {
+      globalIndex.push({ id: 'campaign:' + campaign.id, type: campaign.type === 'war' ? 'War dossier' : 'Operation dossier', title: campaign.title, detail: campaign.period + ' · ' + campaign.theatre + ' · ' + campaign.summary, target: 'campaigns', raw: campaign });
+    });
   }
 
   function renderTimeline() {
@@ -175,6 +186,37 @@
       }).join('') + '</ul>' +
       '<div class="event-foot" style="margin-top:16px">' + bookmarkButton('sector:' + s.id, 'Save sector') +
       '<a class="bookmark-btn" href="' + googleLink('Kargil War ' + s.name + ' battlefield history') + '" target="_blank" rel="noopener noreferrer">↗ Research this sector</a></div>';
+  }
+
+  function renderCampaigns() {
+    var grid = $('#campaignGrid');
+    if (!grid || typeof CAMPAIGNS === 'undefined') return;
+    var query = ($('#campaignSearch') ? $('#campaignSearch').value : '').trim().toLowerCase();
+    var items = CAMPAIGNS.filter(function (campaign) {
+      var byType = activeCampaignFilter === 'all' || campaign.type === activeCampaignFilter;
+      var searchable = [campaign.title, campaign.period, campaign.dates, campaign.theatre, campaign.tag, campaign.summary, campaign.keyPoint, campaign.type].join(' ').toLowerCase();
+      return byType && (!query || searchable.indexOf(query) !== -1);
+    });
+    $('#campaignSummary').textContent = items.length + ' OF ' + CAMPAIGNS.length + ' CAMPAIGNS · SOURCE LINKS INCLUDED';
+    if (!items.length) {
+      grid.innerHTML = '<div class="empty-state campaign-empty">No campaign matches this filter. Try a year, theatre, or operation name.</div>';
+      return;
+    }
+    grid.innerHTML = items.map(function (campaign) {
+      var core = campaign.id === 'kargil-1999';
+      var id = 'campaign:' + campaign.id;
+      var researchQuery = googleLink(campaign.title + ' ' + campaign.period + ' official history');
+      return '<article class="campaign-card' + (core ? ' is-core' : '') + '" id="campaign-card-' + escapeHTML(campaign.id) + '">' +
+        '<div class="card-top"><span class="tag ' + (campaign.type === 'war' ? '' : 'blue') + '">' + escapeHTML(campaign.type === 'war' ? 'War / conflict' : 'Military operation') + '</span><span class="smallcaps">' + escapeHTML(campaign.tag) + '</span></div>' +
+        '<div class="campaign-year">' + escapeHTML(campaign.period) + '</div><h3>' + escapeHTML(campaign.title) + '</h3>' +
+        '<div class="campaign-meta">' + escapeHTML(campaign.dates) + ' · ' + escapeHTML(campaign.theatre) + '</div>' +
+        '<p>' + escapeHTML(campaign.summary) + '</p>' +
+        '<div class="campaign-insight"><span>Why it matters</span>' + escapeHTML(campaign.keyPoint) + '</div>' +
+        '<div class="campaign-links"><a href="' + escapeHTML(campaign.sourceUrl) + '" target="_blank" rel="noopener noreferrer">Primary / official source ↗</a>' +
+        '<a href="' + escapeHTML(campaign.secondaryUrl) + '" target="_blank" rel="noopener noreferrer">Further reading ↗</a>' +
+        (core ? '<button type="button" data-jump="timeline">Open deep-dive dossier ↗</button>' : '<a href="' + researchQuery + '" target="_blank" rel="noopener noreferrer">Web research ↗</a>') +
+        '</div>' + bookmarkButton(id, 'Save campaign') + '</article>';
+    }).join('');
   }
 
   function renderHighways() {
@@ -248,6 +290,98 @@
     }).join('');
   }
 
+  function renderQuizHome() {
+    if (typeof QUIZ_QUESTIONS === 'undefined') return;
+    var questions = QUIZ_QUESTIONS.filter(function (q) { return activeQuizTopic === 'all' || q.topic === activeQuizTopic; });
+    $('#academyQuestionTotal').textContent = questions.length;
+    var best = Number(safeStoreGet('iw-quiz-best:' + activeQuizTopic, '0')) || 0;
+    $('#academyBestScore').textContent = best ? best + '/' + questions.length : '—';
+    $('#quizTopicLabel').textContent = activeQuizTopic === 'all' ? 'Mixed campaign test' : activeQuizTopic;
+  }
+
+  function startQuiz() {
+    if (typeof QUIZ_QUESTIONS === 'undefined') return;
+    quizQuestions = QUIZ_QUESTIONS.filter(function (q) { return activeQuizTopic === 'all' || q.topic === activeQuizTopic; });
+    if (!quizQuestions.length) { showToast('No questions available for this topic yet'); return; }
+    for (var i = quizQuestions.length - 1; i > 0; i--) {
+      var j = Math.floor(Math.random() * (i + 1));
+      var tmp = quizQuestions[i]; quizQuestions[i] = quizQuestions[j]; quizQuestions[j] = tmp;
+    }
+    quizPosition = 0; quizScore = 0; quizAnswered = false; quizResponses = [];
+    $('#quizShell').hidden = false;
+    $('#quizQuestionStage').hidden = false;
+    $('#quizResultStage').hidden = true;
+    $('#quizScoreText').textContent = 'Score: 0';
+    $('#quizTopicLabel').textContent = activeQuizTopic === 'all' ? 'Mixed campaign test' : activeQuizTopic;
+    renderQuizQuestion();
+    $('#quizShell').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  function renderQuizQuestion() {
+    var q = quizQuestions[quizPosition];
+    if (!q) { finishQuiz(); return; }
+    quizAnswered = false;
+    $('#quizQuestionStage').hidden = false;
+    $('#quizResultStage').hidden = true;
+    $('#quizQuestionNumber').textContent = String(quizPosition + 1).padStart(2, '0');
+    $('#quizProgressText').textContent = 'QUESTION ' + (quizPosition + 1) + ' / ' + quizQuestions.length;
+    $('#quizProgressBar').style.width = (((quizPosition) / quizQuestions.length) * 100) + '%';
+    $('#quizTopicMeta').textContent = (q.topic || 'CAMPAIGN').toUpperCase() + ' / FIELD TEST';
+    $('#quizQuestion').textContent = q.question;
+    $('#quizOptions').innerHTML = q.options.map(function (option, i) {
+      return '<button type="button" class="quiz-option" data-quiz-answer="' + i + '"><span class="letter">' + String.fromCharCode(65 + i) + '</span><span>' + escapeHTML(option) + '</span></button>';
+    }).join('');
+    $('#quizFeedback').hidden = true;
+    $('#quizFeedback').className = 'quiz-feedback';
+    $('#quizFeedback').innerHTML = '';
+    $('#quizNext').disabled = true;
+    $('#quizNext').textContent = quizPosition === quizQuestions.length - 1 ? 'See results →' : 'Next question →';
+    $('#quizScoreText').textContent = 'Score: ' + quizScore;
+  }
+
+  function answerQuiz(answerIndex) {
+    if (quizAnswered) return;
+    var q = quizQuestions[quizPosition];
+    if (!q) return;
+    quizAnswered = true;
+    var correct = Number(answerIndex) === q.answer;
+    if (correct) quizScore++;
+    quizResponses.push({ question: q, chosen: Number(answerIndex), correct: correct });
+    $('#quizOptions [data-quiz-answer]').forEach(function (button) {
+      var index = Number(button.dataset.quizAnswer);
+      button.disabled = true;
+      if (index === q.answer) button.classList.add('correct');
+      if (index === Number(answerIndex) && !correct) button.classList.add('wrong');
+    });
+    var feedback = $('#quizFeedback');
+    feedback.hidden = false;
+    feedback.className = 'quiz-feedback ' + (correct ? 'correct' : 'wrong');
+    feedback.innerHTML = '<strong>' + (correct ? '✓ Correct answer' : 'Not quite — review this detail') + '</strong>' +
+      escapeHTML(q.explain) + '<br><a href="' + escapeHTML(q.sourceUrl) + '" target="_blank" rel="noopener noreferrer">' + escapeHTML(q.sourceLabel) + ' ↗</a>';
+    $('#quizScoreText').textContent = 'Score: ' + quizScore;
+    $('#quizNext').disabled = false;
+  }
+
+  function finishQuiz() {
+    $('#quizQuestionStage').hidden = true;
+    $('#quizResultStage').hidden = false;
+    $('#quizProgressText').textContent = 'TEST COMPLETE';
+    $('#quizProgressBar').style.width = '100%';
+    var total = quizQuestions.length;
+    var percent = total ? Math.round(quizScore / total * 100) : 0;
+    var key = 'iw-quiz-best:' + activeQuizTopic;
+    var best = Number(safeStoreGet(key, '0')) || 0;
+    if (quizScore > best) { safeStoreSet(key, String(quizScore)); best = quizScore; }
+    $('#quizResultNumber').textContent = quizScore + ' / ' + total;
+    $('#quizResultTitle').textContent = percent >= 85 ? 'Excellent field awareness.' : percent >= 60 ? 'Solid start. Sharpen the details.' : 'Good first pass. Review the sources.';
+    $('#quizResultText').textContent = percent + '% correct · Best for this topic on this device: ' + best + '/' + total + '. Review missed questions below, then retake the test when ready.';
+    $('#quizReview').innerHTML = quizResponses.filter(function (response) { return !response.correct; }).map(function (response) {
+      var q = response.question;
+      return '<div class="quiz-review-item"><strong>' + escapeHTML(q.question) + '</strong><span class="miss">Your answer: ' + escapeHTML(q.options[response.chosen]) + '</span><br><span class="hit">Correct: ' + escapeHTML(q.options[q.answer]) + '</span><br>' + escapeHTML(q.explain) + '<br><a href="' + escapeHTML(q.sourceUrl) + '" target="_blank" rel="noopener noreferrer">' + escapeHTML(q.sourceLabel) + ' ↗</a></div>';
+    }).join('') || '<div class="empty-state" style="margin-top:15px">Perfect run — no missed answers. Open the source links and challenge yourself with another topic.</div>';
+    renderQuizHome();
+  }
+
   function findEntry(id) {
     var indexed = globalIndex.find(function (entry) { return entry.id === id; });
     if (indexed) return indexed;
@@ -257,6 +391,10 @@
     }
     if (id.indexOf('operation:') === 0 && typeof OPERATIONS !== 'undefined') {
       var oi = Number(id.split(':')[1]); if (OPERATIONS[oi]) return { id: id, type: 'Operation', title: OPERATIONS[oi].name, detail: OPERATIONS[oi].who, target: 'operations', raw: OPERATIONS[oi] };
+    }
+    if (id.indexOf('campaign:') === 0 && typeof CAMPAIGNS !== 'undefined') {
+      var campaign = CAMPAIGNS.find(function (c) { return 'campaign:' + c.id === id; });
+      if (campaign) return { id: id, type: campaign.type === 'war' ? 'War dossier' : 'Operation dossier', title: campaign.title, detail: campaign.summary, target: 'campaigns', raw: campaign };
     }
     return null;
   }
@@ -386,6 +524,30 @@
       renderTimeline();
     });
     $('#timelineSearch').addEventListener('input', renderTimeline);
+    $('#campaignFilters').addEventListener('click', function (event) {
+      var button = event.target.closest('[data-campaign-filter]');
+      if (!button) return;
+      activeCampaignFilter = button.dataset.campaignFilter;
+      $('#campaignFilters [data-campaign-filter]').forEach(function (b) { b.classList.toggle('active', b === button); });
+      renderCampaigns();
+    });
+    $('#campaignSearch').addEventListener('input', renderCampaigns);
+    $('#quizTopicFilters').addEventListener('click', function (event) {
+      var button = event.target.closest('[data-quiz-topic]');
+      if (!button) return;
+      activeQuizTopic = button.dataset.quizTopic;
+      $('#quizTopicFilters [data-quiz-topic]').forEach(function (b) { b.classList.toggle('active', b === button); });
+      $('#quizShell').hidden = true;
+      renderQuizHome();
+    });
+    $('#quizStart').addEventListener('click', startQuiz);
+    $('#quizOptions').addEventListener('click', function (event) {
+      var button = event.target.closest('[data-quiz-answer]');
+      if (button) answerQuiz(button.dataset.quizAnswer);
+    });
+    $('#quizNext').addEventListener('click', function () { if (!quizAnswered) return; quizPosition++; renderQuizQuestion(); });
+    $('#quizRetake').addEventListener('click', startQuiz);
+    $('#quizBackToTopics').addEventListener('click', function () { $('#quizShell').hidden = true; $('#quizStart').focus(); });
     $('#sectorSelector').addEventListener('click', function (event) {
       var button = event.target.closest('[data-sector]');
       if (!button) return;
@@ -410,7 +572,7 @@
     $('#saveNotes').addEventListener('click', function () { safeStoreSet('iw-field-notes', $('#fieldNotes').value); showToast('Field notes saved in this browser'); });
     $('#clearSaved').addEventListener('click', function () {
       if (!savedIds.size) { showToast('Your saved list is already empty'); return; }
-      savedIds.clear(); saveIds(); renderVault(); renderTimeline(); renderSources(); renderSectors(); renderOperations(); renderLeaders(); renderHeroes(); renderReforms(); showToast('Saved items cleared');
+      savedIds.clear(); saveIds(); renderVault(); renderTimeline(); renderSources(); renderSectors(); renderOperations(); renderCampaigns(); renderLeaders(); renderHeroes(); renderReforms(); showToast('Saved items cleared');
     });
     $('#themeToggle').addEventListener('click', function () {
       document.body.classList.toggle('light-mode');
@@ -440,7 +602,7 @@
       var scrollable = document.documentElement.scrollHeight - window.innerHeight;
       var percent = scrollable > 0 ? (window.scrollY / scrollable) * 100 : 0;
       $('#readingProgress').style.width = Math.min(100, Math.max(0, percent)) + '%';
-      var sections = ['overview', 'timeline', 'theatre', 'operations', 'people', 'intelligence', 'sources'];
+      var sections = ['overview', 'campaigns', 'timeline', 'theatre', 'operations', 'people', 'academy', 'intelligence', 'sources'];
       var current = 'overview';
       sections.forEach(function (id) { var element = document.getElementById(id); if (element && element.getBoundingClientRect().top < 180) current = id; });
       $$('.nav-link').forEach(function (nav) { nav.classList.toggle('active', nav.dataset.jump === current); });
@@ -455,6 +617,7 @@
     addSearchButton();
     buildIndex();
     renderTimeline();
+    renderCampaigns();
     renderSectors();
     renderHighways();
     renderOperations();
@@ -463,6 +626,7 @@
     renderReforms();
     renderSources();
     renderVault();
+    renderQuizHome();
     wireEvents();
     var stats = $$('.metric strong');
     if (stats.length) stats[0].setAttribute('title', 'Date range from first detection reported on 3 May to official end date on 26 July. Counting conventions vary.');
