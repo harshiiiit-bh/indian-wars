@@ -836,6 +836,12 @@
       renderTimeline();
     });
     $('#timelineSearch').addEventListener('input', renderTimeline);
+    $('#timelineClearFilters').addEventListener('click', function () {
+      activePhase = 'all';
+      $('#timelineSearch').value = '';
+      $$('#phaseFilters .filter-btn').forEach(function (button) { button.classList.toggle('active', button.dataset.phase === 'all'); });
+      renderTimeline();
+    });
 
     $('#campaignFilters').addEventListener('click', function (event) {
       var button = event.target.closest('[data-campaign-filter]');
@@ -845,6 +851,12 @@
       renderCampaigns();
     });
     $('#campaignSearch').addEventListener('input', renderCampaigns);
+    $('#campaignClearFilters').addEventListener('click', function () {
+      activeCampaignFilter = 'all';
+      $('#campaignSearch').value = '';
+      $$('#campaignFilters [data-campaign-filter]').forEach(function (button) { button.classList.toggle('active', button.dataset.campaignFilter === 'all'); });
+      renderCampaigns();
+    });
 
     $('#atlasFilters').addEventListener('click', function (event) {
       var button = event.target.closest('[data-atlas-filter]');
