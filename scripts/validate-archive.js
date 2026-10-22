@@ -116,6 +116,11 @@ check(!app.includes('Open original ↗'), 'The source library must not use outbo
 check(!app.includes('Further web research ↗'), 'Operation dossiers must not route readers away for the main explanation.');
 check(!app.includes('Read source ↗') && !app.includes('Open source ↗'), 'War study and comparison citations must be displayed as in-page reference notes, not outbound links.');
 check(!app.includes('Open image source and licence ↗'), 'Image credits and licence information must be readable without leaving the dossier.');
+check(app.includes("id: 'atlas:' + operation.id"), 'Global search must index complete Operations Atlas dossiers.');
+check(app.includes("id: 'study:' + study.id"), 'Global search must index first-party War Studies content.');
+check(app.includes("item.id.indexOf('study:') === 0"), 'Selecting a War Studies search result must open the on-site study.');
+check(app.includes("item.id.indexOf('campaign:') === 0"), 'Selecting a campaign search result must open its in-page study when available.');
+
 const sourceRendererStart = app.indexOf('function renderSources()');
 const sourceRendererEnd = app.indexOf('function renderQuizHome()', sourceRendererStart);
 check(sourceRendererStart >= 0 && sourceRendererEnd > sourceRendererStart && !app.slice(sourceRendererStart, sourceRendererEnd).includes('<a href="'), 'Source register entries must be presented as local citation cards.');
