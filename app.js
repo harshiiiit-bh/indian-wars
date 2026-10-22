@@ -92,6 +92,10 @@
   var TIMELINE_PAGE_SIZE = 10;
   var CAMPAIGN_PAGE_SIZE = 6;
   var ATLAS_PAGE_SIZE = 9;
+  var ATLAS_COMPARE_LIMIT = 3;
+  var atlasSortMode = 'catalogue';
+  var atlasViewMode = 'cards';
+  var comparisonIds = [];
   var timelinePage = 1;
   var campaignPage = 1;
   var atlasPage = 1;
@@ -472,19 +476,44 @@
       '<g fill="#e9eee7" font-family="DM Mono,monospace" font-size="12" letter-spacing="2"><text x="24" y="34">FIELD DIAGRAM / CONCEPTUAL</text><text x="24" y="272">NOT A HISTORICAL PHOTOGRAPH OR OPERATIONAL MAP</text></g></svg>';
   }
 
+  function sortAtlasItems(items) {
+    var mode = ($('#atlasSort') && $('#atlasSort').value) || atlasSortMode;
+    var ranked = items.map(function (item, index) {
+      var match = String(item.period || '').match(/\b(?:18|19|20|21)\d{2}\b/);
+      return { item: item, index: index, year: match ? Number(match[0]) : null, sources: (item.sources || []).length };
+    });
+    if (mode === 'title') {
+      ranked.sort(function (a, b) { return String(a.item.title || '').localeCompare(String(b.item.title || '')) || a.index - b.index; });
+    } else if (mode === 'sources') {
+      ranked.sort(function (a, b) { return b.sources - a.sources || String(a.item.title || '').localeCompare(String(b.item.title || '')) || a.index - b.index; });
+    } else if (mode === 'newest' || mode === 'oldest') {
+      ranked.sort(function (a, b) {
+        if (a.year === null && b.year !== null) return 1;
+        if (b.year === null && a.year !== null) return -1;
+        if (a.year !== null && b.year !== null && a.year !== b.year) return mode === 'newest' ? b.year - a.year : a.year - b.year;
+        return a.index - b.index;
+      });
+    }
+    return ranked.map(function (entry) { return entry.item; });
+  }
+
   function getAtlasItems() {
     if (typeof OPERATIONS_ATLAS === 'undefined') return [];
     var query = ($('#atlasSearch') ? $('#atlasSearch').value : '').trim().toLowerCase();
-    return OPERATIONS_ATLAS.filter(function (op) {
+    var filtered = OPERATIONS_ATLAS.filter(function (op) {
       var typeMatch = activeAtlasFilter === 'all' || op.type === activeAtlasFilter;
       var searchable = [op.title, op.period, op.type, op.service, op.place, op.scope, op.summary, op.plan, op.execution, op.friction, op.lessons].join(' ').toLowerCase();
       return typeMatch && (!query || searchable.indexOf(query) !== -1);
     });
+    return sortAtlasItems(filtered);
   }
 
   function renderAtlas() {
     var grid = $('#atlasGrid');
     if (!grid || typeof OPERATIONS_ATLAS === 'undefined') return;
+    grid.classList.toggle('atlas-list-view', atlasViewMode === 'list');
+    syncAtlasViewControls();
+    renderAtlasCompareTray();
     var items = getAtlasItems();
     atlasPage = renderPagination('atlasPagination', 'atlas', atlasPage, items.length, ATLAS_PAGE_SIZE);
     var totalPages = Math.max(1, Math.ceil(items.length / ATLAS_PAGE_SIZE));
@@ -502,6 +531,8 @@
         ? '<img loading="lazy" src="' + escapeHTML(op.image.src) + '" alt="' + escapeHTML(op.image.alt) + '" onerror="this.remove();">'
         : atlasArtwork(op);
       var dateLabel = op.period + ' · ' + op.place;
+      var isCompared = comparisonIds.indexOf(op.id) !== -1;
+      var compareDisabled = !isCompared && comparisonIds.length >= ATLAS_COMPARE_LIMIT;
       return '<article class="atlas-card" id="atlas-card-' + escapeHTML(op.id) + '">' +
         '<div class="atlas-thumb">' + imageBlock + '<span class="thumb-label">' + escapeHTML(op.type === 'research' ? 'EVIDENCE INDEX' : atlasTypeLabel(op.type)) + '</span></div>' +
         '<div class="atlas-card-body"><div class="atlas-card-tags"><span class="tag ' + (op.type === 'hadr' || op.type === 'evacuation' ? 'blue' : op.type === 'internal-security' ? 'orange' : op.type === 'peacekeeping' ? 'gold' : '') + '">' + escapeHTML(atlasTypeLabel(op.type)) + '</span>' +
@@ -509,12 +540,150 @@
         '<h3>' + escapeHTML(op.title) + '</h3><div class="atlas-card-meta">' + escapeHTML(dateLabel) + '</div>' +
         '<p>' + escapeHTML(op.summary) + '</p>' +
         '<div class="atlas-card-tags"><span class="atlas-chip">' + escapeHTML(op.service) + '</span><span class="atlas-chip">' + (op.sources || []).length + ' linked sources</span></div>' +
-        '<div class="atlas-card-actions"><button class="primary" type="button" data-open-operation="' + escapeHTML(op.id) + '">Open full dossier ↗</button>' +
+        '<div class="atlas-card-actions"><button type="button" class="' + (isCompared ? 'compare-selected' : '') + '" data-compare-operation="' + escapeHTML(op.id) + '" aria-pressed="' + (isCompared ? 'true' : 'false') + '"' + (compareDisabled ? ' disabled' : '') + '>' + (isCompared ? '✓ Selected' : '＋ Compare') + '</button>' +
+        '<button class="primary" type="button" data-open-operation="' + escapeHTML(op.id) + '">Open full dossier ↗</button>' +
         bookmarkButton('atlas:' + op.id, 'Save') + '</div></div></article>';
     }).join('');
     renderAtlasMap();
   }
-  function initOperationsMap() {
+function syncAtlasViewControls() {
+    var cards = $('#atlasViewCards');
+    var list = $('#atlasViewList');
+    if (cards) { cards.classList.toggle('active', atlasViewMode === 'cards'); cards.setAttribute('aria-pressed', atlasViewMode === 'cards' ? 'true' : 'false'); }
+    if (list) { list.classList.toggle('active', atlasViewMode === 'list'); list.setAttribute('aria-pressed', atlasViewMode === 'list' ? 'true' : 'false'); }
+  }
+
+  function getComparedOperations() {
+    if (typeof OPERATIONS_ATLAS === 'undefined') return [];
+    return comparisonIds.map(function (id) {
+      return OPERATIONS_ATLAS.find(function (op) { return op.id === id; });
+    }).filter(Boolean);
+  }
+
+  function renderAtlasCompareTray() {
+    var tray = $('#atlasCompareTray');
+    if (!tray) return;
+    var selected = getComparedOperations();
+    tray.hidden = selected.length === 0;
+    var count = $('#atlasCompareCount');
+    var selectedWrap = $('#atlasCompareSelected');
+    var runButton = $('#atlasCompareRun');
+    var clearButton = $('#atlasCompareClear');
+    if (count) count.textContent = selected.length + ' / ' + ATLAS_COMPARE_LIMIT + ' selected';
+    if (selectedWrap) {
+      selectedWrap.innerHTML = selected.map(function (op) {
+        return '<span class="atlas-compare-chip"><span title="' + escapeHTML(op.title) + '">' + escapeHTML(op.title) + '</span><button type="button" data-remove-compare="' + escapeHTML(op.id) + '" aria-label="Remove ' + escapeHTML(op.title) + ' from comparison" title="Remove">×</button></span>';
+      }).join('');
+    }
+    if (runButton) {
+      runButton.disabled = selected.length < 2;
+      runButton.textContent = selected.length < 2 ? 'Select 2 to compare' : 'Compare ' + selected.length + ' dossiers';
+    }
+    if (clearButton) clearButton.disabled = selected.length === 0;
+  }
+
+  function toggleAtlasCompare(operationId) {
+    var position = comparisonIds.indexOf(operationId);
+    if (position >= 0) {
+      comparisonIds.splice(position, 1);
+    } else {
+      if (comparisonIds.length >= ATLAS_COMPARE_LIMIT) {
+        showToast('Compare up to ' + ATLAS_COMPARE_LIMIT + ' dossiers at once. Remove one to add another.');
+        return;
+      }
+      var exists = typeof OPERATIONS_ATLAS !== 'undefined' && OPERATIONS_ATLAS.some(function (op) { return op.id === operationId; });
+      if (!exists) return;
+      comparisonIds.push(operationId);
+    }
+    renderAtlas();
+    showToast(position >= 0 ? 'Dossier removed from comparison' : 'Dossier added to comparison');
+  }
+
+  function setAtlasView(mode) {
+    if (mode !== 'cards' && mode !== 'list') return;
+    atlasViewMode = mode;
+    renderAtlas();
+  }
+
+  function clearAtlasComparison() {
+    comparisonIds = [];
+    renderAtlas();
+    showToast('Comparison selection cleared');
+  }
+
+  function renderAtlasComparison() {
+    var body = $('#atlasCompareBody');
+    var selected = getComparedOperations();
+    if (!body || selected.length < 2) return false;
+    var rows = [
+      { label: 'Type', value: function (op) { return escapeHTML(atlasTypeLabel(op.type)); } },
+      { label: 'Period', value: function (op) { return escapeHTML(op.period || 'Not stated'); } },
+      { label: 'Theatre', value: function (op) { return escapeHTML(op.place || 'Not stated'); } },
+      { label: 'Participation', value: function (op) { return escapeHTML(op.service || 'Not stated'); } },
+      { label: 'Scope', value: function (op) { return escapeHTML(op.scope || 'Not stated'); } },
+      { label: 'Overview', value: function (op) { return escapeHTML(op.summary || 'No overview recorded.'); } },
+      { label: 'Planning', value: function (op) { return escapeHTML(op.plan || 'No planning summary recorded.'); } },
+      { label: 'Execution record', value: function (op) { return escapeHTML(op.execution || 'No execution summary recorded.'); } },
+      { label: 'Friction & evidence gaps', value: function (op) { return escapeHTML(op.friction || 'No specific friction summary recorded.'); } },
+      { label: 'Lessons for study', value: function (op) { return escapeHTML(op.lessons || 'No lesson summary recorded.'); } },
+      { label: 'Dated milestones', value: function (op) {
+        var entries = (op.chronology || []).slice(0, 4);
+        if (!entries.length) return '<span class="atlas-compare-muted">No dated milestones in this dossier.</span>';
+        return '<ul>' + entries.map(function (entry) { return '<li><strong>' + escapeHTML(entry.date || 'Date not stated') + '</strong> — ' + escapeHTML(entry.title || entry.detail || 'Recorded milestone') + '</li>'; }).join('') + '</ul><p class="atlas-compare-muted">' + (op.chronology || []).length + ' dated entries in the full dossier.</p>';
+      } },
+      { label: 'Linked sources', value: function (op) {
+        var sources = op.sources || [];
+        if (!sources.length) return '<span class="atlas-compare-muted">No source links listed in this record.</span>';
+        return '<ul>' + sources.map(function (source) {
+          return '<li><a href="' + escapeHTML(source.url || '#') + '" target="_blank" rel="noopener noreferrer">' + escapeHTML(source.title || 'Open linked source') + ' ↗</a>' + (source.kind ? '<br><span class="atlas-compare-muted">' + escapeHTML(source.kind) + '</span>' : '') + '</li>';
+        }).join('') + '</ul>';
+      } },
+      { label: 'Evidence count', value: function (op) { return (op.sources || []).length + ' linked source' + ((op.sources || []).length === 1 ? '' : 's') + ' · ' + (op.chronology || []).length + ' dated entries'; } }
+    ];
+    var head = '<thead><tr><th scope="col">Comparison</th>' + selected.map(function (op) {
+      return '<th scope="col"><span class="tag">' + escapeHTML(atlasTypeLabel(op.type)) + '</span><h3>' + escapeHTML(op.title) + '</h3><p class="atlas-compare-period">' + escapeHTML(op.period || 'Period not stated') + ' · ' + escapeHTML(op.place || 'Theatre not stated') + '</p></th>';
+    }).join('') + '</tr></thead>';
+    var bodyRows = rows.map(function (row) {
+      return '<tr><th scope="row">' + escapeHTML(row.label) + '</th>' + selected.map(function (op) {
+        return '<td>' + row.value(op) + '</td>';
+      }).join('') + '</tr>';
+    }).join('');
+    body.innerHTML = '<p class="atlas-compare-intro">A side-by-side reading aid for the archive summaries. Interpretive notes are editorial; use the linked source documents for claims and exact wording.</p>' +
+      '<div class="atlas-compare-table-wrap"><table class="atlas-compare-table">' + head + '<tbody>' + bodyRows + '</tbody></table></div>' +
+      '<p class="atlas-compare-muted" style="margin:12px 0 0">Chronology rows show up to four milestones per operation; source lists reflect the references currently attached to each dossier.</p>';
+    return true;
+  }
+
+  function openAtlasComparison() {
+    if (getComparedOperations().length < 2) {
+      showToast('Select at least two dossiers to compare');
+      return;
+    }
+    if (!renderAtlasComparison()) return;
+    var backdrop = $('#atlasCompareBackdrop');
+    var shell = $('#atlasCompareShell');
+    if (!backdrop || !shell) return;
+    backdrop.hidden = false;
+    shell.hidden = false;
+    document.body.style.overflow = 'hidden';
+    shell.scrollTop = 0;
+    $('#atlasCompareClose').focus();
+  }
+
+  function closeAtlasComparison() {
+    var backdrop = $('#atlasCompareBackdrop');
+    var shell = $('#atlasCompareShell');
+    var wasOpen = !!(shell && !shell.hidden);
+    if (backdrop) backdrop.hidden = true;
+    if (shell) shell.hidden = true;
+    if (wasOpen) {
+      document.body.style.overflow = $('#atlasModalShell') && !$('#atlasModalShell').hidden ? 'hidden' : '';
+      var trigger = $('#atlasCompareRun');
+      if (trigger && !trigger.disabled) trigger.focus({ preventScroll: true });
+    }
+  }
+
+    function initOperationsMap() {
     var el = $('#operationsMap');
     if (!el) return;
     if (typeof L === 'undefined') {
@@ -924,6 +1093,16 @@
       if (routeButton) { navigateRoute(routeButton.dataset.route); return; }
       var saveBtn = event.target.closest('[data-save-id]');
       if (saveBtn) { toggleSaved(saveBtn.dataset.saveId); return; }
+      var compareBtn = event.target.closest('[data-compare-operation]');
+      if (compareBtn) { if (!compareBtn.disabled) toggleAtlasCompare(compareBtn.dataset.compareOperation); return; }
+      var removeCompareBtn = event.target.closest('[data-remove-compare]');
+      if (removeCompareBtn) { toggleAtlasCompare(removeCompareBtn.dataset.removeCompare); return; }
+      var runCompareBtn = event.target.closest('[data-run-comparison]');
+      if (runCompareBtn) { if (!runCompareBtn.disabled) openAtlasComparison(); return; }
+      var clearCompareBtn = event.target.closest('[data-clear-comparison]');
+      if (clearCompareBtn) { clearAtlasComparison(); return; }
+      var closeCompareBtn = event.target.closest('[data-close-comparison]');
+      if (closeCompareBtn) { closeAtlasComparison(); return; }
       var operationBtn = event.target.closest('[data-open-operation]');
       if (operationBtn) { openOperationDetail(operationBtn.dataset.openOperation); return; }
       var openBtn = event.target.closest('[data-open-id]');
@@ -982,6 +1161,9 @@
       renderAtlas();
     });
     $('#atlasSearch').addEventListener('input', function () { atlasPage = 1; renderAtlas(); });
+    $('#atlasSort').addEventListener('change', function () { atlasSortMode = this.value; atlasPage = 1; renderAtlas(); });
+    $('#atlasViewCards').addEventListener('click', function () { setAtlasView('cards'); });
+    $('#atlasViewList').addEventListener('click', function () { setAtlasView('list'); });
     $('#atlasClearFilters').addEventListener('click', function () {
       activeAtlasFilter = 'all';
       atlasPage = 1;
@@ -1066,7 +1248,7 @@
       var typing = target && (/INPUT|TEXTAREA|SELECT/.test(target.tagName) || target.isContentEditable);
       if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === 'k') { event.preventDefault(); openSearch(); }
       else if (event.key === '/' && !typing) { event.preventDefault(); openSearch(); }
-      else if (event.key === 'Escape') { hideSearch(); closeVault(); closeOperationDetail(); }
+      else if (event.key === 'Escape') { hideSearch(); closeVault(); closeOperationDetail(); closeAtlasComparison(); }
     });
     document.addEventListener('click', function (event) {
       var wrap = $('#globalSearchWrap');
