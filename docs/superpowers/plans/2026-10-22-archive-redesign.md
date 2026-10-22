@@ -43,7 +43,7 @@ File: index.html.
 
 - Add data-view grouping to top-level content; existing element IDs stay stable.
 - Add a neutral #home dashboard with archive intro, catalogue coverage signals, and clear links to Operations, Campaigns, Kargil, Academy and Sources.
-- Treat existing #overview, #overview-brief, #timeline, #theatre, #operations, #people as Kargil dossier sections, not Home.
+- Treat #overview and #overview-brief as the Kargil briefing view; split #timeline, #theatre, #operations and #people into focused Kargil subviews. Keep the original IDs for bookmarked links.
 - Put #atlas under the Operations destination; preserve Campaigns, Academy, Analysis and Sources as their own destinations.
 - Replace sprawling nav with Home, Operations, Campaigns, Kargil, Academy and a compact More menu containing Analysis and Sources; utilities remain visible and labelled.
 - Remove the long-document progress indicator and styles that imply one continuous reading page.
@@ -74,6 +74,7 @@ Files: index.html embedded CSS and navigation markup.
 - Navigation uses clear labels, high-contrast active state, keyboard access and a mobile More menu.
 - Each collection keeps its own search and filter group; add/update reset controls only where missing.
 - Home cards and section headers provide visible destinations rather than pushing all controls into the header.
+- [x] Paginate the Kargil timeline (10 per page), Campaign Library (6 per page), and Operations Atlas (9 per page); reset each list to page one when its search/filter changes.
 - [x] Add small-screen styles for a usable route bar and More menu.
 - [x] Reduce density of unnecessary chip/pill treatment in navigation and control groups without restyling all historic content.
 - [x] Verify the route menu closes predictably and focus remains visible.
@@ -89,12 +90,14 @@ Files: README.md; verify scripts/validate-archive.js, index.html, app.js, campai
 
 ## Execution record
 
-**Implemented on the default branch:** neutral Home dashboard, route grouping, hash-based client routing, legacy anchors, labelled navigation utilities, More menu, Kargil chapter jump bar, search accessibility labels, campaign/timeline reset buttons, source-scope note, route-aware map resizing, and the archive validator workflow.
+**Implemented on the default branch:** a neutral archive Home; distinct hash-routed destinations for Home, Operations Atlas, Campaign Library, Kargil briefing, Academy, Analysis and Sources; dedicated Kargil Timeline, Terrain, Operations and People views; a persistent chapter bar; legacy-hash mapping; responsive navigation with labelled utilities; search/filter reset controls; pagination for the long chronology and catalogues; dynamic Home catalogue counts; corrected delegated actions for dynamically rendered cards; route-aware Leaflet resizing; and source-scope notes.
 
-**Validation evidence:** GitHub Actions run [Validate Indian Wars archive](https://github.com/harshiiiit-bh/indian-wars/actions/runs/39786565876) completed successfully. Its JavaScript syntax-check step and structural-validation step passed. The GitHub Pages build/deployment workflow for the same commit also completed successfully. Additional source-level checks passed for 28 structural/syntax assertions, ten direct/legacy route-resolution cases, and route activation behavior; the HTML contains 92 unique IDs.
+**Validation evidence:** the source-level verification pass checks unique HTML IDs, page/view grouping, required controls, 20 direct/legacy route-resolution cases, route activation behavior, page state/rendering and pagers. The JavaScript syntax checks cover app.js, campaigns.js, data.js and scripts/validate-archive.js. GitHub Actions CI checks are configured to run the syntax and structural validator on pushes and pull requests. Record the latest completed CI and GitHub Pages build results after final file updates.
 
 **Ruling:** Keep the original static HTML/CSS/JavaScript + hash routing rather than introduce a framework — best fit for this repository's GitHub Pages deployment and keeps the historical data files intact; cost if wrong: future larger feature work may eventually justify a framework migration.
 
-**Ruling:** Preserve all existing section IDs and map old anchors to a destination, rather than breaking bookmarks — lowers the risk of breaking existing external links; cost if wrong: one legacy hash may resolve to a broader destination than before.
+**Ruling:** Preserve all existing section IDs and map old anchors to focused destinations, rather than breaking bookmarks — lowers the risk of breaking existing links; cost if wrong: a legacy hash may resolve to a focused chapter instead of a broader page.
 
-**Verification limitation:** A full interactive browser walkthrough and screenshot-based visual review were not available in the current tool environment. CI validates source structure and JavaScript syntax, not every browser rendering or mobile gesture.
+**Ruling:** Paginate long search results instead of loading every card in a single feed — directly addresses the user's endless-scroll complaint; cost if wrong: some users may prefer an all-results view, so search/filter and visible result/page counts remain available.
+
+**Verification limitation:** Full live-browser interaction, screenshots, and device-specific visual walkthrough were not available in the current tool environment. CI checks structure and JavaScript syntax, and source-level simulations cover routing and pagination behavior, but they do not fully replace visual testing on a real browser/mobile device.
