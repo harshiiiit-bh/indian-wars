@@ -85,7 +85,8 @@ check(/atlas-list-view/.test(html), 'Responsive operations list view styles are 
 check(/var ATLAS_COMPARE_LIMIT = 3/.test(app), 'Operation comparison limit must be explicit and bounded.');
 
 check(html.includes('<script src="war-studies.js"></script>'), 'The first-party war-study knowledge base must load before the app.');
-for (const id of ['warStudyBackdrop', 'warStudyShell', 'warStudyTitle', 'warStudyBody', 'warStudyClose']) {
+check(app.includes('id="warStudyTitle"'), 'The war-study reader must set a live accessible title.');
+for (const id of ['warStudyBackdrop', 'warStudyShell', 'warStudyBody', 'warStudyClose']) {
   check(html.includes(`id="${id}"`), `Missing in-page war study reader control: ${id}`);
 }
 check(app.includes('data-open-study'), 'Campaign cards must open an on-site study instead of depending on outbound links.');
