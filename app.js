@@ -813,12 +813,6 @@
   }
 
   function wireEvents() {
-    $$('[data-jump]').forEach(function (button) {
-      button.addEventListener('click', function () { sectionJump(button.dataset.jump); });
-    });
-    $$('[data-route]').forEach(function (button) {
-      button.addEventListener('click', function () { navigateRoute(button.dataset.route); });
-    });
     window.addEventListener('hashchange', handleLocationChange);
     window.addEventListener('popstate', handleLocationChange);
     var navMore = $('#navMore');
@@ -907,6 +901,10 @@
     });
 
     document.addEventListener('click', function (event) {
+      var jumpButton = event.target.closest('[data-jump]');
+      if (jumpButton) { sectionJump(jumpButton.dataset.jump); return; }
+      var routeButton = event.target.closest('[data-route]');
+      if (routeButton) { navigateRoute(routeButton.dataset.route); return; }
       var saveBtn = event.target.closest('[data-save-id]');
       if (saveBtn) { toggleSaved(saveBtn.dataset.saveId); return; }
       var operationBtn = event.target.closest('[data-open-operation]');
