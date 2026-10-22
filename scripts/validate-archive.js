@@ -104,5 +104,18 @@ check(app.includes('data-study-complete') && app.includes('iw-studied-wars'), 'R
 check(html.includes('.kargil-chapter-nav[hidden]{display:none!important}'), 'The Kargil chapter bar must be fully hidden on unrelated routes such as Academy.');
 check(app.includes('function findWarStudyForAtlasOperation('), 'Operations Atlas is missing cross-links to relevant first-party war studies.');
 check(app.includes('data-related-study'), 'Linked operation dossiers must identify their expanded on-site study action.');
+const directListenerIds = [...app.matchAll(/\$\(['"]#([\w-]+)['"]\)\.addEventListener/g)].map((match) => match[1]);
+for (const id of directListenerIds) { check(ids.includes(id), 'Event wiring targets missing element #' + id + '; this can break control setup.'); }
+const staticExternalAnchors = [...html.matchAll(/<a\b[^>]*href=["']https?:/gi)];
+check(staticExternalAnchors.length === 0, 'Static learning pages must not send readers to external websites.');
+check(!app.includes('window.open(item.raw.url'), 'Choosing a search result must open its source note in-page, not a new website.');
+check(!app.includes('Open original ↗'), 'The source library must not use outbound source-opening buttons.');
+check(!app.includes('Further web research ↗'), 'Operation dossiers must not route readers away for the main explanation.');
+check(!app.includes('Read source ↗') && !app.includes('Open source ↗'), 'War study and comparison citations must be displayed as in-page reference notes, not outbound links.');
+check(!app.includes('Open image source and licence ↗'), 'Image credits and licence information must be readable without leaving the dossier.');
+const sourceRendererStart = app.indexOf('function renderSources()');
+const sourceRendererEnd = app.indexOf('function renderQuizHome()', sourceRendererStart);
+check(sourceRendererStart >= 0 && sourceRendererEnd > sourceRendererStart && !app.slice(sourceRendererStart, sourceRendererEnd).includes('<a href="'), 'Source register entries must be presented as local citation cards.');
+check(app.includes("source-card-' + escapeHTML(s.id)"), 'Source cards need stable in-page targets so search can navigate to them.');
 if (failures.length) { console.error(`Archive validation failed (${failures.length}):`); for (const failure of failures) console.error(` - ${failure}`); process.exitCode = 1; }
 else { console.log(`Archive validation passed. ${ids.length} HTML IDs are unique; 7 routes, legacy routing, core controls and script order are present.`); }
