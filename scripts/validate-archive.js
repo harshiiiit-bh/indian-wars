@@ -53,6 +53,10 @@ for (const id of ['timelinePagination', 'campaignPagination', 'atlasPagination']
 check(/function\s+renderPagination\s*\(/.test(app), 'Pagination renderer is missing.');
 check(['timelinePage', 'campaignPage', 'atlasPage'].every(name => app.includes(name)), 'A result-list page state is missing.');
 check(/data-page-action/.test(app) && /data-page-list/.test(app), 'Previous/Next pagination controls are not handled.');
+check(/function\s+prepareDynamicAnchor\s*\(/.test(app), 'Dynamic list anchor resolver is missing.');
+check(/timeline-event-'\) === 0\) return 'kargil-timeline'/.test(app) && /campaign-card-'\) === 0\) return 'campaigns'/.test(app) && /atlas-card-'\) === 0\) return 'operations-atlas'/.test(app), 'Direct list-item hashes must resolve to their destination views.');
+check(/var eventPosition = orderedTimeline\.findIndex/.test(app) && /var campaignPosition = CAMPAIGNS\.findIndex/.test(app) && /var atlasPosition = atlasItems\.findIndex/.test(app), 'Direct links must select the page containing the linked record.');
+check(/prepareDynamicAnchor\('timeline-event-' \+ evIdx\)/.test(app), 'Saved timeline entries must navigate to the page containing the saved event.');
 check(!/^\s*\$\([^;\n]+\)\.forEach/m.test(app), 'A single-element query is incorrectly used as a collection.');
 check((app.match(/var pageItems = (?:filtered|items)\.slice\(/g) || []).length >= 3, 'The three paginated lists must render only the current page.');
 check(/timelinePage = 1;[\s\S]{0,100}renderTimeline\(\)/.test(app) && /campaignPage = 1;[\s\S]{0,100}renderCampaigns\(\)/.test(app) && /atlasPage = 1;[\s\S]{0,100}renderAtlas\(\)/.test(app), 'Search/filter changes should reset result lists to page one.');
