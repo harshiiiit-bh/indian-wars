@@ -498,6 +498,18 @@ body[data-route="home"] .footer{margin-top:42px}
 }
 @media(prefers-reduced-motion:reduce){.home-destination{transition:none}}
 
+
+/* Result pagination: keep large catalogues navigable without a single long feed */
+.list-pagination[hidden]{display:none!important}
+.list-pagination{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin:17px 0 4px;padding:12px 13px;border:1px solid var(--line);background:rgba(19,28,25,.76);border-radius:13px}
+.list-pagination .pagination-status{font:10px "DM Mono",monospace;letter-spacing:.06em;color:var(--muted);text-align:center;flex:1 1 120px}
+.list-pagination button{display:inline-flex;align-items:center;justify-content:center;gap:7px;min-height:36px;padding:8px 12px;border:1px solid var(--line);background:var(--surface);color:var(--text);border-radius:9px;cursor:pointer;font-size:11px;font-weight:600}
+.list-pagination button:hover:not(:disabled){border-color:var(--line2);background:var(--surface2)}
+.list-pagination button:disabled{opacity:.38;cursor:not-allowed}
+.timeline-main{display:grid;gap:11px;min-width:0}
+.timeline-main .list-pagination{margin-top:2px}
+@media(max-width:600px){.list-pagination{gap:7px;padding:9px}.list-pagination button{flex:1 1 auto;padding:8px 9px}.list-pagination .pagination-status{order:-1;flex-basis:100%;text-align:left}}
+
 </style>
 </head>
 <body>
@@ -696,6 +708,7 @@ body[data-route="home"] .footer{margin-top:42px}
       </div>
       <div class="campaign-summary" id="campaignSummary"></div>
       <div class="campaign-grid" id="campaignGrid"></div>
+      <nav class="list-pagination" id="campaignPagination" aria-label="Campaign pages" hidden></nav>
     </section>
 
 
@@ -731,6 +744,7 @@ body[data-route="home"] .footer{margin-top:42px}
       </div>
       <div class="atlas-results-head"><div><div class="smallcaps">Field dossiers</div><h3 id="atlasSummary">Loading the operation index…</h3></div><button class="quiet-btn" id="atlasClearFilters">Reset filters</button></div>
       <div class="atlas-grid" id="atlasGrid"><div class="empty-state">Loading operation dossiers…</div></div>
+      <nav class="list-pagination" id="atlasPagination" aria-label="Operation dossier pages" hidden></nav>
     </section>
 
     <section class="section" id="timeline" data-view="kargil-timeline" hidden>
@@ -743,7 +757,10 @@ body[data-route="home"] .footer{margin-top:42px}
         <button class="filter-btn active" data-phase="all">All phases</button><button class="filter-btn" data-phase="infiltration">Infiltration</button><button class="filter-btn" data-phase="detection">Detection</button><button class="filter-btn" data-phase="mobilization">Mobilization</button><button class="filter-btn" data-phase="battles">Key battles</button><button class="filter-btn" data-phase="endgame">Endgame</button>
       </div>
       <div class="timeline-layout">
-        <div class="timeline-list" id="timelineList"><div class="empty-state">Loading verified chronology from the archive…</div></div>
+        <div class="timeline-main">
+          <div class="timeline-list" id="timelineList"><div class="empty-state">Loading verified chronology from the archive…</div></div>
+          <nav class="list-pagination" id="timelinePagination" aria-label="Timeline pages" hidden></nav>
+        </div>
         <aside class="timeline-aside card">
           <div class="smallcaps">Timeline navigator</div>
           <div class="aside-stat"><strong id="eventTotal">—</strong><span>Chronology entries</span></div>
