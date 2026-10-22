@@ -424,6 +424,11 @@ body.light-mode .atlas-card{background:linear-gradient(150deg,#fff,#f4f7ef)}
 .text-action:hover{color:#efffac}
 .home-method-note{margin:20px 0 0;padding:13px 16px;border-left:2px solid var(--line2);color:var(--muted);font-size:11px;line-height:1.7}
 .home-method-note strong{color:var(--text)}
+.timeline-tools{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:0 0 14px}
+.timeline-search{width:min(620px,100%);flex:1 1 320px}
+.filter-reset{min-height:38px;font-size:11px}
+.campaign-toolbar .campaign-search{flex:1 1 330px}
+.campaign-toolbar .filter-reset{flex:0 0 auto}
 .nav-more{position:relative;flex:0 0 auto}
 .nav-more>summary{list-style:none;cursor:pointer}
 .nav-more>summary::-webkit-details-marker{display:none}
@@ -664,7 +669,7 @@ body[data-route="home"] .footer{margin-top:42px}
           <button class="filter-btn" data-campaign-filter="war">Wars</button>
           <button class="filter-btn" data-campaign-filter="operation">Operations</button>
         </div>
-        <div class="search-wrap campaign-search"><span class="search-icon">⌕</span><input id="campaignSearch" class="search-input" placeholder="Find a campaign, theatre or year…" autocomplete="off"></div>
+        <div class="search-wrap campaign-search"><span class="search-icon">⌕</span><input id="campaignSearch" class="search-input" aria-label="Search campaigns" placeholder="Find a campaign, theatre or year…" autocomplete="off"></div><button type="button" class="quiet-btn filter-reset" id="campaignClearFilters">Clear filters</button>
       </div>
       <div class="campaign-summary" id="campaignSummary"></div>
       <div class="campaign-grid" id="campaignGrid"></div>
@@ -675,7 +680,7 @@ body[data-route="home"] .footer{margin-top:42px}
       <div class="section-head"><div><div class="kicker">03 / Operations atlas</div><h2>Trace the operation. Study the decisions.</h2></div><p>A map-led, source-linked catalogue of major publicly documented Indian Army operations and selected joint or whole-of-government missions at home and abroad.</p></div>
       <div class="caveat"><div class="warn">i</div><div><h3>Open-source coverage—not a claim that every mission is listed.</h3><p>The Army's history includes short battles, long-running deployments, peacekeeping, internal-security campaigns, disaster response, and classified or incomplete records. Each dossier labels Army-led, joint, host-nation-led or whole-of-government participation. Dates are shown where supported by public sources; unknown days are not invented. Map markers show broad theatres, not operational positions or disputed boundaries.</p></div></div>
       <div class="atlas-tools">
-        <div class="search-wrap atlas-search"><span class="search-icon">⌕</span><input class="search-input" id="atlasSearch" placeholder="Search an operation, location, lesson or period…" autocomplete="off"></div>
+        <div class="search-wrap atlas-search"><span class="search-icon">⌕</span><input class="search-input" id="atlasSearch" aria-label="Search operation dossiers" placeholder="Search an operation, location, lesson or period…" autocomplete="off"></div>
         <div class="filter-row" id="atlasFilters" aria-label="Filter operations">
           <button class="filter-btn active" data-atlas-filter="all">All dossiers</button>
           <button class="filter-btn" data-atlas-filter="combat">Combat &amp; campaigns</button>
@@ -707,8 +712,9 @@ body[data-route="home"] .footer{margin-top:42px}
 
     <section class="section" id="timeline" data-view="kargil" hidden>
       <div class="section-head"><div><div class="kicker">02 / Chronology</div><h2>Follow the campaign.</h2></div><div class="head-count" id="timelineCount">Loading events…</div></div>
-      <div class="search-wrap" style="max-width:620px">
-        <span class="search-icon">⌕</span><input id="timelineSearch" class="search-input" placeholder="Filter events by place, operation, person…" autocomplete="off"><kbd>↵</kbd>
+      <div class="timeline-tools">
+        <div class="search-wrap timeline-search"><span class="search-icon">⌕</span><input id="timelineSearch" class="search-input" aria-label="Search the Kargil timeline" placeholder="Filter events by place, operation, person…" autocomplete="off"></div>
+        <button type="button" class="quiet-btn filter-reset" id="timelineClearFilters">Reset timeline filters</button>
       </div>
       <div class="filter-row" id="phaseFilters" aria-label="Filter timeline by phase">
         <button class="filter-btn active" data-phase="all">All phases</button><button class="filter-btn" data-phase="infiltration">Infiltration</button><button class="filter-btn" data-phase="detection">Detection</button><button class="filter-btn" data-phase="mobilization">Mobilization</button><button class="filter-btn" data-phase="battles">Key battles</button><button class="filter-btn" data-phase="endgame">Endgame</button>
