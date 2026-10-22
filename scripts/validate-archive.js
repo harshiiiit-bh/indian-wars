@@ -83,5 +83,21 @@ check(app.includes('function openAtlasComparison(') && app.includes('function cl
 check(/data-compare-operation/.test(app) && /data-remove-compare/.test(app) && /data-run-comparison/.test(app) && /data-clear-comparison/.test(app) && /data-close-comparison/.test(app), 'Comparison actions are not fully delegated.');
 check(/atlas-list-view/.test(html), 'Responsive operations list view styles are missing.');
 check(/var ATLAS_COMPARE_LIMIT = 3/.test(app), 'Operation comparison limit must be explicit and bounded.');
+
+check(html.includes('<script src="war-studies.js"></script>'), 'The first-party war-study knowledge base must load before the app.');
+for (const id of ['warStudyBackdrop', 'warStudyShell', 'warStudyTitle', 'warStudyBody', 'warStudyClose']) {
+  check(html.includes(`id="${id}"`), `Missing in-page war study reader control: ${id}`);
+}
+check(app.includes('data-open-study'), 'Campaign cards must open an on-site study instead of depending on outbound links.');
+check(app.includes('function openWarStudy(') && app.includes('function closeWarStudy('), 'In-page war study reader open/close flow is missing.');
+const campaignRendererStart = app.indexOf('function renderCampaigns(');
+const campaignRendererEnd = app.indexOf('function atlasColor(', campaignRendererStart);
+check(campaignRendererStart >= 0 && app.slice(campaignRendererStart, campaignRendererEnd).includes('data-open-study'), 'Campaign Library must provide an internal Read study action.');
+check(app.includes('WAR_STUDIES') && read('war-studies.js').includes('WAR_STUDIES'), 'Curated war-study content is not connected to the reader.');
+for (const field of ['context:', 'commanders:', 'phases:', 'timeline:', 'planning:', 'execution:', 'friction:', 'lessons:', 'sources:']) {
+  check(read('war-studies.js').includes(field), `War-study content model is missing the ${field.replace(':', '')} field.`);
+}
+check((read('war-studies.js').match(/id:\\s*["'][^"']+["']/g) || []).length >= 8, 'The in-page war-study library should cover all eight flagship campaigns.');
+check(app.includes('data-study-complete') && app.includes('iw-studied-wars'), 'Reading progress must be savable locally.');
 if (failures.length) { console.error(`Archive validation failed (${failures.length}):`); for (const failure of failures) console.error(` - ${failure}`); process.exitCode = 1; }
 else { console.log(`Archive validation passed. ${ids.length} HTML IDs are unique; 7 routes, legacy routing, core controls and script order are present.`); }
