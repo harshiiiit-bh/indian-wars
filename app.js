@@ -522,7 +522,7 @@
     var correct = Number(answerIndex) === q.answer;
     if (correct) quizScore++;
     quizResponses.push({ question: q, chosen: Number(answerIndex), correct: correct });
-    $('#quizOptions [data-quiz-answer]').forEach(function (button) {
+    $$('#quizOptions [data-quiz-answer]').forEach(function (button) {
       var index = Number(button.dataset.quizAnswer);
       button.disabled = true;
       if (index === q.answer) button.classList.add('correct');
@@ -645,7 +645,7 @@
       var evIdx = item.id.split(':')[1];
       activePhase = 'all';
       $('#timelineSearch').value = '';
-      $('#phaseFilters .filter-btn').forEach(function (b) { b.classList.toggle('active', b.dataset.phase === 'all'); });
+      $$('#phaseFilters .filter-btn').forEach(function (b) { b.classList.toggle('active', b.dataset.phase === 'all'); });
       renderTimeline();
       var eventEl = $('#timeline-event-' + evIdx);
       if (eventEl) eventEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
@@ -695,7 +695,7 @@
       var button = event.target.closest('[data-phase]');
       if (!button) return;
       activePhase = button.dataset.phase;
-      $$('#phaseFilters .filter-btn').forEach(function (b) { b.classList.toggle('active', b === button); });
+      $$$('#phaseFilters .filter-btn').forEach(function (b) { b.classList.toggle('active', b === button); });
       renderTimeline();
     });
     $('#timelineSearch').addEventListener('input', renderTimeline);
@@ -703,7 +703,7 @@
       var button = event.target.closest('[data-campaign-filter]');
       if (!button) return;
       activeCampaignFilter = button.dataset.campaignFilter;
-      $('#campaignFilters [data-campaign-filter]').forEach(function (b) { b.classList.toggle('active', b === button); });
+      $$('#campaignFilters [data-campaign-filter]').forEach(function (b) { b.classList.toggle('active', b === button); });
       renderCampaigns();
     });
     $('#campaignSearch').addEventListener('input', renderCampaigns);
