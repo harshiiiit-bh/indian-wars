@@ -11,6 +11,10 @@
     'operations-atlas': 'Operations Atlas',
     campaigns: 'Campaign Library',
     kargil: 'Kargil War 1999',
+    'kargil-timeline': 'Kargil Timeline',
+    'kargil-theatre': 'Kargil Theatre',
+    'kargil-operations': 'Kargil Operations',
+    'kargil-people': 'Kargil People',
     academy: 'Academy',
     analysis: 'Analysis',
     sources: 'Sources'
@@ -23,20 +27,20 @@
     kargil: 'kargil',
     overview: 'kargil',
     'overview-brief': 'kargil',
-    timeline: 'kargil',
-    timelineCount: 'kargil',
-    phaseFilters: 'kargil',
-    timelineList: 'kargil',
-    theatre: 'kargil',
-    sectorSelector: 'kargil',
-    sectorDetail: 'kargil',
-    highwaysList: 'kargil',
-    operations: 'kargil',
-    opsGrid: 'kargil',
-    people: 'kargil',
-    sideSwitch: 'kargil',
-    leadersGrid: 'kargil',
-    heroesGrid: 'kargil',
+    timeline: 'kargil-timeline',
+    timelineCount: 'kargil-timeline',
+    phaseFilters: 'kargil-timeline',
+    timelineList: 'kargil-timeline',
+    theatre: 'kargil-theatre',
+    sectorSelector: 'kargil-theatre',
+    sectorDetail: 'kargil-theatre',
+    highwaysList: 'kargil-theatre',
+    operations: 'kargil-operations',
+    opsGrid: 'kargil-operations',
+    people: 'kargil-people',
+    sideSwitch: 'kargil-people',
+    leadersGrid: 'kargil-people',
+    heroesGrid: 'kargil-people',
     academy: 'academy',
     intelligence: 'analysis',
     analysis: 'analysis',
@@ -137,7 +141,14 @@
   }
 
   function syncRouteNavigation(route) {
+    var isKargilRoute = route === 'kargil' || route.indexOf('kargil-') === 0;
     $$('.top-nav [data-route]').forEach(function (button) {
+      var active = button.dataset.route === route || (button.dataset.route === 'kargil' && isKargilRoute);
+      button.classList.toggle('active', active);
+      if (active) button.setAttribute('aria-current', 'page');
+      else button.removeAttribute('aria-current');
+    });
+    $$('#kargilChapterNav [data-route]').forEach(function (button) {
       var active = button.dataset.route === route;
       button.classList.toggle('active', active);
       if (active) button.setAttribute('aria-current', 'page');
@@ -163,6 +174,12 @@
       view.classList.toggle('route-hidden', !visible);
       view.setAttribute('aria-hidden', visible ? 'false' : 'true');
     });
+    var chapterNav = $('#kargilChapterNav');
+    if (chapterNav) {
+      var showChapterNav = isKargilRoute || route === 'analysis' || route === 'sources';
+      chapterNav.hidden = !showChapterNav;
+      chapterNav.setAttribute('aria-hidden', showChapterNav ? 'false' : 'true');
+    }
     syncRouteNavigation(route);
     document.title = ROUTE_TITLES[route] + ' — Indian Wars Field Archive';
     if (route === 'operations-atlas' && atlasMap && typeof atlasMap.invalidateSize === 'function') {
