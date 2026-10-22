@@ -37,5 +37,15 @@ check(/id="campaignSearch"/.test(html) && /id="atlasSearch"/.test(html) && /id="
 check(/id="campaignClearFilters"/.test(html) && /id="timelineClearFilters"/.test(html) && /id="atlasClearFilters"/.test(html), 'Each searchable collection should have a clear/reset control.');
 check(/id="globalSearch"/.test(html) && /id="savedOpen"/.test(html), 'Global search or saved-notes utility is missing.');
 check(/id="overview"[^>]*data-view="kargil"[\s\S]{0,800}1999/i.test(html), 'The dedicated Kargil view must identify its historical scope and year.');
+for (const route of ['kargil-timeline', 'kargil-theatre', 'kargil-operations', 'kargil-people']) {
+  check(html.includes(`data-view="${route}"`), `Missing focused Kargil chapter view: ${route}`);
+  check(html.includes(`data-route="${route}"`), `Missing Kargil chapter navigation control: ${route}`);
+}
+check(/id="kargilChapterNav"[^>]*hidden/.test(html) && !/<div class="kargil-chapter-nav"[^>]*data-view=/.test(html), 'Kargil chapter bar must persist independently of a single view.');
+check(/var chapterNav = \$\('#kargilChapterNav'\)/.test(app), 'Kargil chapter bar route visibility is not wired.');
+check(/var isKargilRoute = route === 'kargil' \|\| route.indexOf\('kargil-'\) === 0/.test(app), 'Top-level Kargil navigation should remain active across subviews.');
+for (const [section, route] of Object.entries({timeline:'kargil-timeline',theatre:'kargil-theatre',operations:'kargil-operations',people:'kargil-people'})) {
+  check(new RegExp(section + `:\\s*'` + route + `'`).test(app), `Legacy hash ${section} does not route to ${route}.`);
+}
 if (failures.length) { console.error(`Archive validation failed (${failures.length}):`); for (const failure of failures) console.error(` - ${failure}`); process.exitCode = 1; }
 else { console.log(`Archive validation passed. ${ids.length} HTML IDs are unique; 7 routes, legacy routing, core controls and script order are present.`); }
