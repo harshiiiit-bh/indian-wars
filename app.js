@@ -141,11 +141,13 @@
     var key = String(hash || '').replace(/^#/, '').split('?')[0];
     if (ROUTE_TITLES[key]) return key;
     if (sectionRouteMap[key]) return sectionRouteMap[key];
+    if (key.indexOf('timeline-event-') === 0) return 'kargil-timeline';
+    if (key.indexOf('campaign-card-') === 0) return 'campaigns';
+    if (key.indexOf('atlas-card-') === 0) return 'operations-atlas';
     var target = document.getElementById(key);
     var view = target && (target.matches('[data-view]') ? target : target.closest('[data-view]'));
     return view && ROUTE_TITLES[view.dataset.view] ? view.dataset.view : 'home';
   }
-
   function syncRouteNavigation(route) {
     var isKargilRoute = route === 'kargil' || route.indexOf('kargil-') === 0;
     $$('.top-nav [data-route]').forEach(function (button) {
@@ -209,15 +211,52 @@
     }
   }
 
+  function prepareDynamicAnchor(key) {
+    if (!key) return;
+    var eventMatch = /^timeline-event-(\d+)$/.exec(key);
+    if (eventMatch && typeof TIMELINE !== 'undefined') {
+      activePhase = 'all';
+      if ($('#timelineSearch')) $('#timelineSearch').value = '';
+      $$('#phaseFilters [data-phase]').forEach(function (button) { button.classList.toggle('active', button.dataset.phase === 'all'); });
+      var orderedTimeline = TIMELINE.map(function (event, index) { return { raw: event, index: index, sort: parseDateKey(event.date, index / 1000) }; }).sort(function (a, b) { return a.sort - b.sort; });
+      var eventPosition = orderedTimeline.findIndex(function (item) { return item.index === Number(eventMatch[1]); });
+      timelinePage = eventPosition >= 0 ? Math.floor(eventPosition / TIMELINE_PAGE_SIZE) + 1 : 1;
+      renderTimeline();
+      return;
+    }
+    if (key.indexOf('campaign-card-') === 0 && typeof CAMPAIGNS !== 'undefined') {
+      activeCampaignFilter = 'all';
+      campaignPage = 1;
+      if ($('#campaignSearch')) $('#campaignSearch').value = '';
+      $$('#campaignFilters [data-campaign-filter]').forEach(function (button) { button.classList.toggle('active', button.dataset.campaignFilter === 'all'); });
+      var campaignId = key.slice('campaign-card-'.length);
+      var campaignPosition = CAMPAIGNS.findIndex(function (campaign) { return campaign.id === campaignId; });
+      if (campaignPosition >= 0) campaignPage = Math.floor(campaignPosition / CAMPAIGN_PAGE_SIZE) + 1;
+      renderCampaigns();
+      return;
+    }
+    if (key.indexOf('atlas-card-') === 0 && typeof OPERATIONS_ATLAS !== 'undefined') {
+      activeAtlasFilter = 'all';
+      atlasPage = 1;
+      if ($('#atlasSearch')) $('#atlasSearch').value = '';
+      $$('#atlasFilters [data-atlas-filter]').forEach(function (button) { button.classList.toggle('active', button.dataset.atlasFilter === 'all'); });
+      var operationId = key.slice('atlas-card-'.length);
+      var atlasItems = getAtlasItems();
+      var atlasPosition = atlasItems.findIndex(function (operation) { return operation.id === operationId; });
+      if (atlasPosition >= 0) atlasPage = Math.floor(atlasPosition / ATLAS_PAGE_SIZE) + 1;
+      renderAtlas();
+    }
+  }
+
   function handleLocationChange() {
     var key = window.location.hash.replace(/^#/, '');
+    prepareDynamicAnchor(key);
     var route = resolveRoute(key);
     var target = key ? document.getElementById(key) : null;
     var targetView = target && (target.matches('[data-view]') ? target : target.closest('[data-view]'));
     var scrollTo = target && targetView && targetView.dataset.view === route ? key : null;
     activateRoute(route, { scrollTo: scrollTo, resetScroll: !scrollTo && !!key, focus: !!key && !scrollTo });
   }
-
   function navigateRoute(route) {
     if (!ROUTE_TITLES[route]) route = 'home';
     hideSearch();
@@ -819,11 +858,7 @@
     sectionJump(item.target || 'overview');
     if (item.id.indexOf('event:') === 0) {
       var evIdx = item.id.split(':')[1];
-      activePhase = 'all';
-      timelinePage = 1;
-      $('#timelineSearch').value = '';
-      $$('#phaseFilters .filter-btn').forEach(function (b) { b.classList.toggle('active', b.dataset.phase === 'all'); });
-      renderTimeline();
+      prepareDynamicAnchor('timeline-event-' + evIdx);
       var eventEl = $('#timeline-event-' + evIdx);
       if (eventEl) eventEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
     }
