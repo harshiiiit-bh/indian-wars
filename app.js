@@ -9,7 +9,7 @@
   var ROUTE_TITLES = {
     home: 'Home',
     'operations-atlas': 'Operations Atlas',
-    campaigns: 'Campaign Library',
+    campaigns: 'War Studies',
     kargil: 'Kargil War 1999',
     'kargil-timeline': 'Kargil Timeline',
     'kargil-theatre': 'Kargil Theatre',
@@ -414,6 +414,17 @@
   function findWarStudy(campaignId) {
     if (typeof WAR_STUDIES === 'undefined') return null;
     return WAR_STUDIES.find(function (study) { return study.id === campaignId || study.campaignId === campaignId; }) || null;
+  }
+
+  function findWarStudyForAtlasOperation(operationId) {
+    var relatedIds = {
+      'goa-vijay-1961': 'goa-1961',
+      'meghdoot-1984': 'operation-meghdoot',
+      'pawan-1987': 'operation-pawan',
+      'pawan-peacekeeping': 'operation-pawan',
+      'cactus-1988': 'operation-cactus'
+    };
+    return findWarStudy(relatedIds[operationId] || operationId);
   }
 
   function renderCampaigns() {
@@ -822,6 +833,7 @@ function syncAtlasViewControls() {
     if (typeof OPERATIONS_ATLAS === 'undefined') return;
     var op = OPERATIONS_ATLAS.find(function (item) { return item.id === operationId; });
     if (!op) return;
+    var relatedStudy = findWarStudyForAtlasOperation(op.id);
     var art = op.image
       ? '<figure class="atlas-detail-image"><img src="' + escapeHTML(op.image.src) + '" alt="' + escapeHTML(op.image.alt) + '"><figcaption>' + escapeHTML(op.image.caption) +
         '<br><strong>' + escapeHTML(op.image.credit) + '</strong><br><span>' + escapeHTML(op.image.license) + '</span><br><a href="' + escapeHTML(op.image.page) + '" target="_blank" rel="noopener noreferrer">Open image source and licence ↗</a></figcaption></figure>'
@@ -845,6 +857,7 @@ function syncAtlasViewControls() {
     var body = '<div class="atlas-detail-head"><div><div class="atlas-card-tags"><span class="tag">' + escapeHTML(atlasTypeLabel(op.type)) + '</span><span class="atlas-chip">' + escapeHTML(op.service) + '</span></div>' +
       '<h2 id="atlasModalTitle">' + escapeHTML(op.title) + '</h2><div class="atlas-detail-sub">' + escapeHTML(op.period) + '<br>' + escapeHTML(op.place) + '<br>' + escapeHTML(op.scope) + '</div>' +
       '<p class="atlas-detail-summary">' + escapeHTML(op.summary) + '</p><div class="event-foot">' + bookmarkButton('atlas:' + op.id,'Save dossier') +
+      (relatedStudy ? '<button type="button" class="primary-btn" data-open-study="' + escapeHTML(relatedStudy.id) + '" data-related-study="' + escapeHTML(relatedStudy.id) + '">Read expanded study ↗</button>' : '') +
       '<a class="bookmark-btn" href="' + googleLink(op.title + ' ' + op.period + ' official history') + '" target="_blank" rel="noopener noreferrer">Further web research ↗</a></div></div>' + art + '</div>' +
       '<div class="atlas-anatomy"><div class="atlas-anatomy-head"><div><div class="smallcaps">Pictorial teaching / after-action lens</div><h3>From decision to lesson</h3></div><span class="pill">Source-led analysis</span></div>' +
       '<div class="atlas-steps">' + steps.map(function (step) { return '<div class="atlas-step"><div class="n">' + step.n + '</div><strong>' + step.title + '</strong><span>' + step.body + '</span></div>'; }).join('') + '</div></div>' +
