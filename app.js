@@ -281,9 +281,6 @@
     activateRoute(route, { scrollTo: target ? id : null, resetScroll: !target, focus: !!target });
     hideSearch();
   }
-  function googleLink(query) {
-    return 'https://www.google.com/search?q=' + encodeURIComponent(query);
-  }
   function shortHeadline(text) {
     var clean = String(text || '').replace(/\s+/g, ' ').trim();
     var sentence = clean.split(/(?<=[.!?])\s+/)[0] || clean;
@@ -391,7 +388,7 @@
         '<div><h3>' + escapeHTML(shortHeadline(e.text)) + '</h3><p>' + escapeHTML(e.text) + '</p>' +
         '<div class="event-foot"><span class="tag ' + (e.phase === 'battles' ? 'orange' : e.phase === 'endgame' ? 'gold' : '') + '">' + escapeHTML(PHASE_LABELS[e.phase] || e.phase) + '</span>' +
         bookmarkButton(id, 'Save event') +
-        '<a class="bookmark-btn" href="' + googleLink(e.date + ' Kargil War ' + shortHeadline(e.text)) + '" target="_blank" rel="noopener noreferrer">↗ Research web</a></div></div></article>';
+        '<button type="button" class="bookmark-btn" data-route="sources">In-page evidence notes</button></div></div></article>';
     }).join('');
   }
   function renderSectors() {
@@ -408,7 +405,7 @@
         return '<li><span class="peak-name">' + escapeHTML(p.name) + '</span><span>' + escapeHTML(p.note) + '</span></li>';
       }).join('') + '</ul>' +
       '<div class="event-foot" style="margin-top:16px">' + bookmarkButton('sector:' + s.id, 'Save sector') +
-      '<a class="bookmark-btn" href="' + googleLink('Kargil War ' + s.name + ' battlefield history') + '" target="_blank" rel="noopener noreferrer">↗ Research this sector</a></div>';
+      '<button type="button" class="bookmark-btn" data-route="sources">Read evidence notes</button></div>';
   }
 
   function findWarStudy(campaignId) {
@@ -511,7 +508,7 @@ function closeWarStudy() {
       return '<article class="war-study-card war-study-lesson"><div class="war-study-date">LESSON ' + String(index + 1).padStart(2, '0') + '</div><h4>' + escapeHTML(item.label) + '</h4><p>' + escapeHTML(item.detail) + '</p></article>';
     }).join('');
     var sources = (study.sources || []).map(function (source) {
-      return '<article class="war-study-source"><span class="war-study-tag">' + escapeHTML(source.kind || 'Reference') + '</span><h4>' + escapeHTML(source.title) + '</h4><p><strong>' + escapeHTML(source.publisher || 'Publisher not stated') + '</strong><br>' + escapeHTML(source.supports || 'Further reading and reference.') + '</p><a href="' + escapeHTML(source.url) + '" target="_blank" rel="noopener noreferrer">Open source ↗</a></article>';
+      return '<article class="war-study-source"><span class="war-study-tag">' + escapeHTML(source.kind || 'Reference') + '</span><h4>' + escapeHTML(source.title) + '</h4><p><strong>' + escapeHTML(source.publisher || 'Publisher not stated') + '</strong><br>' + escapeHTML(source.supports || 'Reference note for this study.') + '</p><div class="war-study-source-local">Reference summary included in this study · ' + escapeHTML(source.kind || 'Historical reference') + '</div></article>';
     }).join('');
     var done = studiedWarIds.has(study.id);
     var studyHtml = '<header class="war-study-hero"><div><div class="kicker">Field study / ' + escapeHTML(study.period) + '</div><h2 id="warStudyTitle">' + escapeHTML(study.title) + '</h2><div class="study-period">' + escapeHTML(study.theatre) + '</div><p class="war-study-thesis">' + escapeHTML(study.thesis) + '</p></div>' +
@@ -737,11 +734,11 @@ function syncAtlasViewControls() {
         if (!entries.length) return '<span class="atlas-compare-muted">No dated milestones in this dossier.</span>';
         return '<ul>' + entries.map(function (entry) { return '<li><strong>' + escapeHTML(entry.date || 'Date not stated') + '</strong> — ' + escapeHTML(entry.title || entry.detail || 'Recorded milestone') + '</li>'; }).join('') + '</ul><p class="atlas-compare-muted">' + (op.chronology || []).length + ' dated entries in the full dossier.</p>';
       } },
-      { label: 'Linked sources', value: function (op) {
+      { label: 'Source notes', value: function (op) {
         var sources = op.sources || [];
-        if (!sources.length) return '<span class="atlas-compare-muted">No source links listed in this record.</span>';
+        if (!sources.length) return '<span class="atlas-compare-muted">No reference notes recorded in this dossier.</span>';
         return '<ul>' + sources.map(function (source) {
-          return '<li><a href="' + escapeHTML(source.url || '#') + '" target="_blank" rel="noopener noreferrer">' + escapeHTML(source.title || 'Open linked source') + ' ↗</a>' + (source.kind ? '<br><span class="atlas-compare-muted">' + escapeHTML(source.kind) + '</span>' : '') + '</li>';
+          return '<li><strong>' + escapeHTML(source.title || 'Historical reference') + '</strong>' + (source.kind ? '<br><span class="atlas-compare-muted">' + escapeHTML(source.kind) + '</span>' : '') + '</li>';
         }).join('') + '</ul>';
       } },
       { label: 'Evidence count', value: function (op) { return (op.sources || []).length + ' linked source' + ((op.sources || []).length === 1 ? '' : 's') + ' · ' + (op.chronology || []).length + ' dated entries'; } }
@@ -756,7 +753,7 @@ function syncAtlasViewControls() {
     }).join('');
     body.innerHTML = '<p class="atlas-compare-intro">A side-by-side reading aid for the archive summaries. Interpretive notes are editorial; use the linked source documents for claims and exact wording.</p>' +
       '<div class="atlas-compare-table-wrap"><table class="atlas-compare-table">' + head + '<tbody>' + bodyRows + '</tbody></table></div>' +
-      '<p class="atlas-compare-muted" style="margin:12px 0 0">Chronology rows show up to four milestones per operation; source lists reflect the references currently attached to each dossier.</p>';
+      '<p class="atlas-compare-muted" style="margin:12px 0 0">Chronology rows show up to four milestones per operation; reference notes are included on this page and do not open another website.</p>';
     return true;
   }
 
@@ -800,7 +797,7 @@ function syncAtlasViewControls() {
     atlasMap = L.map('operationsMap', { scrollWheelZoom:false, preferCanvas:true }).setView([24, 58], 3);
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       maxZoom:18,
-      attribution:'&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener noreferrer">OpenStreetMap contributors</a>'
+      attribution:'© OpenStreetMap contributors'
     }).addTo(atlasMap);
     atlasMarkerLayer = L.layerGroup().addTo(atlasMap);
     renderAtlasMap();
@@ -836,7 +833,7 @@ function syncAtlasViewControls() {
     var relatedStudy = findWarStudyForAtlasOperation(op.id);
     var art = op.image
       ? '<figure class="atlas-detail-image"><img src="' + escapeHTML(op.image.src) + '" alt="' + escapeHTML(op.image.alt) + '"><figcaption>' + escapeHTML(op.image.caption) +
-        '<br><strong>' + escapeHTML(op.image.credit) + '</strong><br><span>' + escapeHTML(op.image.license) + '</span><br><a href="' + escapeHTML(op.image.page) + '" target="_blank" rel="noopener noreferrer">Open image source and licence ↗</a></figcaption></figure>'
+        '<br><strong>' + escapeHTML(op.image.credit) + '</strong><br><span>' + escapeHTML(op.image.license) + '</span><br><span class="atlas-image-provenance">Credit and licence notes are shown here; no external navigation required.</span></figcaption></figure>'
       : '<div class="atlas-detail-image"><svg viewBox="0 0 700 350" style="display:block;width:100%;height:280px" role="img" aria-label="Illustrative planning and terrain schematic, not a historical photograph">' +
         '<rect width="700" height="350" fill="#101916"/><g fill="none" stroke="' + atlasColor(op) + '" stroke-opacity=".32">' +
         '<path d="M-20 245 C65 120 135 285 225 170 S385 240 455 95 S600 205 730 60"/><path d="M-20 270 C65 145 135 310 225 195 S385 265 455 120 S600 230 730 85"/><path d="M-20 295 C65 170 135 335 225 220 S385 290 455 145 S600 255 730 110"/><path d="M60 40 L625 310 M130 5 L530 346" stroke-dasharray="6 8"/></g>' +
@@ -846,7 +843,7 @@ function syncAtlasViewControls() {
       return '<article class="atlas-event"><div class="atlas-event-date">' + escapeHTML(e.date) + '</div><div><h4>' + escapeHTML(e.title) + '</h4><p>' + escapeHTML(e.detail) + '</p></div></article>';
     }).join('');
     var sources = (op.sources || []).map(function (s) {
-      return '<article class="atlas-source"><span>' + escapeHTML(s.kind || 'Source') + '</span><strong>' + escapeHTML(s.title) + '</strong><a href="' + escapeHTML(s.url) + '" target="_blank" rel="noopener noreferrer">Read source ↗</a></article>';
+      return '<article class="atlas-source"><span>' + escapeHTML(s.kind || 'Reference') + '</span><strong>' + escapeHTML(s.title) + '</strong><p>In-page citation · supports the dossier chronology and analysis.</p></article>';
     }).join('');
     var steps = [
       {n:'01 / INTENT',title:'Plan',body:'What problem did planners seek to solve?'},
@@ -858,7 +855,7 @@ function syncAtlasViewControls() {
       '<h2 id="atlasModalTitle">' + escapeHTML(op.title) + '</h2><div class="atlas-detail-sub">' + escapeHTML(op.period) + '<br>' + escapeHTML(op.place) + '<br>' + escapeHTML(op.scope) + '</div>' +
       '<p class="atlas-detail-summary">' + escapeHTML(op.summary) + '</p><div class="event-foot">' + bookmarkButton('atlas:' + op.id,'Save dossier') +
       (relatedStudy ? '<button type="button" class="primary-btn" data-open-study="' + escapeHTML(relatedStudy.id) + '" data-related-study="' + escapeHTML(relatedStudy.id) + '">Read expanded study ↗</button>' : '') +
-      '<a class="bookmark-btn" href="' + googleLink(op.title + ' ' + op.period + ' official history') + '" target="_blank" rel="noopener noreferrer">Further web research ↗</a></div></div>' + art + '</div>' +
+      '<button type="button" class="bookmark-btn" data-route="sources">Browse in-page evidence notes</button></div></div>' + art + '</div>' +
       '<div class="atlas-anatomy"><div class="atlas-anatomy-head"><div><div class="smallcaps">Pictorial teaching / after-action lens</div><h3>From decision to lesson</h3></div><span class="pill">Source-led analysis</span></div>' +
       '<div class="atlas-steps">' + steps.map(function (step) { return '<div class="atlas-step"><div class="n">' + step.n + '</div><strong>' + step.title + '</strong><span>' + step.body + '</span></div>'; }).join('') + '</div></div>' +
       '<div class="atlas-detail-grid"><article class="atlas-analysis-card plan"><h3>01 · Planning</h3><p>' + escapeHTML(op.plan) + '</p></article>' +
@@ -901,7 +898,7 @@ function syncAtlasViewControls() {
       return '<article class="operation-card" data-index="0' + (i + 1) + '"><div class="card-top">' + operationTag(op.name) + '<span class="smallcaps">OP / 0' + (i + 1) + '</span></div><h3>' +
         escapeHTML(op.name) + '</h3><div class="op-meta">' + escapeHTML(op.who) + '</div><p>' + escapeHTML(op.desc) + '</p>' +
         '<div class="event-foot" style="margin-top:15px">' + bookmarkButton('operation:' + i, 'Save operation') +
-        '<a class="bookmark-btn" href="' + googleLink(op.name + ' Kargil War official history') + '" target="_blank" rel="noopener noreferrer">↗ Web research</a></div></article>';
+        '<button type="button" class="bookmark-btn" data-route="sources">In-page evidence notes</button></div></article>';
     }).join('');
   }
 
@@ -948,7 +945,7 @@ function syncAtlasViewControls() {
     var el = $('#sourceGrid');
     if (!el) return;
     el.innerHTML = SOURCE_LIBRARY.map(function (s) {
-      return '<article class="source-card"><span class="tag ' + (/Primary|Parliamentary|memorial/i.test(s.kind) ? 'blue' : '') + '">' + escapeHTML(s.kind) + '</span><h3>' + escapeHTML(s.title) + '</h3><p>' + escapeHTML(s.summary) + '</p><div class="source-bottom"><a href="' + escapeHTML(s.url) + '" target="_blank" rel="noopener noreferrer">Open original ↗</a><small>' + escapeHTML(s.year) + '</small></div><div class="event-foot" style="margin-top:12px">' + bookmarkButton('source:' + s.id, 'Save source') + '<span class="smallcaps">' + escapeHTML(s.org) + '</span></div></article>';
+      return '<article class="source-card" id="source-card-' + escapeHTML(s.id) + '"><span class="tag ' + (/Primary|Parliamentary|memorial/i.test(s.kind) ? 'blue' : '') + '">' + escapeHTML(s.kind) + '</span><h3>' + escapeHTML(s.title) + '</h3><p>' + escapeHTML(s.summary) + '</p><div class="source-bottom"><span class="source-local-note">In-page reference</span><small>' + escapeHTML(s.year) + '</small></div><div class="event-foot" style="margin-top:12px">' + bookmarkButton('source:' + s.id, 'Save source') + '<span class="smallcaps">' + escapeHTML(s.org) + '</span></div></article>';
     }).join('');
   }
 
@@ -1019,7 +1016,7 @@ function syncAtlasViewControls() {
     feedback.hidden = false;
     feedback.className = 'quiz-feedback ' + (correct ? 'correct' : 'wrong');
     feedback.innerHTML = '<strong>' + (correct ? '✓ Correct answer' : 'Not quite — review this detail') + '</strong>' +
-      escapeHTML(q.explain) + '<br><a href="' + escapeHTML(q.sourceUrl) + '" target="_blank" rel="noopener noreferrer">' + escapeHTML(q.sourceLabel) + ' ↗</a>';
+      '<p>' + escapeHTML(q.explain) + '</p><div class="quiz-source-note">Reference used: ' + escapeHTML(q.sourceLabel) + '. The explanation is included here; no external page is required.</div>';
     $('#quizScoreText').textContent = 'Score: ' + quizScore;
     $('#quizNext').disabled = false;
   }
@@ -1039,8 +1036,8 @@ function syncAtlasViewControls() {
     $('#quizResultText').textContent = percent + '% correct · Best for this topic on this device: ' + best + '/' + total + '. Review missed questions below, then retake the test when ready.';
     $('#quizReview').innerHTML = quizResponses.filter(function (response) { return !response.correct; }).map(function (response) {
       var q = response.question;
-      return '<div class="quiz-review-item"><strong>' + escapeHTML(q.question) + '</strong><span class="miss">Your answer: ' + escapeHTML(q.options[response.chosen]) + '</span><br><span class="hit">Correct: ' + escapeHTML(q.options[q.answer]) + '</span><br>' + escapeHTML(q.explain) + '<br><a href="' + escapeHTML(q.sourceUrl) + '" target="_blank" rel="noopener noreferrer">' + escapeHTML(q.sourceLabel) + ' ↗</a></div>';
-    }).join('') || '<div class="empty-state" style="margin-top:15px">Perfect run — no missed answers. Open the source links and challenge yourself with another topic.</div>';
+      return '<div class="quiz-review-item"><strong>' + escapeHTML(q.question) + '</strong><span class="miss">Your answer: ' + escapeHTML(q.options[response.chosen]) + '</span><br><span class="hit">Correct: ' + escapeHTML(q.options[q.answer]) + '</span><br>' + escapeHTML(q.explain) + '<div class="quiz-source-note">Reference used: ' + escapeHTML(q.sourceLabel) + '</div></div>';
+    }).join('') || '<div class="empty-state" style="margin-top:15px">Perfect run — no missed answers. Review the evidence notes and challenge yourself with another topic.</div>';
     renderQuizHome();
   }
 
@@ -1088,12 +1085,12 @@ function syncAtlasViewControls() {
     }
     var results = globalIndex.filter(function (item) { return (item.title + ' ' + item.detail + ' ' + item.type).toLowerCase().indexOf(query) !== -1; }).slice(0, 8);
     if (!results.length) {
-      panel.innerHTML = '<div class="empty-state">No local match. <a class="inline-link" target="_blank" rel="noopener noreferrer" href="' + googleLink(rawQuery + ' Kargil War 1999') + '">Search the wider web for “' + escapeHTML(rawQuery) + '” ↗</a></div>';
+      panel.innerHTML = '<div class="empty-state">No match in this archive yet. Try a shorter phrase, a different spelling, a campaign year, a leader, or a topic such as “logistics” or “terrain”.</div>';
       return;
     }
     panel.innerHTML = results.map(function (item) {
       return '<button type="button" class="search-hit" data-open-id="' + escapeHTML(item.id) + '"><span><strong>' + escapeHTML(item.title) + '</strong><small>' + escapeHTML(item.detail).slice(0, 126) + (item.detail.length > 126 ? '…' : '') + '</small></span><span class="type">' + escapeHTML(item.type) + '</span></button>';
-    }).join('') + '<div style="padding:8px 11px;border-top:1px solid var(--line);font-size:10px;color:var(--muted)">Showing up to 8 local results · <a class="inline-link" target="_blank" rel="noopener noreferrer" href="' + googleLink(rawQuery + ' Kargil War 1999') + '">Search Google ↗</a></div>';
+    }).join('') + '<div style="padding:8px 11px;border-top:1px solid var(--line);font-size:10px;color:var(--muted)">Showing up to 8 matches from the on-site archive.</div>';
   }
   function openSearch() {
     $('#globalSearchWrap').style.display = 'block';
@@ -1140,7 +1137,10 @@ function syncAtlasViewControls() {
       var eventEl = $('#timeline-event-' + evIdx);
       if (eventEl) eventEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
     }
-    if (item.id.indexOf('source:') === 0 && item.raw && item.raw.url) window.open(item.raw.url, '_blank', 'noopener');
+    if (item.id.indexOf('source:') === 0 && item.raw) {
+      var sourceCard = document.getElementById('source-card-' + item.raw.id);
+      if (sourceCard) sourceCard.scrollIntoView({ behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'center' });
+    }
   }
 
   function exportArchive() {
@@ -1176,6 +1176,16 @@ function syncAtlasViewControls() {
     btn.addEventListener('click', function () {
       if ($('#globalSearchWrap').style.display === 'block') hideSearch(); else openSearch();
     });
+  }
+
+  function listen(selector, eventName, handler, options) {
+    var element = $(selector);
+    if (!element) {
+      console.warn('[Indian Wars] Interaction target is missing:', selector);
+      return false;
+    }
+    element.addEventListener(eventName, handler, options);
+    return true;
   }
 
   function wireEvents() {
@@ -1238,7 +1248,7 @@ function syncAtlasViewControls() {
       });
     }
 
-    $('#phaseFilters').addEventListener('click', function (event) {
+    listen('#phaseFilters', 'click', function (event) {
       var button = event.target.closest('[data-phase]');
       if (!button) return;
       activePhase = button.dataset.phase;
@@ -1246,8 +1256,8 @@ function syncAtlasViewControls() {
       $$('#phaseFilters .filter-btn').forEach(function (b) { b.classList.toggle('active', b === button); });
       renderTimeline();
     });
-    $('#timelineSearch').addEventListener('input', function () { timelinePage = 1; renderTimeline(); });
-    $('#timelineClearFilters').addEventListener('click', function () {
+    listen('#timelineSearch', 'input', function () { timelinePage = 1; renderTimeline(); });
+    listen('#timelineClearFilters', 'click', function () {
       activePhase = 'all';
       timelinePage = 1;
       $('#timelineSearch').value = '';
@@ -1255,7 +1265,7 @@ function syncAtlasViewControls() {
       renderTimeline();
     });
 
-    $('#campaignFilters').addEventListener('click', function (event) {
+    listen('#campaignFilters', 'click', function (event) {
       var button = event.target.closest('[data-campaign-filter]');
       if (!button) return;
       activeCampaignFilter = button.dataset.campaignFilter;
@@ -1263,8 +1273,8 @@ function syncAtlasViewControls() {
       $$('#campaignFilters [data-campaign-filter]').forEach(function (b) { b.classList.toggle('active', b === button); });
       renderCampaigns();
     });
-    $('#campaignSearch').addEventListener('input', function () { campaignPage = 1; renderCampaigns(); });
-    $('#campaignClearFilters').addEventListener('click', function () {
+    listen('#campaignSearch', 'input', function () { campaignPage = 1; renderCampaigns(); });
+    listen('#campaignClearFilters', 'click', function () {
       activeCampaignFilter = 'all';
       campaignPage = 1;
       $('#campaignSearch').value = '';
@@ -1272,7 +1282,7 @@ function syncAtlasViewControls() {
       renderCampaigns();
     });
 
-    $('#atlasFilters').addEventListener('click', function (event) {
+    listen('#atlasFilters', 'click', function (event) {
       var button = event.target.closest('[data-atlas-filter]');
       if (!button) return;
       activeAtlasFilter = button.dataset.atlasFilter;
@@ -1280,21 +1290,21 @@ function syncAtlasViewControls() {
       $$('#atlasFilters [data-atlas-filter]').forEach(function (b) { b.classList.toggle('active', b === button); });
       renderAtlas();
     });
-    $('#atlasSearch').addEventListener('input', function () { atlasPage = 1; renderAtlas(); });
-    $('#atlasSort').addEventListener('change', function () { atlasSortMode = this.value; atlasPage = 1; renderAtlas(); });
-    $('#atlasViewCards').addEventListener('click', function () { setAtlasView('cards'); });
-    $('#atlasViewList').addEventListener('click', function () { setAtlasView('list'); });
-    $('#atlasClearFilters').addEventListener('click', function () {
+    listen('#atlasSearch', 'input', function () { atlasPage = 1; renderAtlas(); });
+    listen('#atlasSort', 'change', function () { atlasSortMode = this.value; atlasPage = 1; renderAtlas(); });
+    listen('#atlasViewCards', 'click', function () { setAtlasView('cards'); });
+    listen('#atlasViewList', 'click', function () { setAtlasView('list'); });
+    listen('#atlasClearFilters', 'click', function () {
       activeAtlasFilter = 'all';
       atlasPage = 1;
       $('#atlasSearch').value = '';
       $$('#atlasFilters [data-atlas-filter]').forEach(function (b) { b.classList.toggle('active', b.dataset.atlasFilter === 'all'); });
       renderAtlas();
     });
-    $('#atlasModalClose').addEventListener('click', closeOperationDetail);
-    $('#atlasModalBackdrop').addEventListener('click', closeOperationDetail);
+    listen('#atlasModalClose', 'click', closeOperationDetail);
+    listen('#atlasModalBackdrop', 'click', closeOperationDetail);
 
-    $('#quizTopicFilters').addEventListener('click', function (event) {
+    listen('#quizTopicFilters', 'click', function (event) {
       var button = event.target.closest('[data-quiz-topic]');
       if (!button) return;
       activeQuizTopic = button.dataset.quizTopic;
@@ -1302,22 +1312,22 @@ function syncAtlasViewControls() {
       $('#quizShell').hidden = true;
       renderQuizHome();
     });
-    $('#quizStart').addEventListener('click', startQuiz);
-    $('#quizOptions').addEventListener('click', function (event) {
+    listen('#quizStart', 'click', startQuiz);
+    listen('#quizOptions', 'click', function (event) {
       var button = event.target.closest('[data-quiz-answer]');
       if (button) answerQuiz(button.dataset.quizAnswer);
     });
-    $('#quizNext').addEventListener('click', function () { if (!quizAnswered) return; quizPosition++; renderQuizQuestion(); });
-    $('#quizRetake').addEventListener('click', startQuiz);
-    $('#quizBackToTopics').addEventListener('click', function () { $('#quizShell').hidden = true; $('#quizStart').focus(); });
+    listen('#quizNext', 'click', function () { if (!quizAnswered) return; quizPosition++; renderQuizQuestion(); });
+    listen('#quizRetake', 'click', startQuiz);
+    listen('#quizBackToTopics', 'click', function () { $('#quizShell').hidden = true; $('#quizStart').focus(); });
 
-    $('#sectorSelector').addEventListener('click', function (event) {
+    listen('#sectorSelector', 'click', function (event) {
       var button = event.target.closest('[data-sector]');
       if (!button) return;
       activeSector = button.dataset.sector;
       renderSectors();
     });
-    $('#sideSwitch').addEventListener('click', function (event) {
+    listen('#sideSwitch', 'click', function (event) {
       var button = event.target.closest('[data-side]');
       if (!button) return;
       activeSide = button.dataset.side;
@@ -1327,14 +1337,14 @@ function syncAtlasViewControls() {
 
 
 
-    $('#savedOpen').addEventListener('click', openVault);
-    $('#savedClose').addEventListener('click', closeVault);
-    $('#vaultOverlay').addEventListener('click', closeVault);
-    $('#saveNotes').addEventListener('click', function () {
+    listen('#savedOpen', 'click', openVault);
+    listen('#savedClose', 'click', closeVault);
+    listen('#vaultOverlay', 'click', closeVault);
+    listen('#saveNotes', 'click', function () {
       safeStoreSet('iw-field-notes', $('#fieldNotes').value);
       showToast('Field notes saved in this browser');
     });
-    $('#clearSaved').addEventListener('click', function () {
+    listen('#clearSaved', 'click', function () {
       if (!savedIds.size) { showToast('Your saved list is already empty'); return; }
       savedIds.clear();
       saveIds();
@@ -1342,25 +1352,25 @@ function syncAtlasViewControls() {
       renderCampaigns(); renderAtlas(); renderLeaders(); renderHeroes(); renderReforms();
       showToast('Saved items cleared');
     });
-    $('#themeToggle').addEventListener('click', function () {
+    listen('#themeToggle', 'click', function () {
       document.body.classList.toggle('light-mode');
       safeStoreSet('iw-theme', document.body.classList.contains('light-mode') ? 'light' : 'dark');
     });
     if (safeStoreGet('iw-theme', 'dark') === 'light') document.body.classList.add('light-mode');
-    $('#exportBtn').addEventListener('click', exportArchive);
-    $('#printBtn').addEventListener('click', function () { window.print(); });
+    listen('#exportBtn', 'click', exportArchive);
+    listen('#printBtn', 'click', function () { window.print(); });
 
-    $('#globalSearch').addEventListener('input', function () {
+    listen('#globalSearch', 'input', function () {
       renderSearchResults(this.value);
       $('#searchPanel').classList.add('show');
     });
-    $('#globalSearch').addEventListener('focus', function () { $('#searchPanel').classList.add('show'); });
-    $('#globalSearch').addEventListener('keydown', function (event) {
+    listen('#globalSearch', 'focus', function () { $('#searchPanel').classList.add('show'); });
+    listen('#globalSearch', 'keydown', function (event) {
       if (event.key === 'Escape') hideSearch();
       if (event.key === 'Enter') {
         var first = $('.search-hit', $('#searchPanel'));
         if (first) openIndexed(first.dataset.openId);
-        else window.open(googleLink(this.value + ' Indian military history'), '_blank', 'noopener');
+        else showToast('No matching entry in the on-site archive. Try another term.');
       }
     });
     document.addEventListener('keydown', function (event) {
