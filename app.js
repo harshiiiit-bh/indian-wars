@@ -88,6 +88,8 @@
   }
   var storedSavedIds = safeJSON(safeStoreGet('iw-field-saved', '[]'), []);
   var savedIds = new Set((Array.isArray(storedSavedIds) ? storedSavedIds : []).filter(function (x) { return typeof x === 'string'; }));
+  var storedStudiedWarIds = safeJSON(safeStoreGet('iw-studied-wars', '[]'), []);
+  var studiedWarIds = new Set((Array.isArray(storedStudiedWarIds) ? storedStudiedWarIds : []).filter(function (x) { return typeof x === 'string'; }));
   var activePhase = 'all';
   var TIMELINE_PAGE_SIZE = 10;
   var CAMPAIGN_PAGE_SIZE = 6;
@@ -409,40 +411,133 @@
       '<a class="bookmark-btn" href="' + googleLink('Kargil War ' + s.name + ' battlefield history') + '" target="_blank" rel="noopener noreferrer">↗ Research this sector</a></div>';
   }
 
+  function findWarStudy(campaignId) {
+    if (typeof WAR_STUDIES === 'undefined') return null;
+    return WAR_STUDIES.find(function (study) { return study.id === campaignId || study.campaignId === campaignId; }) || null;
+  }
+
   function renderCampaigns() {
     var grid = $('#campaignGrid');
     if (!grid || typeof CAMPAIGNS === 'undefined') return;
     var query = ($('#campaignSearch') ? $('#campaignSearch').value : '').trim().toLowerCase();
     var items = CAMPAIGNS.filter(function (campaign) {
       var byType = activeCampaignFilter === 'all' || campaign.type === activeCampaignFilter;
-      var searchable = [campaign.title, campaign.period, campaign.dates, campaign.theatre, campaign.tag, campaign.summary, campaign.keyPoint, campaign.type].join(' ').toLowerCase();
+      var study = findWarStudy(campaign.id);
+      var searchable = [campaign.title, campaign.period, campaign.dates, campaign.theatre, campaign.tag, campaign.summary, campaign.keyPoint, campaign.type,
+        study ? study.thesis : '', study ? study.context.join(' ') : '', study ? study.commanders.map(function (leader) { return leader.name + ' ' + leader.role; }).join(' ') : ''].join(' ').toLowerCase();
       return byType && (!query || searchable.indexOf(query) !== -1);
     });
     campaignPage = renderPagination('campaignPagination', 'campaigns', campaignPage, items.length, CAMPAIGN_PAGE_SIZE);
     var totalPages = Math.max(1, Math.ceil(items.length / CAMPAIGN_PAGE_SIZE));
-    $('#campaignSummary').textContent = items.length + ' OF ' + CAMPAIGNS.length + ' CAMPAIGNS · PAGE ' + campaignPage + ' / ' + totalPages + ' · SOURCE LINKS INCLUDED';
+    var coveredStudies = items.filter(function (campaign) { return !!findWarStudy(campaign.id); }).length;
+    $('#campaignSummary').textContent = items.length + ' CAMPAIGNS · ' + coveredStudies + ' FULL IN-PAGE STUDIES · PAGE ' + campaignPage + ' / ' + totalPages;
     if (!items.length) {
-      grid.innerHTML = '<div class="empty-state campaign-empty">No campaign matches this filter. Try a year, theatre, or operation name.</div>';
+      grid.innerHTML = '<div class="empty-state campaign-empty">No campaign matches this filter. Try a year, theatre, leader, or lesson.</div>';
       return;
     }
     var pageItems = items.slice((campaignPage - 1) * CAMPAIGN_PAGE_SIZE, campaignPage * CAMPAIGN_PAGE_SIZE);
     grid.innerHTML = pageItems.map(function (campaign) {
+      var study = findWarStudy(campaign.id);
       var core = campaign.id === 'kargil-1999';
-      var id = 'campaign:' + campaign.id;
-      var researchQuery = googleLink(campaign.title + ' ' + campaign.period + ' official history');
+      var savedId = 'campaign:' + campaign.id;
+      var studyMeta = study
+        ? '<div class="campaign-study-stats"><span>' + (study.timeline || []).length + ' milestones</span><span>' + (study.commanders || []).length + ' leadership profiles</span><span>' + (study.sources || []).length + ' references</span></div>'
+        : '<div class="campaign-study-stats"><span>Overview and source links</span></div>';
+      var studyButton = study
+        ? '<button class="campaign-read-btn" type="button" data-open-study="' + escapeHTML(study.id) + '">' + (studiedWarIds.has(study.id) ? '↻ Revisit study' : 'Read full study') + ' ↗</button>'
+        : '<button class="campaign-read-btn" type="button" data-open-study="' + escapeHTML(campaign.id) + '">Read campaign record ↗</button>';
       return '<article class="campaign-card' + (core ? ' is-core' : '') + '" id="campaign-card-' + escapeHTML(campaign.id) + '">' +
         '<div class="card-top"><span class="tag ' + (campaign.type === 'war' ? '' : 'blue') + '">' + escapeHTML(campaign.type === 'war' ? 'War / conflict' : 'Military operation') + '</span><span class="smallcaps">' + escapeHTML(campaign.tag) + '</span></div>' +
         '<div class="campaign-year">' + escapeHTML(campaign.period) + '</div><h3>' + escapeHTML(campaign.title) + '</h3>' +
         '<div class="campaign-meta">' + escapeHTML(campaign.dates) + ' · ' + escapeHTML(campaign.theatre) + '</div>' +
         '<p>' + escapeHTML(campaign.summary) + '</p>' +
         '<div class="campaign-insight"><span>Why it matters</span>' + escapeHTML(campaign.keyPoint) + '</div>' +
-        '<div class="campaign-links"><a href="' + escapeHTML(campaign.sourceUrl) + '" target="_blank" rel="noopener noreferrer">Primary / official source ↗</a>' +
-        '<a href="' + escapeHTML(campaign.secondaryUrl) + '" target="_blank" rel="noopener noreferrer">Further reading ↗</a>' +
-        (core ? '<button type="button" data-jump="timeline">Open deep-dive dossier ↗</button>' : '<a href="' + researchQuery + '" target="_blank" rel="noopener noreferrer">Web research ↗</a>') +
-        '</div>' + bookmarkButton(id, 'Save campaign') + '</article>';
+        studyMeta +
+        '<div class="campaign-links">' + studyButton + '<span class="campaign-source-hint">Read the explanation here; sources are listed inside.</span></div>' +
+        bookmarkButton(savedId, 'Save campaign') + '</article>';
     }).join('');
   }
-  function atlasColor(op) {
+function closeWarStudy() {
+    var backdrop = $('#warStudyBackdrop');
+    var shell = $('#warStudyShell');
+    var wasOpen = !!(shell && !shell.hidden);
+    if (backdrop) backdrop.hidden = true;
+    if (shell) shell.hidden = true;
+    if (wasOpen) {
+      var anotherModalOpen = ($('#atlasModalShell') && !$('#atlasModalShell').hidden) || ($('#atlasCompareShell') && !$('#atlasCompareShell').hidden);
+      document.body.style.overflow = anotherModalOpen ? 'hidden' : '';
+      if (warStudyReturnFocus && document.contains(warStudyReturnFocus)) warStudyReturnFocus.focus({ preventScroll: true });
+      warStudyReturnFocus = null;
+    }
+  }
+
+  var warStudyReturnFocus = null;
+
+  function openWarStudy(studyId) {
+    var study = findWarStudy(studyId);
+    var body = $('#warStudyBody');
+    var backdrop = $('#warStudyBackdrop');
+    var shell = $('#warStudyShell');
+    if (!study || !body || !backdrop || !shell) {
+      showToast('This study is not yet in the in-page library.');
+      return;
+    }
+    warStudyReturnFocus = document.activeElement;
+    var context = (study.context || []).map(function (paragraph) { return '<p>' + escapeHTML(paragraph) + '</p>'; }).join('');
+    var commanders = (study.commanders || []).map(function (leader) {
+      return '<article class="war-study-card war-study-leader"><span class="war-study-tag">' + escapeHTML(leader.tag || 'Leadership') + '</span><h4>' + escapeHTML(leader.name) + '</h4><div class="war-study-role">' + escapeHTML(leader.role) + '</div><p>' + escapeHTML(leader.contribution) + '</p></article>';
+    }).join('');
+    var phases = (study.phases || []).map(function (phase, index) {
+      return '<article class="war-study-card"><div class="war-study-date">PHASE ' + String(index + 1).padStart(2, '0') + ' · ' + escapeHTML(phase.dates) + '</div><h4>' + escapeHTML(phase.title) + '</h4><p>' + escapeHTML(phase.detail) + '</p></article>';
+    }).join('');
+    var timeline = (study.timeline || []).map(function (entry) {
+      return '<article class="war-study-event"><div class="war-study-event-date">' + escapeHTML(entry.date) + '</div><div class="war-study-event-dot" aria-hidden="true"></div><div><span class="war-study-tag">' + escapeHTML(entry.status || 'Public milestone') + '</span><h4>' + escapeHTML(entry.title) + '</h4><p>' + escapeHTML(entry.detail) + '</p></div></article>';
+    }).join('');
+    var friction = (study.friction || []).map(function (item) {
+      return '<article class="war-study-card war-study-friction"><span class="war-study-tag">' + escapeHTML(item.type || 'Review point') + '</span><h4>' + escapeHTML(item.label) + '</h4><p>' + escapeHTML(item.detail) + '</p></article>';
+    }).join('');
+    var lessons = (study.lessons || []).map(function (item, index) {
+      return '<article class="war-study-card war-study-lesson"><div class="war-study-date">LESSON ' + String(index + 1).padStart(2, '0') + '</div><h4>' + escapeHTML(item.label) + '</h4><p>' + escapeHTML(item.detail) + '</p></article>';
+    }).join('');
+    var sources = (study.sources || []).map(function (source) {
+      return '<article class="war-study-source"><span class="war-study-tag">' + escapeHTML(source.kind || 'Reference') + '</span><h4>' + escapeHTML(source.title) + '</h4><p><strong>' + escapeHTML(source.publisher || 'Publisher not stated') + '</strong><br>' + escapeHTML(source.supports || 'Further reading and reference.') + '</p><a href="' + escapeHTML(source.url) + '" target="_blank" rel="noopener noreferrer">Open source ↗</a></article>';
+    }).join('');
+    var done = studiedWarIds.has(study.id);
+    var studyHtml = '<header class="war-study-hero"><div><div class="kicker">Field study / ' + escapeHTML(study.period) + '</div><h2 id="warStudyTitle">' + escapeHTML(study.title) + '</h2><div class="study-period">' + escapeHTML(study.theatre) + '</div><p class="war-study-thesis">' + escapeHTML(study.thesis) + '</p></div>' +
+      '<aside class="war-study-hero-aside"><div class="smallcaps">Study snapshot</div><div class="war-study-stats"><div class="war-study-stat"><strong>' + (study.timeline || []).length + '</strong><span>Dated milestones</span></div><div class="war-study-stat"><strong>' + (study.commanders || []).length + '</strong><span>Leader profiles</span></div><div class="war-study-stat"><strong>' + (study.sources || []).length + '</strong><span>Evidence links</span></div></div>' +
+      '<p style="font-size:11px;line-height:1.7;color:var(--muted)">Article content is on this page. Sources are supporting evidence, not a substitute for the explanation.</p><button type="button" class="quiet-btn war-study-complete' + (done ? ' is-complete' : '') + '" data-study-complete="' + escapeHTML(study.id) + '" aria-pressed="' + (done ? 'true' : 'false') + '">' + (done ? '✓ Marked as studied' : 'Mark study as completed') + '</button></aside></header>' +
+      '<nav class="war-study-toc" aria-label="War study contents">' +
+      '<button type="button" data-study-jump="war-study-context">Context</button><button type="button" data-study-jump="war-study-phases">Campaign phases</button><button type="button" data-study-jump="war-study-commanders">Leadership</button><button type="button" data-study-jump="war-study-timeline">Timeline</button><button type="button" data-study-jump="war-study-planning">Planning</button><button type="button" data-study-jump="war-study-execution">Execution</button><button type="button" data-study-jump="war-study-friction">Mistakes & constraints</button><button type="button" data-study-jump="war-study-lessons">Lessons</button><button type="button" data-study-jump="war-study-sources">Sources</button></nav>' +
+      '<section class="war-study-section" id="war-study-context"><div class="war-study-section-head"><div><div class="smallcaps">01 / Background and stakes</div><h3>What happened—and why it mattered</h3></div></div><div class="war-study-prose">' + context + '</div></section>' +
+      '<section class="war-study-section" id="war-study-phases"><div class="war-study-section-head"><div><div class="smallcaps">02 / Campaign structure</div><h3>Understand the phases</h3></div></div><div class="war-study-grid">' + phases + '</div></section>' +
+      '<section class="war-study-section" id="war-study-commanders"><div class="war-study-section-head"><div><div class="smallcaps">03 / Command and leadership</div><h3>Leaders and their actual roles</h3></div></div><div class="war-study-grid">' + commanders + '</div><p class="war-study-events-note">Leadership profiles distinguish political authority, senior service command, theatre command and front-line leadership. A name appearing in an article does not by itself prove that the person directed every event described.</p></section>' +
+      '<section class="war-study-section" id="war-study-timeline"><div class="war-study-section-head"><div><div class="smallcaps">04 / Chronology</div><h3>Key events in date order</h3></div></div><div class="war-study-timeline">' + timeline + '</div><p class="war-study-events-note">This is a dated milestone chronology based on the public sources linked below. It is not a fabricated account for every calendar day. When daily orders, unit diaries or exact sequence are not publicly verifiable from the cited record, the page says so.</p></section>' +
+      '<section class="war-study-section" id="war-study-planning"><div class="war-study-section-head"><div><div class="smallcaps">05 / Intent and preparation</div><h3>Planning: the problem decision-makers faced</h3></div></div><div class="war-study-prose"><p>' + escapeHTML(study.planning) + '</p></div></section>' +
+      '<section class="war-study-section" id="war-study-execution"><div class="war-study-section-head"><div><div class="smallcaps">06 / What happened</div><h3>Implementation and execution</h3></div></div><div class="war-study-prose"><p>' + escapeHTML(study.execution) + '</p></div></section>' +
+      '<section class="war-study-section" id="war-study-friction"><div class="war-study-section-head"><div><div class="smallcaps">07 / Critical review</div><h3>Mistakes, constraints and evidence gaps</h3></div></div><div class="war-study-grid">' + friction + '</div><p class="war-study-events-note">The review labels separate documented facts from analytical questions and evidence caveats. Where the sources do not establish that an individual made a specific mistake, the page will not invent one.</p></section>' +
+      '<section class="war-study-section" id="war-study-lessons"><div class="war-study-section-head"><div><div class="smallcaps">08 / After-action study</div><h3>What future leaders can learn</h3></div></div><div class="war-study-grid">' + lessons + '</div></section>' +
+      '<section class="war-study-section" id="war-study-sources"><div class="war-study-section-head"><div><div class="smallcaps">09 / Evidence trail</div><h3>Sources and further reading</h3></div></div><div class="war-study-source-grid">' + sources + '</div></section>' +
+      '<div class="war-study-evidence-note"><strong>Research standard.</strong> This is an independent educational synthesis, not an official government history. Sources are summarised in our own words. Official releases, memorial pages, academic studies, memoirs and records may differ in scope or interpretation; check the original text for disputed dates, casualty counts and claims about individual decisions. Some operational records remain unavailable or classified.</div>';
+    body.innerHTML = studyHtml;
+    backdrop.hidden = false;
+    shell.hidden = false;
+    document.body.style.overflow = 'hidden';
+    shell.scrollTop = 0;
+    $('#warStudyClose').focus();
+  }
+
+  function toggleWarStudyCompleted(studyId) {
+    var study = findWarStudy(studyId);
+    if (!study) return;
+    if (studiedWarIds.has(study.id)) studiedWarIds.delete(study.id);
+    else studiedWarIds.add(study.id);
+    safeStoreSet('iw-studied-wars', JSON.stringify(Array.from(studiedWarIds)));
+    renderCampaigns();
+    openWarStudy(study.id);
+    showToast(studiedWarIds.has(study.id) ? 'Study marked as completed on this device' : 'Study progress cleared');
+  }
+
+    function atlasColor(op) {
     if (op.type === 'hadr' || op.type === 'evacuation') return '#8bc9e8';
     if (op.type === 'peacekeeping' || op.type === 'stabilisation') return '#e3be72';
     if (op.type === 'internal-security') return '#ee835b';
@@ -1087,6 +1182,18 @@ function syncAtlasViewControls() {
         if (pageTarget) pageTarget.scrollIntoView({ behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start' });
         return;
       }
+      var studyOpenBtn = event.target.closest('[data-open-study]');
+      if (studyOpenBtn) { openWarStudy(studyOpenBtn.dataset.openStudy); return; }
+      var studyCloseBtn = event.target.closest('[data-close-study]');
+      if (studyCloseBtn) { closeWarStudy(); return; }
+      var studyCompleteBtn = event.target.closest('[data-study-complete]');
+      if (studyCompleteBtn) { toggleWarStudyCompleted(studyCompleteBtn.dataset.studyComplete); return; }
+      var studyJumpBtn = event.target.closest('[data-study-jump]');
+      if (studyJumpBtn) {
+        var studyTarget = document.getElementById(studyJumpBtn.dataset.studyJump);
+        if (studyTarget) studyTarget.scrollIntoView({ behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start' });
+        return;
+      }
       var jumpButton = event.target.closest('[data-jump]');
       if (jumpButton) { sectionJump(jumpButton.dataset.jump); return; }
       var routeButton = event.target.closest('[data-route]');
@@ -1248,7 +1355,7 @@ function syncAtlasViewControls() {
       var typing = target && (/INPUT|TEXTAREA|SELECT/.test(target.tagName) || target.isContentEditable);
       if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === 'k') { event.preventDefault(); openSearch(); }
       else if (event.key === '/' && !typing) { event.preventDefault(); openSearch(); }
-      else if (event.key === 'Escape') { hideSearch(); closeVault(); closeOperationDetail(); closeAtlasComparison(); }
+      else if (event.key === 'Escape') { hideSearch(); closeVault(); closeOperationDetail(); closeAtlasComparison(); closeWarStudy(); }
     });
     document.addEventListener('click', function (event) {
       var wrap = $('#globalSearchWrap');
