@@ -1,46 +1,63 @@
-# Indian Wars — Kargil War Field Archive
+# Indian Wars — Field Archive
 
-An interactive, source-led educational dossier about the 1999 Kargil conflict. The site preserves the original historical dataset while presenting it in a responsive research interface.
+An interactive, source-led educational archive for Indian military history. The Kargil War (1999) remains the deep-dive dossier; the campaign library now links concise historical guides across earlier conflicts and operations.
 
-## Experience
+## What's included
 
-- Responsive field-archive UI with dark/light themes and a reading progress indicator.
-- Global search across the curated timeline, theatre sectors and named heights, operations, commanders, gallantry profiles, reforms, and sources.
-- Timeline filters for infiltration, detection, mobilisation, battles, and endgame, plus event-level web research links.
-- Interactive sector selector, battlefield-feature notes, and logistics / highway reference cards.
-- Switchable Indian and Pakistani leadership lists and expandable gallantry profiles.
-- Source library linked to official Indian records, parliamentary archives, and contemporary diplomatic material.
-- Browser-local field notes and saved items; export the curated dossier as JSON; print or save the page as PDF.
-- Keyboard search: Ctrl/Command + K or /. Press Esc to close the search or notes drawer.
+### Campaign library
+- Jammu & Kashmir conflict (1947–49)
+- Operation Vijay — Goa liberation (1961)
+- Sino-Indian War (1962)
+- India–Pakistan War (1965)
+- India–Pakistan War / Bangladesh Liberation context (1971)
+- Operation Meghdoot (launched 1984)
+- Operation Cactus (1988)
+- Kargil War (1999), with the original in-depth dossier
+
+Each guide identifies its period, theatre, category, key point, and direct official/archival source links. Campaign summaries are orientation notes rather than substitutes for full source documents.
+
+### Interactive tools
+- Responsive interface with dark/light themes and reading-progress bar.
+- Global archive search across the timeline, campaigns, theatre features, operations, leadership, gallantry profiles, reforms, and sources.
+- Timeline phase filters and keyword search.
+- Campaign filter/search for wars vs. operations, year, theatre, and subject.
+- Interactive sector navigator, named battlefield features, and logistics / highway references.
+- Switchable Indian/Pakistani leadership profiles and expandable gallantry records.
+- **Academy study mode**: 15 multiple-choice questions spanning the campaign library, immediate answer feedback, source citations, shuffled order, topic filters, review of incorrect responses, score and local best score.
+- Browser-local saved field items and personal notes.
+- Export the curated archive as JSON, or print/save the website as PDF.
+- Keyboard archive search: Ctrl/Command + K or /. Press Esc to close search or the field-notes drawer.
 
 ## Files
 
-- index.html — layout, styling, responsive UI, and evidence/source panels.
-- app.js — rendering and interaction layer.
-- data.js — original structured Kargil chronology, sectors, operations, people, reforms, and analysis.
-- SOURCES.md — source register and notes on provenance and data integrity.
+- index.html — layout, styles, campaign library, quiz interface, source and evidence panels.
+- app.js — rendering and interaction layer, local search, saved items, and study scoring.
+- data.js — original Kargil chronology, theatre sectors, operations, people, reforms, and analysis.
+- campaigns.js — campaign catalogue and the source-linked quiz question bank.
+- README.md — setup and product documentation.
+- SOURCES.md — source register, provenance, and data-integrity notes.
 
 ## Research and source policy
 
-The UI prioritises primary/official records where available and identifies interpretive summaries as such. See the on-page Sources section and SOURCES.md for source links and editorial caveats.
+The source library prioritises official Indian government/service records, parliamentary catalogues, and contemporaneous diplomatic/archival documents where available. Interpretive summaries are identified as such; consult the linked original materials for details.
 
-Two scope issues are deliberately visible instead of silently reconciled:
+Two scope issues are deliberately visible rather than silently reconciled:
 
-1. The long-cited figure of 527 Indian fatalities differs from the 674 stated on the National War Memorial's Operation Vijay page. Check each source's wording and scope before citing either.
-2. Official IAF summaries group missions differently (strike, reconnaissance/ELINT, escort, helicopter, air transport, casualty evacuation). Totals with different category definitions should not be compared as if they measured the same thing.
+1. The long-cited Kargil fatality figure of 527 differs from the 674 stated on the National War Memorial's Operation Vijay page. Check the source wording and scope before citing either figure.
+2. Official IAF summaries group missions differently (strike, reconnaissance/ELINT, escort, helicopter, air transport, casualty evacuation). Totals with different category definitions should not be compared as if they measured the same activity.
 
-The website does not claim to be an official government publication.
+This is an independent educational project, not an official government publication. Historical conflicts may have contested narratives; the archive favours careful wording, citations, and explicit scope labels.
 
-## Live web research vs. static content
+## Live research vs. static content
 
-This is a static GitHub Pages application. Global search searches the dataset committed to the repository. The Search the web links open a Google query for additional research; the source cards link to original institutions. The site does not scrape Google or ingest arbitrary pages automatically.
+This is a static GitHub Pages application. Archive search queries the committed local dataset and source catalogue; “Web research” links open Google queries and source cards open original institutions. The site does **not** scrape Google or ingest arbitrary pages automatically.
 
-For future automated research ingestion, select a source/API with documented access, set attribution and deduplication rules, validate factual claims, handle rate limits, and keep private API credentials on a server—not in this public frontend.
+For automated research ingestion, choose an API or licensed source with documented access, create a server-side retrieval and citation pipeline, deduplicate and date sources, validate claims, respect rate limits and copyright, and keep secret API credentials out of this public frontend.
 
 ## Local development
 
-Open index.html in a browser or serve this directory with any static web server. No package installation or build step is required. data.js must load before app.js.
+Open index.html in a browser or serve this folder with a static web server. No package installation or build step is required. Scripts must load in this order: data.js, campaigns.js, app.js.
 
 ## Credits
 
-Independent educational project by Harshit Chaubey. Historical summaries are provided for study and should be checked against the linked original records.
+Independent educational project by Harshit Chaubey. Use the linked sources to verify claims before relying on the material for publication or exam reference.
