@@ -510,6 +510,59 @@ body[data-route="home"] .footer{margin-top:42px}
 .timeline-main .list-pagination{margin-top:2px}
 @media(max-width:600px){.list-pagination{gap:7px;padding:9px}.list-pagination button{flex:1 1 auto;padding:8px 9px}.list-pagination .pagination-status{order:-1;flex-basis:100%;text-align:left}}
 
+
+/* Atlas refinement: sortable catalogue, card/list mode, and side-by-side comparison */
+.atlas-browse-controls{display:flex;align-items:end;gap:16px;flex-wrap:wrap;margin:0 0 14px;padding:14px;border:1px solid var(--line);border-radius:14px;background:rgba(19,28,25,.55)}
+.atlas-sort-label,.atlas-view-control{display:flex;flex-direction:column;gap:7px}
+.atlas-sort-select{min-height:40px;min-width:190px;max-width:100%;padding:8px 34px 8px 11px;color:var(--text);background:var(--surface);border:1px solid var(--line);border-radius:10px;font:11px "DM Mono",monospace}
+.atlas-sort-select:focus-visible,.atlas-view-btn:focus-visible,.atlas-card-actions button:focus-visible{outline:2px solid var(--lime);outline-offset:3px}
+.atlas-view-toggle{display:flex;gap:4px;padding:4px;border:1px solid var(--line);background:var(--surface);border-radius:10px}
+.atlas-view-btn{border:1px solid transparent;border-radius:7px;background:transparent;color:var(--muted);padding:7px 10px;min-height:30px;font-size:11px;cursor:pointer}
+.atlas-view-btn.active{background:var(--surface3);color:var(--lime);border-color:var(--line2)}
+.atlas-control-note{font-size:11px;line-height:1.55;color:var(--muted);margin:0 0 4px auto;max-width:350px;flex:1 1 240px}
+.atlas-grid.atlas-list-view{grid-template-columns:minmax(0,1fr)}
+.atlas-list-view .atlas-card{flex-direction:row;min-height:190px}
+.atlas-list-view .atlas-thumb{height:auto;min-height:190px;width:min(270px,30%);flex:0 0 min(270px,30%)}
+.atlas-list-view .atlas-card-body{padding:16px 18px}
+.atlas-list-view .atlas-card p{max-width:95ch}
+.atlas-card-actions button.compare-selected{border-color:var(--lime);background:rgba(216,243,106,.1);color:var(--lime)}
+.atlas-card-actions button:disabled{opacity:.45;cursor:not-allowed}
+.atlas-compare-tray[hidden],.atlas-compare-backdrop[hidden],.atlas-compare-shell[hidden]{display:none!important}
+.atlas-compare-tray{position:fixed;z-index:250;left:50%;bottom:16px;transform:translateX(-50%);width:min(1100px,calc(100% - 28px));display:grid;grid-template-columns:auto minmax(140px,1fr) auto;align-items:center;gap:14px;padding:12px 14px;border:1px solid var(--line2);border-radius:16px;background:rgba(16,23,21,.97);box-shadow:0 18px 65px rgba(0,0,0,.42);backdrop-filter:blur(18px)}
+.atlas-compare-tray-copy{display:flex;flex-direction:column;gap:4px;white-space:nowrap}
+.atlas-compare-tray-copy strong{font:600 12px "Space Grotesk",sans-serif;color:var(--text)}
+.atlas-compare-selected{display:flex;flex-wrap:wrap;align-items:center;gap:6px;min-width:0}
+.atlas-compare-chip{display:inline-flex;align-items:center;gap:7px;max-width:100%;border:1px solid var(--line);border-radius:8px;padding:5px 7px;color:var(--text);font-size:10px}
+.atlas-compare-chip span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:180px}
+.atlas-compare-chip button{display:inline-flex;align-items:center;justify-content:center;min-width:20px;min-height:20px;border:0;border-radius:5px;background:var(--surface3);color:var(--muted);cursor:pointer}
+.atlas-compare-tray-actions{display:flex;align-items:center;gap:6px}
+.atlas-compare-tray-actions .primary-btn,.atlas-compare-tray-actions .quiet-btn{min-height:35px;padding:7px 10px;font-size:10px}
+.atlas-compare-tray-actions button:disabled{opacity:.45;cursor:not-allowed}
+.atlas-compare-backdrop{position:fixed;inset:0;z-index:320;background:rgba(0,0,0,.8);backdrop-filter:blur(8px)}
+.atlas-compare-shell{position:fixed;z-index:330;inset:4vh 3vw;max-width:1600px;margin:auto;overflow:auto;padding:0 24px 26px;border:1px solid var(--line2);border-radius:20px;background:var(--bg2);box-shadow:0 28px 100px rgba(0,0,0,.55)}
+.atlas-compare-header{position:sticky;top:0;padding:15px 0;background:var(--bg2)}
+.atlas-compare-header h2{font:600 clamp(22px,3vw,34px)/1.1 "Space Grotesk",sans-serif;letter-spacing:-.04em;margin:5px 0 0}
+.atlas-compare-body{padding-top:16px}
+.atlas-compare-intro{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 14px;color:var(--muted);font-size:12px}
+.atlas-compare-table-wrap{overflow:auto;border:1px solid var(--line);border-radius:13px}
+.atlas-compare-table{width:100%;min-width:780px;border-collapse:separate;border-spacing:0;table-layout:fixed}
+.atlas-compare-table th,.atlas-compare-table td{padding:14px;border-bottom:1px solid var(--line);border-right:1px solid var(--line);vertical-align:top;text-align:left;overflow-wrap:anywhere}
+.atlas-compare-table thead th{position:sticky;top:0;z-index:2;background:var(--surface2);font:600 13px/1.4 "Space Grotesk",sans-serif;color:var(--text)}
+.atlas-compare-table thead th:first-child{width:145px;color:var(--muted);font:10px "DM Mono",monospace;text-transform:uppercase;letter-spacing:.08em}
+.atlas-compare-table tbody th{width:145px;background:rgba(19,28,25,.56);font:10px/1.5 "DM Mono",monospace;text-transform:uppercase;letter-spacing:.05em;color:var(--muted)}
+.atlas-compare-table td{font-size:12px;line-height:1.75;color:var(--text)}
+.atlas-compare-table tr:last-child th,.atlas-compare-table tr:last-child td{border-bottom:0}
+.atlas-compare-table th:last-child,.atlas-compare-table td:last-child{border-right:0}
+.atlas-compare-table ul{padding-left:17px;margin:0}
+.atlas-compare-table li+li{margin-top:6px}
+.atlas-compare-table a{color:var(--lime);text-decoration:underline;text-underline-offset:3px}
+body.light-mode .atlas-compare-tray{background:rgba(255,255,255,.97)}
+body.light-mode .atlas-compare-shell{background:var(--bg2)}
+body.light-mode .atlas-compare-table thead th{background:var(--surface2)}
+@media(max-width:900px){.atlas-compare-tray{grid-template-columns:1fr auto;gap:9px}.atlas-compare-selected{grid-column:1/-1;grid-row:2}.atlas-compare-tray-actions{grid-column:2;grid-row:1}.atlas-control-note{flex-basis:100%;margin:0}.atlas-list-view .atlas-thumb{width:220px;flex-basis:220px}}
+@media(max-width:600px){.atlas-list-view .atlas-card{flex-direction:column}.atlas-list-view .atlas-thumb{width:100%;height:150px;min-height:150px;flex-basis:auto}.atlas-compare-tray{bottom:8px;width:calc(100% - 16px);padding:10px}.atlas-compare-tray-copy .smallcaps{font-size:8px}.atlas-compare-tray-copy strong{font-size:11px}.atlas-compare-tray-actions .quiet-btn{display:none}.atlas-compare-shell{inset:2vh 2vw;padding:0 12px 16px}.atlas-compare-table th,.atlas-compare-table td{padding:10px}.atlas-sort-select{min-width:160px}}
+@media(prefers-reduced-motion:reduce){.atlas-card{transition:none}.atlas-card:hover{transform:none}}
+
 </style>
 </head>
 <body>
@@ -743,8 +796,35 @@ body[data-route="home"] .footer{margin-top:42px}
         </aside>
       </div>
       <div class="atlas-results-head"><div><div class="smallcaps">Field dossiers</div><h3 id="atlasSummary">Loading the operation index…</h3></div><button class="quiet-btn" id="atlasClearFilters">Reset filters</button></div>
+      <div class="atlas-browse-controls" aria-label="Operation catalogue display controls">
+        <label class="atlas-sort-label" for="atlasSort"><span class="smallcaps">Sort dossiers</span>
+          <select id="atlasSort" class="atlas-sort-select">
+            <option value="catalogue">Archive order</option>
+            <option value="newest">Newest period first</option>
+            <option value="oldest">Oldest period first</option>
+            <option value="title">Title A–Z</option>
+            <option value="sources">Most linked sources</option>
+          </select>
+        </label>
+        <div class="atlas-view-control">
+          <span class="smallcaps">Layout</span>
+          <div class="atlas-view-toggle" role="group" aria-label="Catalogue layout">
+            <button type="button" id="atlasViewCards" class="atlas-view-btn active" data-atlas-view="cards" aria-pressed="true" title="Show dossier cards">▦ Cards</button>
+            <button type="button" id="atlasViewList" class="atlas-view-btn" data-atlas-view="list" aria-pressed="false" title="Show compact dossier list">☷ List</button>
+          </div>
+        </div>
+        <p class="atlas-control-note">Select up to three records to compare their plans, execution, constraints, lessons and cited sources.</p>
+      </div>
       <div class="atlas-grid" id="atlasGrid"><div class="empty-state">Loading operation dossiers…</div></div>
       <nav class="list-pagination" id="atlasPagination" aria-label="Operation dossier pages" hidden></nav>
+      <div class="atlas-compare-tray" id="atlasCompareTray" role="region" aria-label="Selected operation dossiers for comparison" hidden>
+        <div class="atlas-compare-tray-copy"><span class="smallcaps">Comparison workspace</span><strong id="atlasCompareCount">0 / 3 selected</strong></div>
+        <div class="atlas-compare-selected" id="atlasCompareSelected"></div>
+        <div class="atlas-compare-tray-actions">
+          <button type="button" class="primary-btn" id="atlasCompareRun" data-run-comparison disabled>Select 2 to compare</button>
+          <button type="button" class="quiet-btn" id="atlasCompareClear" data-clear-comparison disabled>Clear</button>
+        </div>
+      </div>
     </section>
 
     <section class="section" id="timeline" data-view="kargil-timeline" hidden>
@@ -907,6 +987,14 @@ body[data-route="home"] .footer{margin-top:42px}
   <div id="atlasModalBody"></div>
 </section>
 
+<div class="atlas-compare-backdrop" id="atlasCompareBackdrop" data-close-comparison hidden></div>
+<section class="atlas-compare-shell" id="atlasCompareShell" role="dialog" aria-modal="true" aria-labelledby="atlasCompareTitle" hidden>
+  <div class="atlas-modal-top atlas-compare-header">
+    <div><div class="smallcaps">Indian Wars / comparative reading</div><h2 id="atlasCompareTitle">Compare selected operations</h2></div>
+    <button type="button" class="icon-btn" id="atlasCompareClose" data-close-comparison aria-label="Close operation comparison">×</button>
+  </div>
+  <div id="atlasCompareBody" class="atlas-compare-body"></div>
+</section>
 <div class="overlay" id="vaultOverlay"></div>
 <aside class="drawer" id="vaultDrawer" aria-label="Saved field notes" aria-hidden="true">
   <div class="drawer-head"><div><div class="smallcaps">Personal workspace</div><h2>Field notes</h2></div><button class="icon-btn" id="savedClose" aria-label="Close field notes">×</button></div>
