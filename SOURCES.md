@@ -1,65 +1,123 @@
-# Indian Wars — Source Register
+# Indian Wars — Source Register and Research Notes
 
-This source register supports the site's Kargil dossier and the campaign library. It prioritises primary/official material for dates and institutional statements; short campaign summaries are editorial orientation, not exhaustive war histories.
+This register supports the original Kargil dossier, campaign library and Operations Atlas. These links are starting points to original institutions or archival records; each record should be read in its actual context and scope.
 
-## 1947–49 — Jammu & Kashmir conflict
+## 1947–49 — Jammu & Kashmir conflict and Operation Bison
+- [India–Pakistan Conflict, 1947–48 — National War Memorial](https://nationalwarmemorial.gov.in/murals/totem_details/1): summary of the early conflict, Srinagar airlift and ceasefire.
+- [Moments of Military Pride: 1947 to 1962 — National War Memorial](https://nationalwarmemorial.gov.in/war-depictions/details/3): Operation Bison, Zoji La, Operation Polo and other early campaigns.
+- [Official History of Indian Armed Forces — PIB / Ministry of Defence](https://www.pib.gov.in/newsite/PrintRelease.aspx?lang=2&reg=48&relid=177064): catalogue of published official military histories.
 
-- [India–Pakistan Conflict, 1947–48 — National War Memorial](https://nationalwarmemorial.gov.in/murals/totem_details/1). Memorial overview of the Srinagar airlift and ceasefire date, and the numbers as stated by that source.
-- [Official History of Indian Armed Forces — PIB, Ministry of Defence](https://www.pib.gov.in/newsite/PrintRelease.aspx?lang=2&reg=48&relid=177064). Government catalogue noting the official publication *History of Operations in Jammu & Kashmir, 1947–48*.
-- [Moments of Military Pride: 1947 to 1962 — National War Memorial](https://nationalwarmemorial.gov.in/war-depictions/details/3). Memorial record covering, among other topics, the recapture of Zoji La and Operation Bison.
+## 1948 — Operation Polo / Hyderabad
+- [Capture of Hyderabad — National War Memorial](https://nationalwarmemorial.gov.in/war-depictions/details/3): memorial account of the campaign, plan, thrusts, and surrender date.
+- [Official-history catalogue — PIB](https://www.pib.gov.in/newsite/PrintRelease.aspx?lang=2&reg=48&relid=177064): lists the government's Operation Polo historical publication.
 
-## 1961 — Goa liberation
+## 1953–54 — Custodian Force India in Korea
+- [Official-history catalogue — PIB](https://www.pib.gov.in/newsite/PrintRelease.aspx?lang=2&reg=48&relid=177064): lists History of the Custodian Force (India) in Korea, 1953–54.
+- [Korean Armistice Agreement — United Nations Command resource](https://www.usfk.mil/Resources/Armistice-Agreement/): armistice context; use the full historical publication for unit chronology.
 
-- [Official History of Indian Armed Forces — PIB, Ministry of Defence](https://www.pib.gov.in/newsite/PrintRelease.aspx?lang=2&reg=48&relid=177064). Lists the official-history publication *Operation Vijay – The Liberation of Goa and other Portuguese Colonies in India, 1961*.
-- Note the codename is reused: the 1961 Goa operation is distinct from the 1999 Kargil ground campaign called Operation Vijay.
+## 1960–63 — Congo Operation / ONUC
+- [Official-history catalogue — PIB](https://www.pib.gov.in/newsite/PrintRelease.aspx?lang=2&reg=48&relid=177064): lists the Congo Operation, 1960–63.
+- [United Nations Peacekeeping — ONUC mission history](https://peacekeeping.un.org/mission/past/onuc.htm): UN mandate and multinational-mission context.
+
+## 1961 — Goa liberation / Operation Vijay
+- [Moments of Military Pride: 1947 to 1962 — National War Memorial](https://nationalwarmemorial.gov.in/war-depictions/details/3): tri-service liberation campaign and main dates.
+- [Operation in Goa, December 1961 — US Office of the Historian](https://history.state.gov/historicaldocuments/frus1961-63v19/d76): contemporary diplomatic reporting.
+- [G. K. Handoo to K. P. Candeth — military to civil administration in Goa, 11 February 1962 — Nehru Archive](https://nehruarchive.in/documents/g-k-handoo-to-k-p-candeth-military-to-civil-administration-in-goa-11-february-1962-6j2on): archival document for the post-operation transition.
+- Codename note: Goa's 1961 Operation Vijay is separate from the 1999 Kargil ground campaign with the same name.
 
 ## 1962 — Sino-Indian War context
+- [Moments of Military Pride: 1947 to 1962 — National War Memorial](https://nationalwarmemorial.gov.in/war-depictions/details/3): official memorial context.
+- [To Heads of Government, 26 October 1962 — Nehru Archive](https://nehruarchive.in/documents/to-heads-of-government-26-october-1962-y6yqq): contemporaneous correspondence.
+- The Atlas is not a full daily account of the 1962 conflict. Use official military history, parliamentary records and scholarship from multiple perspectives; border and responsibility narratives have been contested.
 
-- [Moments of Military Pride: 1947 to 1962 — National War Memorial](https://nationalwarmemorial.gov.in/war-depictions/details/3). Official memorial history for early post-independence operations and frontier context.
-- [To Heads of Government, 26 October 1962 — The Nehru Archive](https://nehruarchive.in/documents/to-heads-of-government-26-october-1962-y6yqq). Contemporaneous correspondence useful for studying how the crisis was diplomatically framed at the time.
-- Read contested border narratives in context and compare contemporary documents with later scholarship rather than treating any one source as a complete account.
+## 1965 and 1971 — India–Pakistan wars
+- [1965 India–Pakistan War: Role of IAF — PIB / Ministry of Defence](https://www.pib.gov.in/newsite/PrintRelease.aspx?lang=2&reg=48&relid=109364): air-ground coordination and Operation Grand Slam.
+- [Official military-history catalogue — PIB](https://www.pib.gov.in/newsite/PrintRelease.aspx?lang=2&reg=48&relid=177064): government histories for both wars.
+- [50th anniversary of the 1971 war — PIB](https://www.pib.gov.in/newsite/PrintRelease.aspx?lang=2&reg=48&relid=228559): government retrospective.
+- [The Indo-Pak War 1971 — Ministry of External Affairs](https://www.mea.gov.in/Uploads/PublicationDocs/23460_IWM_Book__11-06-2014_.pdf): historical publication and political/diplomatic context.
+- [22 Killer Squadron / Operation Trident — PIB](https://www.pib.gov.in/Pressreleaseshare.aspx?PRID=1778234&lang=2&reg=48): official naval history of 4–5 December 1971.
+- [Vijay Diwas — PIB](https://www.pib.gov.in/PressReleasePage.aspx?PRID=1765917&lang=2&reg=48): 1971 retrospective.
 
-## 1965 — India–Pakistan War
+## 1984 — Operation Blue Star and Operation Meghdoot
+- [Statement on the Indian operation at Sri Harmandir Sahib in 1984 — UK Government](https://www.gov.uk/government/speeches/statement-on-the-indian-operation-at-sri-harmandir-sahib-in-1984): UK Cabinet Secretary retrospective concerning UK advice and the June operation. This is one particular review, not a complete independent history; competing claims should be attributed.
+- [IAF in Operation Meghdoot — PIB / Ministry of Defence](https://www.pib.gov.in/Pressreleaseshare.aspx?PRID=2017834&lang=2&reg=48): 13 April 1984 launch, Army–Air Force context and high-altitude support.
+- [Bana Top / Operation Meghdoot — National War Memorial](https://nationalwarmemorial.gov.in/murals/details/13): later 1987 assault in the continuing Siachen deployment.
+- [Image: Operation Blue Star — Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Operation_Blue_Star.jpg): archival photo dated 8 June 1984; Commons records a Government Open Data Licence India claim but notes that the licence status has not been administrator-reviewed. Recheck before reuse.
+- [Image: Siachen warriors — Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Siachen_warriors.jpg): modern high-altitude visual by Arshsangh, CC BY-SA 4.0. It is not presented as an image of the 1984 Meghdoot launch.
 
-- [Seminar: 1965 India–Pakistan War — Role of IAF, PIB](https://www.pib.gov.in/newsite/PrintRelease.aspx?lang=2&reg=48&relid=109364). Air Force retrospective covering Operation Grand Slam in the Chhamb–Jaurian sector and air–ground coordination.
-- [Official History of Indian Armed Forces — PIB](https://www.pib.gov.in/newsite/PrintRelease.aspx?lang=2&reg=48&relid=177064). Catalogue of the official publication *The India-Pakistan War of 1965: A History*.
-
-## 1971 — India–Pakistan War / Bangladesh Liberation context
-
-- [50th anniversary official account of the 1971 war — PIB, Ministry of Defence](https://www.pib.gov.in/newsite/PrintRelease.aspx?lang=2&reg=48&relid=228559). Government account of eastern and western fronts, the surrender in Dhaka, and Bangladesh's emergence as an independent nation.
-- [The Indo-Pak War 1971 — Ministry of External Affairs](https://www.mea.gov.in/Uploads/PublicationDocs/23460_IWM_Book__11-06-2014_.pdf). A government historical publication with wider political, humanitarian, and diplomatic context.
-- [22 Killer Squadron / Operation Trident — PIB](https://www.pib.gov.in/Pressreleaseshare.aspx?PRID=1778234&lang=2&reg=48). Official naval history of the missile-boat action on the night of 4–5 December 1971.
-- [Vijay Diwas official account — PIB](https://www.pib.gov.in/PressReleasePage.aspx?PRID=1765917&lang=2&reg=48). Government retrospective on the 1971 victory and joint-service lessons.
-
-## 1984 — Operation Meghdoot
-
-- [IAF in Operation Meghdoot — PIB, Ministry of Defence](https://www.pib.gov.in/PressReleasePage.aspx?PRID=2017834&lang=2&noshow=1&reg=48). Records the operation's launch on 13 April 1984, high-altitude deployment, and airlift role.
-- [Operation Meghdoot commemorated — PIB](https://www.pib.gov.in/newsite/PrintRelease.aspx?lang=2&reg=48&relid=118215). Official account of the objective to secure strategic heights on the Saltoro Ridge.
+## 1987–90 — Operation Pawan / IPKF in Sri Lanka
+- [Official-history catalogue — PIB](https://www.pib.gov.in/newsite/PrintRelease.aspx?lang=2&reg=48&relid=177064): broader history catalogue.
+- [Operation Pawan retrospective — Moneycontrol Defence](https://www.moneycontrol.com/defence/operation-pawan-1987-90-how-the-ipkf-learnt-the-hard-way-to-fight-the-ltte-article-13781472.html): secondary military-history analysis. It should be compared against other published accounts rather than used as a sole authority.
 
 ## 1988 — Operation Cactus
+- [Responding First, Leading Power — Ministry of External Affairs](https://www.mea.gov.in/Portal/IndiaArticleAll/636548965437648101_Responding_First_Leading_Pow.pdf): foreign-policy account of the response to the Maldives government's request.
+- [Operation Cactus — Indian Express research article](https://indianexpress.com/article/research/operation-cactus-how-india-helped-maldives-end-a-coup-backed-by-lankan-militants-7605322/): secondary historical account.
 
-- [Responding First, Leading Power — Ministry of External Affairs](https://www.mea.gov.in/Portal/IndiaArticleAll/636548965437648101_Responding_First_Leading_Pow.pdf). MEA account stating India responded to a request for assistance from the Maldives government.
-- [Indian Navy response during Maldives crisis — PIB, Ministry of Defence](https://www.pib.gov.in/newsite/PrintRelease.aspx?lang=2&reg=48&relid=112783). Official naval summary of the 1988 coup attempt and response.
-- [Operation Cactus — IDSA research article](https://www.idsa.in/system/files/JDS_8_2_GautamSen.pdf). Secondary analysis for additional context; distinguish scholarly interpretation from official records.
+## 1990–92 — Operations Bajrang and Rhino
+- [Ministry of Home Affairs — Annual Report 1991–92](https://www.mha.gov.in/sites/default/files/REPORT_1991_92_12022021.pdf): government reporting on Operation Rhino's launch and events in Assam.
+- [US Department of State country report / archive](https://www.ecoi.net/en/document/1140831.html): historical reporting concerning Assam and Operation Bajrang.
+- [South Asia Terrorism Portal — Assam backgrounder](https://satp.org/satporgtp/countries/india/states/assam/backgrounder/index.html): secondary conflict history. Counts and interpretations should retain the reporting date and source scope.
 
-## 1999 — Kargil War
+## 1990s onward — Operation Rakshak and Operation Sadbhavana
+- [Ashok Chakra award citation — PIB](https://www.pib.gov.in/newsite/PrintRelease.aspx?lang=2&reg=48&relid=175890): a specific episode under Operation Rakshak; not a complete daily campaign record.
+- [Army in the Development of Jammu & Kashmir — PIB](https://www.pib.gov.in/newsite/erelcontent.aspx?lang=1&reg=3&relid=33374): Operation Sadbhavana context and civic-action projects.
+- [Operation Sadbhavana and related activities — PIB](https://www.pib.gov.in/newsite/erelcontent.aspx?lang=2&reg=48&relid=93711): government overview.
+- Broad campaign labels do not establish the date or details of every incident. Use a dated source for each specific episode.
 
-- [Operation Vijay — War Depictions, National War Memorial](https://nationalwarmemorial.gov.in/war-depictions/details/8). Official memorial overview of the conflict and awards; the site's stated figures should be cited with the exact page and its scope.
-- [The Nation Remembers Kargil War Heroes — PIB / Ministry of Defence](https://www.pib.gov.in/newsite/erelcontent.aspx?lang=2&reg=48&relid=50974). Official government overview of the Kargil campaign.
-- [Kargil Vijay Diwas Rajat Jayanti — IAF operations, PIB](https://www.pib.gov.in/PressReleasePage.aspx?PRID=2033075&lang=2&reg=48). IAF retrospective that distinguishes reported sortie / mission categories.
-- [History of the Indian Air Force](https://careerairforce.gov.in/indian-air-force-history). Official service-history overview.
-- [Kargil Review Committee papers — Sansad eLibrary](https://elibrary.sansad.in/items/94154a2c-a144-4ab4-a8bc-94c76e834c04). Parliamentary catalogue for the Committee report and related action-taken material.
-- [Committee report and action-taken parliamentary record — Rajya Sabha Official Debates](https://rsdebate.nic.in/handle/123456789/110129). Parliamentary record and linked documents.
-- [Clinton–Sharif Joint Statement on Kashmir — White House archive, 4 July 1999](https://clintonwhitehouse6.archives.gov/1999/07/1999-07-04-joint-statement-by-president-and-pakistan-prime-minister.html). Contemporaneous diplomatic statement on the Line of Control.
-- [History of the Department of State — Kashmir conflict](https://1997-2001.state.gov/about_state/history/ch13.html). U.S. diplomatic historical context.
-- [Kargil War records — Clinton Presidential Library finding aid](https://www.clintonlibrary.gov/research/archives/finding-aids/kargil-war). Archival catalogue for Kargil-era records.
+## 2001–02 — Operation Parakram
+- [US State Department archive — South Asia regional context](https://1997-2001.state.gov/regions/sa/index.html): archival diplomatic context.
+- [Google research handoff — Operation Parakram official histories](https://www.google.com/search?q=Operation+Parakram+2001+2002+official+history+lessons): use only to locate additional sources; the search results are not themselves evidence.
 
-## Editorial and data-integrity notes
+## 2003 — Bhutan-led Operation All Clear
+- [MEA Annual Report 2003–04 — Bhutan](https://www.mea.gov.in/Uploads/PublicationDocs/165_Annual-Report-2003-2004.pdf): records the Royal Bhutan Army's operation from 15 December and requested Indian logistical support.
+- Attribution note: the Atlas explicitly labels All Clear as Bhutan-led, not an Indian Army-led operation.
 
-- The original Kargil chronology, theatre notes, operations, leadership profiles, gallantry biographies, reforms, and strategic analysis remain in data.js.
-- The source library explicitly flags the long-cited 527 Indian fatalities figure alongside 674 stated on the National War Memorial's Operation Vijay page. They may reflect different source scope or counting conventions; this project does not silently reconcile them.
-- Mission/sortie counts also depend on category definitions. Use the original IAF source's wording and do not compare categories as if they are identical.
-- The campaign library distinguishes wars from named operations and notes date scope (for example, the start of an ongoing deployment versus the fixed period of a war).
-- Campaign cards, quiz explanations, and source panels link directly to source material. Quiz score is stored only in browser-local storage; questions are curated rather than dynamically generated.
-- This is a static GitHub Pages application: built-in search indexes committed data. Google links are external handoffs; the site does not scrape Google or autonomously ingest pages.
-- Public sources can change or move. When publishing claims, record the exact source, date, wording, and context used.
+## 2004 — Operation Sea Wave
+- [PIB — Armed Forces disaster-relief missions retrospective](https://www.pib.gov.in/PressNoteDetails.aspx?ModuleId=3&NoteId=157371&lang=13&reg=22): official disaster-relief overview. For daily incident chronology, locate contemporary situation reports and unit records.
+
+## 2013–15 — Operations Surya Hope, Megh Rahat and Maitri
+- [Uttarakhand Flash Floods, June 2013 — NIDM / India Disaster Report](https://nidm.gov.in/pdf/pubs/india%20disaster%20report%202013.pdf): after-action account of early situation reporting, destroyed bridges/routes, weather restrictions and adaptive planning in the Surya Hope context.
+- [PIB — Armed Forces mount relief operations, 19 June 2013](https://www.pib.gov.in/newsite/PrintRelease.aspx?relid=96637): dated government status update.
+- [PIB — Army update, 26 June 2013](https://www.pib.gov.in/newsite/PrintRelease.aspx?lang=2&reg=48&relid=96805): engineering and evacuation status.
+- [Ministry of Defence Annual Report 2014–15](https://www.ddpmod.gov.in/sites/default/files/2023-12/Annual%20report%202014-2015_0.pdf): Operation Megh Rahat launch and reported response.
+- [J&K floods, September 2014 — NDRF](https://www.ndrf.gov.in/en/operations/jammu-kashmir-flood-rescue-and-relief-operations-sep-2014): NDRF mobilisation and response details.
+- [India Disaster Report 2014–17 — NIDM](https://nidm.gov.in/PDF/pubs/IDR2014-17.pdf): response constraints including bad weather and boat availability.
+- [PIB — Operation Maitri launch, 26 April 2015](https://www.pib.gov.in/newsite/PrintRelease.aspx?lang=2&reg=48&relid=118739): Army's Nepal relief operation.
+- [PIB — Operation Maitri daily update, 3 May 2015](https://www.pib.gov.in/newsite/PrintRelease.aspx?lang=2&reg=48&relid=121124): engineering and medical support snapshot.
+- [PIB — Operation Maitri daily update, 20 May 2015](https://www.pib.gov.in/newsite/PrintRelease.aspx?lang=2&reg=48&relid=121886): ongoing relief activity.
+- [PIB — armed forces wind up relief, 5 June 2015](https://www.pib.gov.in/newsite/PrintRelease.aspx?lang=2&reg=48&relid=122332): published wind-up summary.
+- [Image: 2013 Uttarakhand rescue — Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Army_personnel_busy_in_rescue_operations_in_Pindari_glacier,_in_Uttarakhand_(2).jpg): Government of India/MoD image marked under GODL-India; attribution required.
+- [Image: 60 Para Field Hospital in Nepal, 14 May 2015 — Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Army_Medical_Team_of_60_Para_Field_Hospital_providing_first_aid_treatment,_at_Sinamangal,_in_Nepal_on_May_14,_2015.jpg): mission-specific Operation Maitri photo; Government of India/MoD, GODL-India.
+
+## 2021–23 — Operations Devi Shakti, Ganga, Kaveri, Ajay, Dost
+- [MEA Annual Report 2021–22 — Operation Devi Shakti](https://fsi.mea.gov.in/Uploads/PublicationDocs/34894_MEA_Annual_Report_English.pdf): evacuation context and published scope.
+- [MEA Annual Report 2021–22 — Operation Ganga](https://meacms.mea.gov.in/Uploads/PublicationDocs/36286_MEA_Annual_Report_2022_English_web.pdf): government account of the Ukraine evacuation.
+- [MEA — operation-wise evacuation figures](https://www.mea.gov.in/Images/CPV/LS988En01.pdf): parliamentary answer with scope-specific counts including Ganga, Kaveri and Ajay.
+- [MEA Annual Report 2023 — Operation Kaveri](https://www.mea.gov.in/Images/CPV/38005_Final-MEA-AR-2023-English.pdf): Sudan evacuation, control-room and air/sea route context.
+- [Search official PIB records for Operation Dost](https://www.google.com/search?q=site%3Apib.gov.in+Operation+Dost+India+2023+Army+field+hospital): source-finding handoff. Search results themselves are not treated as confirmation of individual events.
+
+## 2025 — Operations Sindoor and Sindhu
+- [PIB / Ministry of Defence — Operation Sindoor statement, 7 May 2025](https://www.pib.gov.in/PressReleasePage.aspx?PRID=2127370&lang=2&reg=48): initial Indian government statement; claims should be attributed to that release.
+- [PIB — Operation Sindoor technology / air-defence account, 14 May 2025](https://static.pib.gov.in/WriteReadData/specificdocs/documents/2025/may/doc2025514554901.pdf): government's retrospective and description of events on 7–8 May.
+- [PIB — CDS strategic review, 25 May 2025](https://www.pib.gov.in/PressReleasePage.aspx?PRID=2131197&lang=2&reg=48): subsequent official assessment.
+- [MEA — Israel relations brief, February 2026](https://www.fsi.mea.gov.in/Portal/ForeignRelation/Israel_February_2026_1_.pdf): source used for the Operation Sindhu evacuation via Jordan and Egypt.
+
+## Kargil War 1999 dossier
+- [Operation Vijay — National War Memorial](https://nationalwarmemorial.gov.in/war-depictions/details/8): official memorial account and reported figures.
+- [The Nation Remembers Kargil War Heroes — PIB / Ministry of Defence](https://www.pib.gov.in/newsite/erelcontent.aspx?lang=2&reg=48&relid=50974): government retrospective.
+- [Kargil Vijay Diwas Rajat Jayanti — IAF operations, PIB](https://www.pib.gov.in/PressReleasePage.aspx?PRID=2033075&lang=2&reg=48): IAF retrospective and mission-category context.
+- [History of the Indian Air Force](https://careerairforce.gov.in/indian-air-force-history): official service history.
+- [Kargil Review Committee papers — Sansad eLibrary](https://elibrary.sansad.in/items/94154a2c-a144-4ab4-a8bc-94c76e834c04): parliamentary catalogue.
+- [Kargil Review Committee debate — Rajya Sabha](https://rsdebate.nic.in/handle/123456789/110129): parliamentary record and related material.
+- [Clinton–Sharif joint statement, 4 July 1999 — White House archive](https://clintonwhitehouse6.archives.gov/1999/07/1999-07-04-joint-statement-by-president-and-pakistan-prime-minister.html): contemporary diplomatic text.
+- [US Department of State history — Kashmir crisis](https://1997-2001.state.gov/about_state/history/ch13.html): retrospective diplomatic account.
+- [Clinton Presidential Library — Kargil War finding aid](https://www.clintonlibrary.gov/research/archives/finding-aids/kargil-war): archival records catalogue.
+
+## Research method: chronology, mistakes and lessons
+- A daily entry is included only when a source gives a dated milestone. An umbrella operation, multi-year deployment or short public retrospective is not converted into a fabricated full daily log.
+- “Planning” summarises documented intent or clearly labels analysis. “Implementation” describes dated public accounts. “Mistakes/friction” identifies documented constraints or contested critiques, and separately marks evidence gaps. “Lessons” are educational inferences, not claims attributed to commanders unless linked to a source.
+- A failure in outcome does not by itself prove that a specific decision was an error. Look for after-action reviews, inquiry reports, primary papers, multiple participant accounts and contemporaneous documentation.
+- Current or recent-operation claims may be disputed. Official statements are attributed to the issuing government; do not present them as independent verification.
+- Open-source inventory is not a complete list of every action, small-unit mission, ongoing deployment or classified operation. This limitation is deliberate and transparent.
+- Image credits and licence notes appear with relevant image exhibits. Verify the current Commons source page and licence before reusing a file outside the site; linked licence status may change.
+- The site is a static browser app. It indexes data committed to this repository, links to original sources, and provides a Google search handoff; it does not automatically scrape or ingest external webpages.
