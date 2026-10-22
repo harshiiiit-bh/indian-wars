@@ -78,6 +78,8 @@
     saveIds();
     renderTimeline();
     renderCampaigns();
+    renderAtlas();
+    renderAtlasMap();
     renderSectors();
     renderOperations();
     renderLeaders();
@@ -87,6 +89,7 @@
     renderVault();
     renderSearchResults($('#globalSearch') ? $('#globalSearch').value : '');
   }
+
   function sectionJump(id) {
     var target = document.getElementById(id);
     if (target) target.scrollIntoView({ behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start' });
@@ -522,7 +525,7 @@
     var correct = Number(answerIndex) === q.answer;
     if (correct) quizScore++;
     quizResponses.push({ question: q, chosen: Number(answerIndex), correct: correct });
-    $$('#quizOptions [data-quiz-answer]').forEach(function (button) {
+    $$('quizOptions [data-quiz-answer]').forEach(function (button) {
       var index = Number(button.dataset.quizAnswer);
       button.disabled = true;
       if (index === q.answer) button.classList.add('correct');
@@ -638,6 +641,12 @@
     if (item.side) activeSide = item.side;
     if (item.id.indexOf('sector:') === 0) activeSector = item.raw.id;
     if (item.id.indexOf('peak:') === 0) activeSector = item.sectorId;
+    if (item.id.indexOf('atlas:') === 0 && item.raw) {
+      sectionJump('atlas');
+      closeVault();
+      openOperationDetail(item.raw.id);
+      return;
+    }
     renderSectors();
     renderLeaders();
     sectionJump(item.target || 'overview');
@@ -664,6 +673,7 @@
       IndianLeaders: typeof LEADERS_INDIA !== 'undefined' ? LEADERS_INDIA : [],
       PakistaniLeaders: typeof LEADERS_PAK !== 'undefined' ? LEADERS_PAK : [],
       gallantryProfiles: typeof HEROES !== 'undefined' ? HEROES : [],
+      operationsAtlas: typeof OPERATIONS_ATLAS !== 'undefined' ? OPERATIONS_ATLAS : [],
       reforms: typeof REFORMS !== 'undefined' ? REFORMS : [],
       analysis: typeof STRATEGIC_COMPARISON !== 'undefined' ? STRATEGIC_COMPARISON : [],
       sourceLibrary: SOURCE_LIBRARY,
@@ -688,17 +698,22 @@
   }
 
   function wireEvents() {
-    $$('[data-jump]').forEach(function (button) { button.addEventListener('click', function () { sectionJump(button.dataset.jump); }); });
-    $$('.nav-link').forEach(function (button) { button.addEventListener('click', function () { sectionJump(button.dataset.jump); }); });
+    $$('[data-jump]').forEach(function (button) {
+      button.addEventListener('click', function () { sectionJump(button.dataset.jump); });
+    });
+    $$('.nav-link').forEach(function (button) {
+      button.addEventListener('click', function () { sectionJump(button.dataset.jump); });
+    });
 
     $('#phaseFilters').addEventListener('click', function (event) {
       var button = event.target.closest('[data-phase]');
       if (!button) return;
       activePhase = button.dataset.phase;
-      $$$('#phaseFilters .filter-btn').forEach(function (b) { b.classList.toggle('active', b === button); });
+      $$('#phaseFilters .filter-btn').forEach(function (b) { b.classList.toggle('active', b === button); });
       renderTimeline();
     });
     $('#timelineSearch').addEventListener('input', renderTimeline);
+
     $('#campaignFilters').addEventListener('click', function (event) {
       var button = event.target.closest('[data-campaign-filter]');
       if (!button) return;
@@ -707,11 +722,29 @@
       renderCampaigns();
     });
     $('#campaignSearch').addEventListener('input', renderCampaigns);
+
+    $('#atlasFilters').addEventListener('click', function (event) {
+      var button = event.target.closest('[data-atlas-filter]');
+      if (!button) return;
+      activeAtlasFilter = button.dataset.atlasFilter;
+      $$('#atlasFilters [data-atlas-filter]').forEach(function (b) { b.classList.toggle('active', b === button); });
+      renderAtlas();
+    });
+    $('#atlasSearch').addEventListener('input', renderAtlas);
+    $('#atlasClearFilters').addEventListener('click', function () {
+      activeAtlasFilter = 'all';
+      $('#atlasSearch').value = '';
+      $$('#atlasFilters [data-atlas-filter]').forEach(function (b) { b.classList.toggle('active', b.dataset.atlasFilter === 'all'); });
+      renderAtlas();
+    });
+    $('#atlasModalClose').addEventListener('click', closeOperationDetail);
+    $('#atlasModalBackdrop').addEventListener('click', closeOperationDetail);
+
     $('#quizTopicFilters').addEventListener('click', function (event) {
       var button = event.target.closest('[data-quiz-topic]');
       if (!button) return;
       activeQuizTopic = button.dataset.quizTopic;
-      $('#quizTopicFilters [data-quiz-topic]').forEach(function (b) { b.classList.toggle('active', b === button); });
+      $$('#quizTopicFilters [data-quiz-topic]').forEach(function (b) { b.classList.toggle('active', b === button); });
       $('#quizShell').hidden = true;
       renderQuizHome();
     });
@@ -723,10 +756,12 @@
     $('#quizNext').addEventListener('click', function () { if (!quizAnswered) return; quizPosition++; renderQuizQuestion(); });
     $('#quizRetake').addEventListener('click', startQuiz);
     $('#quizBackToTopics').addEventListener('click', function () { $('#quizShell').hidden = true; $('#quizStart').focus(); });
+
     $('#sectorSelector').addEventListener('click', function (event) {
       var button = event.target.closest('[data-sector]');
       if (!button) return;
-      activeSector = button.dataset.sector; renderSectors();
+      activeSector = button.dataset.sector;
+      renderSectors();
     });
     $('#sideSwitch').addEventListener('click', function (event) {
       var button = event.target.closest('[data-side]');
@@ -735,19 +770,30 @@
       $$('#sideSwitch button').forEach(function (b) { b.classList.toggle('active', b === button); });
       renderLeaders();
     });
+
     document.addEventListener('click', function (event) {
       var saveBtn = event.target.closest('[data-save-id]');
       if (saveBtn) { toggleSaved(saveBtn.dataset.saveId); return; }
+      var operationBtn = event.target.closest('[data-open-operation]');
+      if (operationBtn) { openOperationDetail(operationBtn.dataset.openOperation); return; }
       var openBtn = event.target.closest('[data-open-id]');
       if (openBtn) { var id = openBtn.dataset.openId; closeVault(); openIndexed(id); }
     });
+
     $('#savedOpen').addEventListener('click', openVault);
     $('#savedClose').addEventListener('click', closeVault);
     $('#vaultOverlay').addEventListener('click', closeVault);
-    $('#saveNotes').addEventListener('click', function () { safeStoreSet('iw-field-notes', $('#fieldNotes').value); showToast('Field notes saved in this browser'); });
+    $('#saveNotes').addEventListener('click', function () {
+      safeStoreSet('iw-field-notes', $('#fieldNotes').value);
+      showToast('Field notes saved in this browser');
+    });
     $('#clearSaved').addEventListener('click', function () {
       if (!savedIds.size) { showToast('Your saved list is already empty'); return; }
-      savedIds.clear(); saveIds(); renderVault(); renderTimeline(); renderSources(); renderSectors(); renderOperations(); renderCampaigns(); renderLeaders(); renderHeroes(); renderReforms(); showToast('Saved items cleared');
+      savedIds.clear();
+      saveIds();
+      renderVault(); renderTimeline(); renderSources(); renderSectors(); renderOperations();
+      renderCampaigns(); renderAtlas(); renderLeaders(); renderHeroes(); renderReforms();
+      showToast('Saved items cleared');
     });
     $('#themeToggle').addEventListener('click', function () {
       document.body.classList.toggle('light-mode');
@@ -756,7 +802,11 @@
     if (safeStoreGet('iw-theme', 'dark') === 'light') document.body.classList.add('light-mode');
     $('#exportBtn').addEventListener('click', exportArchive);
     $('#printBtn').addEventListener('click', function () { window.print(); });
-    $('#globalSearch').addEventListener('input', function () { renderSearchResults(this.value); $('#searchPanel').classList.add('show'); });
+
+    $('#globalSearch').addEventListener('input', function () {
+      renderSearchResults(this.value);
+      $('#searchPanel').classList.add('show');
+    });
     $('#globalSearch').addEventListener('focus', function () { $('#searchPanel').classList.add('show'); });
     $('#globalSearch').addEventListener('keydown', function (event) {
       if (event.key === 'Escape') hideSearch();
@@ -771,20 +821,25 @@
       var typing = target && (/INPUT|TEXTAREA|SELECT/.test(target.tagName) || target.isContentEditable);
       if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === 'k') { event.preventDefault(); openSearch(); }
       else if (event.key === '/' && !typing) { event.preventDefault(); openSearch(); }
-      else if (event.key === 'Escape') { hideSearch(); closeVault(); }
+      else if (event.key === 'Escape') { hideSearch(); closeVault(); closeOperationDetail(); }
     });
     window.addEventListener('scroll', function () {
       var scrollable = document.documentElement.scrollHeight - window.innerHeight;
       var percent = scrollable > 0 ? (window.scrollY / scrollable) * 100 : 0;
       $('#readingProgress').style.width = Math.min(100, Math.max(0, percent)) + '%';
-      var sections = ['overview', 'campaigns', 'timeline', 'theatre', 'operations', 'people', 'academy', 'intelligence', 'sources'];
+      var sections = ['overview', 'campaigns', 'atlas', 'timeline', 'theatre', 'operations', 'people', 'academy', 'intelligence', 'sources'];
       var current = 'overview';
-      sections.forEach(function (id) { var element = document.getElementById(id); if (element && element.getBoundingClientRect().top < 180) current = id; });
+      sections.forEach(function (id) {
+        var element = document.getElementById(id);
+        if (element && element.getBoundingClientRect().top < 180) current = id;
+      });
       $$('.nav-link').forEach(function (nav) { nav.classList.toggle('active', nav.dataset.jump === current); });
     }, { passive: true });
     document.addEventListener('click', function (event) {
       var wrap = $('#globalSearchWrap');
-      if (wrap && wrap.style.display === 'block' && !wrap.contains(event.target) && event.target.id !== 'searchToggle') $('#searchPanel').classList.remove('show');
+      if (wrap && wrap.style.display === 'block' && !wrap.contains(event.target) && event.target.id !== 'searchToggle') {
+        $('#searchPanel').classList.remove('show');
+      }
     });
   }
 
@@ -793,6 +848,7 @@
     buildIndex();
     renderTimeline();
     renderCampaigns();
+    renderAtlas();
     renderSectors();
     renderHighways();
     renderOperations();
@@ -803,6 +859,7 @@
     renderVault();
     renderQuizHome();
     wireEvents();
+    initOperationsMap();
     var stats = $$('.metric strong');
     if (stats.length) stats[0].setAttribute('title', 'Date range from first detection reported on 3 May to official end date on 26 July. Counting conventions vary.');
   }
