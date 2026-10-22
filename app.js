@@ -1184,12 +1184,22 @@ function syncAtlasViewControls() {
       console.warn('[Indian Wars] Interaction target is missing:', selector);
       return false;
     }
-    element.addEventListener(eventName, handler, options);
+    var guardedHandler = function (event) {
+      try {
+        return handler.call(this, event);
+      } catch (error) {
+        console.error('[Indian Wars] Control action failed:', selector, eventName, error);
+        try { showToast('A control hit an error. Please try again.'); } catch (toastError) { /* keep the page responsive */ }
+        return false;
+      }
+    };
+    element.addEventListener(eventName, guardedHandler, options);
     return true;
   }
 
   function wireEvents() {
     document.addEventListener('click', function (event) {
+      try {
       var pageButton = event.target.closest('[data-page-action][data-page-list]');
       if (pageButton) {
         if (pageButton.disabled) return;
@@ -1237,6 +1247,10 @@ function syncAtlasViewControls() {
       if (operationBtn) { openOperationDetail(operationBtn.dataset.openOperation); return; }
       var openBtn = event.target.closest('[data-open-id]');
       if (openBtn) { var id = openBtn.dataset.openId; closeVault(); openIndexed(id); }
+      } catch (error) {
+        console.error('[Indian Wars] Delegated click action failed:', error);
+        try { showToast('This control hit an error. Navigation remains available.'); } catch (toastError) { /* preserve other controls */ }
+      }
     });
 
     window.addEventListener('hashchange', handleLocationChange);
@@ -1395,26 +1409,39 @@ function syncAtlasViewControls() {
     if (campaignsCount) campaignsCount.textContent = typeof CAMPAIGNS !== 'undefined' ? CAMPAIGNS.length : '—';
   }
 
+  function runInitStep(label, task) {
+    try {
+      task();
+      return true;
+    } catch (error) {
+      console.error('[Indian Wars] Initialisation step failed:', label, error);
+      try { showToast(label + ' could not load; other controls remain available.'); } catch (toastError) { /* keep startup alive */ }
+      return false;
+    }
+  }
+
   function init() {
-    addSearchButton();
-    wireEvents();
-    buildIndex();
-    renderTimeline();
-    renderCampaigns();
-    renderAtlas();
-    renderSectors();
-    renderHighways();
-    renderOperations();
-    renderLeaders();
-    renderHeroes();
-    renderReforms();
-    renderSources();
-    renderVault();
-    renderQuizHome();
-    updateHomeMetrics();
-    initOperationsMap();
-    handleLocationChange();
-    var stats = $$('.metric strong');
+    runInitStep('Search control', addSearchButton);
+    runInitStep('Button and navigation wiring', wireEvents);
+    [
+      ['Search index', buildIndex],
+      ['Timeline', renderTimeline],
+      ['War Studies', renderCampaigns],
+      ['Operations Atlas', renderAtlas],
+      ['Terrain sectors', renderSectors],
+      ['Highways', renderHighways],
+      ['Kargil operations', renderOperations],
+      ['Commanders', renderLeaders],
+      ['Gallantry profiles', renderHeroes],
+      ['Reforms', renderReforms],
+      ['Source register', renderSources],
+      ['Saved items', renderVault],
+      ['Quiz academy', renderQuizHome],
+      ['Home metrics', updateHomeMetrics],
+      ['Operation map', initOperationsMap],
+      ['Route navigation', handleLocationChange]
+    ].forEach(function (step) { runInitStep(step[0], step[1]); });
+    var stats = $('.metric strong');
     if (stats.length) stats[0].setAttribute('title', 'Date range from first detection reported on 3 May to official end date on 26 July. Counting conventions vary.');
   }
 
