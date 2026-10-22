@@ -180,7 +180,6 @@ const OPERATIONS_ATLAS = [
       {date:"18 Dec 1961",title:"Main land thrusts",detail:"The National War Memorial describes northern and eastern land thrusts supported by the other services."},
       {date:"19 Dec 1961",title:"Portuguese surrender",detail:"Portuguese forces surrendered in Goa, Daman and Diu, according to the US diplomatic archive and the memorial."}
     ],
-    image:{src:"https://upload.wikimedia.org/wikipedia/commons/6/61/Indian_soldiers_in_combat_during_operation_vijay.jpg",alt:"Indian Army soldiers pictured in a Government of India defence publication",caption:"Illustrative Army image from a DRDO Government of India publication; not independently confirmed as a contemporaneous 1961 Goa photograph.",credit:"DRDO, Government of India · Government Open Data License (India)",page:"https://commons.wikimedia.org/wiki/File:Indian_soldiers_in_combat_during_operation_vijay.jpg",license:"Government Open Data License — India; attribution required, and Commons marks this file as awaiting review of the licence."},
     sources:[
       {title:"National War Memorial — Liberation of Goa",url:"https://nationalwarmemorial.gov.in/war-depictions/details/3",kind:"Official memorial account"},
       {title:"US Office of the Historian — Goa, December 1961",url:"https://history.state.gov/historicaldocuments/frus1961-63v19/d76",kind:"Contemporaneous diplomatic archive"},
@@ -409,7 +408,6 @@ const OPERATIONS_ATLAS = [
       {date:"First days",title:"Equipment and weather constraints",detail:"The disaster-management report describes shortages of boats and poor weather hindering early rooftop and floodwater rescues."},
       {date:"19 Sep 2014",title:"Major rescue phase ends",detail:"A national disaster report records Megh Rahat ending on 19 September, followed by relief and medical-assistance activity."}
     ],
-    image:{src:"https://upload.wikimedia.org/wikipedia/commons/4/49/Siachen_warriors.jpg",alt:"Indian soldiers in high-altitude clothing, used here only as a generic armed forces visual",caption:"Generic Army personnel image; not a photograph of the 2014 Kashmir flood response. The dossier prioritises source-backed event details over mislabelled imagery.",credit:"Arshsangh · CC BY-SA 4.0",page:"https://commons.wikimedia.org/wiki/File:Siachen_warriors.jpg",license:"Creative Commons Attribution-ShareAlike 4.0 International."},
     sources:[
       {title:"Ministry of Defence Annual Report 2014–15",url:"https://www.ddpmod.gov.in/sites/default/files/2023-12/Annual%20report%202014-2015_0.pdf",kind:"Government annual report"},
       {title:"NDRF — J&K flood rescue and relief operations, September 2014",url:"https://www.ndrf.gov.in/en/operations/jammu-kashmir-flood-rescue-and-relief-operations-sep-2014",kind:"Official disaster-response record"},
@@ -568,7 +566,6 @@ const OPERATIONS_ATLAS = [
       {date:"6 Feb 2023",title:"Earthquakes trigger international response",detail:"The major earthquakes in Türkiye and Syria led to international search-and-rescue and medical assistance."},
       {date:"Feb 2023",title:"Indian teams deploy",detail:"India sent rescue, medical and relief support under the name Operation Dost. Consult linked official records for dated deployment details."}
     ],
-    image:{src:"https://upload.wikimedia.org/wikipedia/commons/5/50/Army_Medical_Team_of_60_Para_Field_Hospital_providing_first_aid_treatment%2C_at_Sinamangal%2C_in_Nepal_on_May_14%2C_2015.jpg",alt:"Indian Army medical team in a field medical setting",caption:"Illustrative field-hospital photograph from Operation Maitri in Nepal (2015), not an Operation Dost photograph.",credit:"Ministry of Defence, Government of India · GODL-India",page:"https://commons.wikimedia.org/wiki/File:Army_Medical_Team_of_60_Para_Field_Hospital_providing_first_aid_treatment,_at_Sinamangal,_in_Nepal_on_May_14,_2015.jpg",license:"Government Open Data License — India; attribution required."},
     sources:[
       {title:"Search official Government of India records for Operation Dost",url:"https://www.google.com/search?q=site%3Apib.gov.in+Operation+Dost+India+2023+Army+field+hospital",kind:"Official-source search"}
     ]
