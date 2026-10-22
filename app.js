@@ -337,6 +337,24 @@
     if (typeof CAMPAIGNS !== 'undefined') CAMPAIGNS.forEach(function (campaign) {
       globalIndex.push({ id: 'campaign:' + campaign.id, type: campaign.type === 'war' ? 'War dossier' : 'Operation dossier', title: campaign.title, detail: campaign.period + ' · ' + campaign.theatre + ' · ' + campaign.summary, target: 'campaigns', raw: campaign });
     });
+    if (typeof OPERATIONS_ATLAS !== 'undefined') OPERATIONS_ATLAS.forEach(function (operation) {
+      var chronologyText = (operation.chronology || []).map(function (entry) { return [entry.date, entry.title, entry.detail].join(' '); }).join(' ');
+      globalIndex.push({
+        id: 'atlas:' + operation.id, type: 'Operations Atlas dossier', title: operation.title,
+        detail: [operation.period, operation.place, operation.scope, operation.service, operation.summary, operation.plan, operation.execution, operation.friction, operation.lessons, chronologyText].join(' '),
+        target: 'operations-atlas', raw: operation
+      });
+    });
+    if (typeof WAR_STUDIES !== 'undefined') WAR_STUDIES.forEach(function (study) {
+      var leadersText = (study.commanders || []).map(function (leader) { return [leader.name, leader.role, leader.contribution].join(' '); }).join(' ');
+      var eventText = (study.timeline || []).map(function (entry) { return [entry.date, entry.title, entry.detail].join(' '); }).join(' ');
+      var reviewText = (study.friction || []).map(function (item) { return [item.label, item.detail, item.type].join(' '); }).concat((study.lessons || []).map(function (item) { return [item.label, item.detail].join(' '); })).join(' ');
+      globalIndex.push({
+        id: 'study:' + study.id, type: 'Full War Study', title: study.title,
+        detail: [study.period, study.theatre, study.thesis, (study.context || []).join(' '), leadersText, eventText, study.planning, study.execution, reviewText].join(' '),
+        target: 'campaigns', raw: study
+      });
+    });
   }
 
   function clampPage(currentPage, totalItems, pageSize) {
@@ -1122,6 +1140,22 @@ function syncAtlasViewControls() {
     if (item.side) activeSide = item.side;
     if (item.id.indexOf('sector:') === 0) activeSector = item.raw.id;
     if (item.id.indexOf('peak:') === 0) activeSector = item.sectorId;
+    if (item.id.indexOf('study:') === 0 && item.raw) {
+      closeVault();
+      openWarStudy(item.raw.id);
+      return;
+    }
+    if (item.id.indexOf('campaign:') === 0 && item.raw) {
+      var campaignStudy = findWarStudy(item.raw.id);
+      if (campaignStudy) {
+        closeVault();
+        openWarStudy(campaignStudy.id);
+      } else {
+        closeVault();
+        sectionJump('campaigns');
+      }
+      return;
+    }
     if (item.id.indexOf('atlas:') === 0 && item.raw) {
       sectionJump('atlas');
       closeVault();
