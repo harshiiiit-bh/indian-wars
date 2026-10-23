@@ -128,5 +128,30 @@ check(app.includes("source-card-' + escapeHTML(s.id)"), 'Source cards need stabl
 
 check(!/target=["']_blank["']/.test(app) && !app.includes('window.open(') && !app.includes('googleLink('), 'Application controls must not navigate to external research or search pages.');
 check(/function renderSources\(\)[\s\S]*source-card-/.test(app), 'The on-site source register needs stable scroll targets for search results.');
+const campaignDataStart = campaigns.indexOf('const CAMPAIGNS = [');
+const atlasDataStart = campaigns.indexOf('const OPERATIONS_ATLAS = [');
+const visualDataStart = campaigns.indexOf('const VISUAL_LIBRARY = [');
+const quizDataStart = campaigns.indexOf('const QUIZ_QUESTIONS = [');
+const campaignData = campaigns.slice(campaignDataStart, atlasDataStart);
+const atlasData = campaigns.slice(atlasDataStart, visualDataStart >= 0 ? visualDataStart : quizDataStart);
+const visualData = visualDataStart >= 0 ? campaigns.slice(visualDataStart, quizDataStart) : '';
+const recordCount = (source) => (source.match(/^\s*id:\s*["']/gm) || []).length;
+const campaignCount = recordCount(campaignData);
+const operationCount = recordCount(atlasData);
+const visualCount = recordCount(visualData);
+const studyStart = read('war-studies.js').indexOf('const WAR_STUDIES = [');
+const studyCount = (read('war-studies.js').slice(studyStart).match(/^\s*id:\s*["']/gm) || []).length;
+check(campaignCount >= 20, `Campaign Library needs at least 20 researched entries; found ${campaignCount}.`);
+check(operationCount >= 55, `Operations Atlas needs at least 55 documented dossiers; found ${operationCount}.`);
+check(studyCount >= 18, `War Studies needs at least 18 in-page learning studies; found ${studyCount}.`);
+check(visualCount >= 12, `Visual Library needs at least 12 cited exhibits; found ${visualCount}.`);
+check(/data-view="history-lab"/.test(html) && /data-route="history-lab"/.test(html), 'History Lab route is missing.');
+check(/data-view="visual-library"/.test(html) && /data-route="visual-library"/.test(html), 'Visual Library route is missing.');
+for (const id of ['historyLabDataset', 'historyLabSummary', 'decadeChart', 'missionTypeChart', 'theatreChart', 'campaignTypeChart']) check(html.includes(`id="${id}"`), `Missing redesigned chart element #${id}.`);
+check(/function\s+renderHistoryLab\s*\(/.test(app) && /function\s+renderResponsiveBarChart\s*\(/.test(app), 'History Lab chart rendering functions are missing.');
+check(/function\s+renderVisualLibrary\s*\(/.test(app) && /VISUAL_LIBRARY/.test(app), 'Curated Visual Library renderer is missing.');
+check(/aria-label="[^"]*(?:chart|graph|distribution|decade)[^"]*"/i.test(app), 'Generated charts need accessible labels.');
+check(/sourceUrl:\s*"https:\/\/commons\.wikimedia\.org\/wiki\/File:/.test(visualData), 'Visual exhibits need explicit source/credit pages.');
+check(/Operation Blue Star/.test(campaigns) && /goa-vijay-1961/.test(campaigns), 'Historical image-provenance audit anchors are missing.');
 if (failures.length) { console.error(`Archive validation failed (${failures.length}):`); for (const failure of failures) console.error(` - ${failure}`); process.exitCode = 1; }
 else { console.log(`Archive validation passed. ${ids.length} HTML IDs are unique; 7 routes, legacy routing, core controls and script order are present.`); }
